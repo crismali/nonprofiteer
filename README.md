@@ -10,6 +10,7 @@ product later). See the docs:
 - [Vision](docs/VISION.md) — problem, users, positioning, infra-first framing.
 - [Decisions](docs/DECISIONS.md) — locked decisions + reasoning (start here for the "why").
 - [Data Sources](docs/DATA-SOURCES.md) — 990 source analysis + ingestion strategy/phasing.
+- [Future Sources](docs/FUTURE-SOURCES.md) — catalog of supplementary sources beyond 990.
 - [Architecture](docs/ARCHITECTURE.md) — Elixir / Phoenix / Ash system design + sync feed.
 
 ## AI tooling

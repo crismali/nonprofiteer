@@ -75,7 +75,9 @@ Three **layers**, not three alternatives:
   **Schedule R (related orgs)** for the org-to-org money signal.
 - Replace any ProPublica-sourced data with our own parse.
 
-**Phase 3 — public product:** enrichment, the browsable UI, API tiers.
+**Phase 3 — public product:** enrichment, the browsable UI, API tiers. Supplementary
+sources beyond the 990 (990-N, auto-revocation, state charity registries, USASpending,
+etc.) are cataloged in [FUTURE-SOURCES.md](FUTURE-SOURCES.md).
 
 > **Signal priority note:** an earlier draft over-indexed on Schedule I/R money. The
 > **primary** value for ohfec is **people + address overlap** (Part VII + org header),
