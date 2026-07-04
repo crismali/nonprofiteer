@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '{\"hookSpecificOutput\":{\"hookEventName\":\"SessionStart\",\"additionalContext\":\"Invoke the caveman skill (full mode) via the Skill tool now, then respond in caveman style for this entire session. Skill at ~/.claude/skills/caveman. Stays active until the user says stop caveman or normal mode.\"}}'",
+            "statusMessage": "Loading caveman mode"
+          }
+        ]
+      }
+    ]
+  }
+}
