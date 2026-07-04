@@ -5,12 +5,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo '{\"hookSpecificOutput\":{\"hookEventName\":\"SessionStart\",\"additionalContext\":\"Invoke the caveman skill (full mode) via the Skill tool now, then respond in caveman style for this entire session. Skill at ~/.claude/skills/caveman. Stays active until the user says stop caveman or normal mode.\"}}'",
-            "statusMessage": "Loading caveman mode"
-          },
-          {
-            "type": "command",
-            "command": "input=$(cat); cur=$(printf '%s' \"$input\" | jq -r '.session_title // \"\"'); prefix='[nonprofiteer] '; case \"$cur\" in \"$prefix\"*) title=\"$cur\" ;; \"\") title=\"${prefix}$(basename \"$(pwd)\")\" ;; *) title=\"${prefix}${cur}\" ;; esac; jq -cn --arg t \"$title\" '{hookSpecificOutput:{hookEventName:\"SessionStart\",sessionTitle:$t}}'"
+            "command": "input=$(cat); cur=$(printf '%s' \"$input\" | jq -r '.session_title // \"\"'); prefix='[nonprofiteer] '; case \"$cur\" in \"$prefix\"*) title=\"$cur\" ;; \"\") title=\"${prefix}$(basename \"$(pwd)\")\" ;; *) title=\"${prefix}${cur}\" ;; esac; ctx='Invoke the caveman skill (full mode) via the Skill tool now, then respond in caveman style for this entire session. Skill at ~/.claude/skills/caveman. Stays active until the user says stop caveman or normal mode.'; jq -cn --arg t \"$title\" --arg c \"$ctx\" '{hookSpecificOutput:{hookEventName:\"SessionStart\",sessionTitle:$t,additionalContext:$c}}'",
+            "statusMessage": "Loading session config"
           }
         ]
       }
