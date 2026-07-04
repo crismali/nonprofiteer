@@ -27,7 +27,7 @@ over a generic changed-since sync feed. Financial schedules deferred to Phase 2.
 
 ## Sibling project: ohfec
 
-Nonprofiteer's driver is **ohfec** (`~/Development/ohfec/ohfec-main`) — a Phoenix/Ash app
+Nonprofiteer's driver is **ohfec** (`~/Development/public-data-projects/ohfec`, sibling dir) — a Phoenix/Ash app
 over the OpenFEC campaign-finance API, **same stack**. OpenFEC is blind to
 501(c)(4)/(c)(3) dark-money nonprofits; nonprofiteer's 990 data extends money trails past
 that blind spot. ohfec's `OhFec.EntityResolution` layer has a dormant EIN-matching tier

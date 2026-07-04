@@ -43,7 +43,7 @@ defer pricing/auth/consumer polish.
 
 ### Why ohfec needs this, concretely
 
-**ohfec** (`~/Development/ohfec/ohfec-main`) is a Phoenix/Ash app over the OpenFEC API.
+**ohfec** (`~/Development/public-data-projects/ohfec`, sibling dir) is a Phoenix/Ash app over the OpenFEC API.
 OpenFEC is federal-only and structurally blind to 501(c)(4)/(c)(3) nonprofits — the
 classic dark-money vehicles — because they don't file with the FEC at all. Money and
 influence trails dead-end at these orgs.
