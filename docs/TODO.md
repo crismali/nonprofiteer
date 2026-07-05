@@ -61,6 +61,10 @@ Ash resources per [ARCHITECTURE.md](ARCHITECTURE.md#data-model-sketch--see-futur
   present) + source-filing pointer (D8).
 - [ ] Bake in **history** — `superseded_by` pointer for amendments; soft-delete tombstone
   for withdrawals; never hard-delete (D10).
+- [ ] **Port `nonprofiteer.resources` mix task** — land alongside the first resource: adapt
+  ohfec's `oh_fec.resources` (Ash introspection — attrs/rels/actions/identities/calcs via
+  `Ash.Resource.Info`, reads `:nonprofiteer, :ash_domains` from config) + a test, so it has
+  something to introspect and doesn't dent coverage in a vacuum.
 
 ## BMF ingest (the org spine, no XML)
 
