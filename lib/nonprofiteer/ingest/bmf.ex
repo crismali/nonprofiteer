@@ -40,6 +40,10 @@ defmodule Nonprofiteer.Ingest.Bmf do
     ntee: 26
   }
 
+  # The EO BMF is a US-domestic registry (the `xx` extract is US orgs operating abroad, still
+  # filed with the IRS), so every address defaults to US; there is no country column to read.
+  @default_country "US"
+
   defmodule LayoutError do
     @moduledoc "Raised when a BMF extract's header doesn't match the pinned expected layout."
     defexception [:message]
@@ -86,7 +90,7 @@ defmodule Nonprofiteer.Ingest.Bmf do
         city: at(row, @col.city),
         region: at(row, @col.state),
         postal_code: at(row, @col.zip),
-        country: "US"
+        country: @default_country
       }
     }
   end

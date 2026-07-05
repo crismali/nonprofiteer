@@ -24,6 +24,10 @@ defmodule Nonprofiteer.Ingest.BmfReconcileWorker do
   @central_codes ["6", "8"]
   @subordinate_code "9"
 
+  # Tags this pass's `Ingest.Run` rows — distinct from the extract workers' state-code ids, so
+  # reconcile runs are filterable in the audit log.
+  @extract_id "reconcile"
+
   @impl Oban.Worker
   def perform(%Oban.Job{}) do
     centrals = central_map()
@@ -82,7 +86,7 @@ defmodule Nonprofiteer.Ingest.BmfReconcileWorker do
     Run
     |> Ash.Changeset.for_create(
       :create,
-      Map.merge(attrs, %{source: :bmf, extract_id: "reconcile"})
+      Map.merge(attrs, %{source: :bmf, extract_id: @extract_id})
     )
     |> Ash.create!()
   end
