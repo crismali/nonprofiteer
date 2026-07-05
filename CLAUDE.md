@@ -39,8 +39,18 @@ corroboration, over nonprofiteer's public API. Details:
 ## AI tooling
 
 A `SessionStart` hook (`.claude/settings.json`) auto-loads **caveman** response mode each
-session. Disable per-session with `stop caveman` / `normal mode`. More AI-tooling tuning is
-planned.
+session. Disable per-session with `stop caveman` / `normal mode`. That file also carries a
+**permission allowlist** for routine `mix`/`git` commands (and denies force-push / hard-reset).
+
+**Skills** (`.claude/skills/`, lifted + adapted from ohfec) — load the relevant one before
+writing that kind of code:
+- `elixir`, `phoenix` — idiomatic Elixir/Phoenix baseline.
+- `elixir-types` — set-theoretic types over Dialyzer; `mix compile --warnings-as-errors` is
+  the type gate, not a Dialyzer pass.
+- `ash` — Ash 3.x resource modeling (actions-not-`Repo`, upserts, policies, generated migrations).
+- `oban` — background-job conventions for the monthly ingest.
+- `ingest` — BMF/990 ingest patterns (cold-start vs steady-state, column-layout pinning,
+  idempotent upserts + orphans, known-answer fixtures).
 
 ## Conventions
 
@@ -55,6 +65,8 @@ satisfy `ash_admin`, not pinning `ash_admin` back).
   `credo --strict`, `doctor --raise`, `compile --warnings-as-errors`, `coveralls` at 80%),
   collapsing green output and surfacing decisive lines on failure. Single source of truth is
   the `check` alias in `mix.exs`; `bin/check` only reformats output.
+- **CI** — GitHub Actions (`.github/workflows/ci.yml`) runs `mix check` on push to `main` and
+  all PRs (Postgres 16 service, `deps`/`_build` cache keyed on `mix.lock`).
 - App modules: `Nonprofiteer` (`:nonprofiteer`) / `NonprofiteerWeb`. Repo is
   `AshPostgres.Repo` with `["ash-functions", "pg_trgm"]` extensions.
 
@@ -66,4 +78,10 @@ phx.new/igniter scaffold (core_components, error views, endpoint, etc.). **Remov
 each file gains hand-written code** — don't widen the patterns, or real code skips the gate
 silently.
 
-Ash resource patterns / ingest pipeline conventions land here as that code is written.
+**Custom Credo check:** `Nonprofiteer.Credo.Check.DefstructHasType` (`.credo/checks/`, loaded
+via `requires:` in `.credo.exs`) requires every module with a `defstruct` to declare a matching
+`@type t()` — the teeth behind the set-theoretic-types decision (see the `elixir-types` skill).
+
+Ash resource + ingest-pipeline conventions live in the `ash` and `ingest` skills; extend those
+(and add new skills) as that code lands. Re-scaffolding notes are in
+[CONTRIBUTING.md](CONTRIBUTING.md).
