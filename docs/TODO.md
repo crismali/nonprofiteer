@@ -99,12 +99,30 @@ Ash resources per [ARCHITECTURE.md](ARCHITECTURE.md#data-model-sketch--see-futur
 
 ## 990 Part VII parse (the deep slice)
 
-- [ ] Pull 990 XML + index files from the **GivingTuesday Data Lake**.
-- [ ] Parser driven by the **NODC concordance** — Part VII only, no financial schedules.
-- [ ] Validate output against **IRSx** as reference.
-- [ ] Mirror each source XML into our own object storage (D11).
+Scope (agreed): Part VII Section A **people only** (name/title/address), **modern schema
+(2013+) only** (older = loud-skip + count, matches D9's ~3-year window), **in-BEAM Saxy**
+parse with IRSx as an offline reference validator (not in the pipeline/CI). Names + addresses
+stored **raw** (consumer normalizes — D2/D4); only the **EIN** is canonicalized as an
+identifier (`Ingest.Ein.normalize/1`). Orphan filings (EIN not in the BMF spine) are
+**skipped + counted**, not force-created.
+
+- [ ] Pull 990 XML + index files from the **GivingTuesday Data Lake** (`gt990datalake-rawdata`).
+- [ ] `Efile.PartVii` Saxy parser — Part VII Section A only, no financial schedules; version-
+  guarded (unrecognized schema raises, never silent-empty).
+- [ ] `Ingest.Ein.normalize/1` — digits-only, require 9; shared by BMF + e-file at the org
+  lookup/identity boundary. Retrofit BMF defensively.
+- [ ] Mirror each source XML into our own object storage (D11) — lift ohfec's R2 uploader;
+  dormant if unconfigured, required precondition when configured.
 - [ ] Backfill ~3 filing years up front + all new filings going forward (D9).
 - [ ] Incrementality via Data Lake index files — process only new/changed returns.
+- [ ] Validate output against **IRSx** as reference (documented dev-time diff, not CI).
+
+**Deferred (Phase-1 follow-ups, not the first cut):**
+- [ ] **Amendment supersede (D10)** — within a `(organization, tax_year, return_type)` group,
+  point earlier filings' `superseded_by` at the latest by `filed_on`. First cut ingests all
+  filings (incl. amendments) as distinct rows keyed on `source_object_id` — no data loss, just
+  no supersede links yet. Needed before the sync feed can emit supersede events.
+- [ ] Older-schema (pre-2013) Part VII support, if history is extended past the D9 window.
 
 ## Sync feed (the Phase-1 deliverable)
 
@@ -124,4 +142,9 @@ Ash resources per [ARCHITECTURE.md](ARCHITECTURE.md#data-model-sketch--see-futur
 
 - Full financial schedules; then Schedule I (grants out) + Schedule R (related orgs).
 - Public JSON API tiers + thin LiveView UI.
+- **Normalization as a consumer/API concern** — nonprofiteer stores raw (names/addresses
+  verbatim, EIN canonicalized as the only identifier); normalization for matching stays out of
+  the source of truth (D2/D4). Idea to explore: a **shared normalization library** depended on
+  by both ohfec and nonprofiteer, surfaced as an **opt-in API option** (e.g. `?normalized=true`)
+  so consumers can request normalized values without the stored facts being mangled.
 - Supplementary sources — see [FUTURE-SOURCES.md](FUTURE-SOURCES.md).

@@ -52,6 +52,8 @@ defmodule Nonprofiteer.MixProject do
       {:req, "~> 0.6"},
       {:nimble_csv, "~> 1.0"},
       {:dotenvy, "~> 1.1"},
+      {:saxy, "~> 1.5"},
+      {:aws_signature, "~> 0.3"},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:doctor, "~> 0.22", only: [:dev, :test], runtime: false},
       {:excoveralls, "~> 0.18", only: :test},

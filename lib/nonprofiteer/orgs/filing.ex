@@ -40,6 +40,16 @@ defmodule Nonprofiteer.Orgs.Filing do
       description "Pointer to the mirrored source XML / IRS DLN — provenance (D11)."
     end
 
+    attribute :filed_on, :date do
+      public? true
+      description "Filing date from the Data Lake index — orders amendments within a tax year."
+    end
+
+    attribute :schema_version, :string do
+      public? true
+      description ~s(IRS return schema version, e.g. "2021v4.0" — provenance + parse dispatch.)
+    end
+
     attribute :tombstoned_at, :utc_datetime_usec do
       public? true
 
@@ -70,5 +80,35 @@ defmodule Nonprofiteer.Orgs.Filing do
       require_atomic? false
       change set_attribute(:tombstoned_at, &DateTime.utc_now/0)
     end
+
+    create :upsert_from_efile do
+      description """
+      Idempotent 990 e-file ingest entry point. Upserts on the `:unique_source_object_id`
+      identity so a re-parse of the same Data Lake return converges. Amendment supersede is a
+      deferred follow-up — amended returns land here as distinct filings (their own OBJECT_ID),
+      with no data lost (D10).
+      """
+
+      upsert? true
+      upsert_identity :unique_source_object_id
+      upsert_fields [:return_type, :tax_year, :filed_on, :schema_version, :organization_id]
+
+      accept [
+        :return_type,
+        :tax_year,
+        :source_object_id,
+        :filed_on,
+        :schema_version,
+        :organization_id
+      ]
+    end
+  end
+
+  # A Data Lake OBJECT_ID is globally unique per filing, so the e-file parse upserts on it —
+  # a re-parse of the same return converges instead of duplicating. Nullable-friendly: filings
+  # created by other paths (tests) without a source id aren't constrained (Postgres treats the
+  # nulls as distinct).
+  identities do
+    identity :unique_source_object_id, [:source_object_id]
   end
 end
