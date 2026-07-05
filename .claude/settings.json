@@ -1,4 +1,48 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(mix format:*)",
+      "Bash(mix credo:*)",
+      "Bash(mix test:*)",
+      "Bash(mix compile:*)",
+      "Bash(mix check:*)",
+      "Bash(mix doctor:*)",
+      "Bash(mix deps.get:*)",
+      "Bash(mix deps.update:*)",
+      "Bash(mix hex.outdated:*)",
+      "Bash(mix setup:*)",
+      "Bash(mix ash.setup:*)",
+      "Bash(mix ash.reset:*)",
+      "Bash(mix ash.migrate:*)",
+      "Bash(mix ash_postgres.generate_migrations:*)",
+      "Bash(mix ecto.migrate:*)",
+      "Bash(mix run:*)",
+      "Bash(mix phx.server:*)",
+      "Bash(bin/check:*)",
+      "Bash(MIX_ENV=test mix test:*)",
+      "Bash(MIX_ENV=test mix ecto.migrate:*)",
+      "Bash(MIX_ENV=dev mix ecto.migrate:*)",
+      "Bash(MIX_ENV=dev mix run:*)",
+      "Bash(MIX_ENV=dev mix phx.server:*)",
+      "Bash(lsof:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git add:*)",
+      "Bash(git worktree:*)",
+      "Bash(git commit:*)",
+      "Bash(git rebase:*)",
+      "Bash(git switch:*)",
+      "Bash(git branch:*)",
+      "Bash(git rev-parse:*)",
+      "Bash(git stash:*)"
+    ],
+    "deny": [
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Bash(git reset --hard:*)"
+    ]
+  },
   "hooks": {
     "SessionStart": [
       {
