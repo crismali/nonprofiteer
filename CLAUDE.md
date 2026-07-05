@@ -20,15 +20,19 @@ consumers use it. See the docs:
 **Phase-1 data model has landed** — `Organization`, `Address`, `Filing`, `Person` under the
 `Nonprofiteer.Orgs` domain (EIN indexed-not-unique, central/subordinate self-ref, Filing
 provenance pointer, Person source-filing pointer + address for D8, `:tombstone` soft-delete
-history on all three history-bearing resources). No ingest or sync feed yet. Near-term goal is
-feeding the sibling ohfec project, not a public launch. Stack: Elixir 1.20 / OTP 29 +
-Phoenix 1.8 + Ash 3 (`ash_postgres`, `ash_phoenix`, `ash_admin`) + Oban, Postgres with
-`pg_trgm`.
+history on all three history-bearing resources). **BMF ingest has landed** — the
+`Nonprofiteer.Ingest` domain: `BmfCoordinatorWorker` (monthly cron) fans out per-extract
+`BmfExtractWorker`s that download (`Ingest.Client`, Req), parse (`Ingest.Bmf`, header-pinned,
+raises `LayoutError` on drift), upsert orgs on a partial `[:source, :ein]` identity (D12),
+link addresses, and write an `Ingest.Run` audit row on success and failure. No 990 parse or
+sync feed yet. Near-term goal is feeding the sibling ohfec project, not a public launch.
+Stack: Elixir 1.20 / OTP 29 + Phoenix 1.8 + Ash 3 (`ash_postgres`, `ash_phoenix`,
+`ash_admin`) + Oban, Postgres with `pg_trgm`.
 
 **Phase 1 scope:** BMF ingest (orgs) + 990 Part VII parse (people/addresses) only, served
 over a generic changed-since sync feed. Financial schedules deferred to Phase 2. See
-[DECISIONS.md](docs/DECISIONS.md). Next build step: BMF ingest (the `ingest` skill has the
-patterns); see [docs/TODO.md](docs/TODO.md). `mix nonprofiteer.resources [Name]` prints a
+[DECISIONS.md](docs/DECISIONS.md). Next build step: 990 Part VII parse (the `ingest` skill has
+the patterns); see [docs/TODO.md](docs/TODO.md). `mix nonprofiteer.resources [Name]` prints a
 resource's shape.
 
 ## Sibling project: ohfec

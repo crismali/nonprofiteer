@@ -49,6 +49,8 @@ defmodule Nonprofiteer.MixProject do
   defp deps do
     [
       {:oban, "~> 2.0"},
+      {:req, "~> 0.6"},
+      {:nimble_csv, "~> 1.0"},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:doctor, "~> 0.22", only: [:dev, :test], runtime: false},
       {:excoveralls, "~> 0.18", only: :test},

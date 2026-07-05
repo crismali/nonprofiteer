@@ -7,13 +7,36 @@ description: Conventions for Nonprofiteer's data ingest — bulk cold-start vs. 
 
 How data gets into Nonprofiteer: the monthly BMF org spine + incremental 990 Part VII parse, plus the one-time cold-start backfill. Grounded in [ARCHITECTURE.md](../../../docs/ARCHITECTURE.md#data-flow) and [DECISIONS.md](../../../docs/DECISIONS.md). Pairs with the `oban` skill (job/queue mechanics) and `ash` skill (upsert actions).
 
-> Provenance: patterns adapted from the sibling **ohfec** project's `bulk_seed` / `bootstrap` / `fetch_examples` mix tasks. The FEC-specific file names/tiers don't carry over; the mechanics below do. No ingest code exists in nonprofiteer yet — this is the shape to build toward.
+> Provenance: patterns adapted from the sibling **ohfec** project's `bulk_seed` / `bootstrap` / `fetch_examples` mix tasks. The FEC-specific file names/tiers don't carry over; the mechanics below do.
+
+## What's built (BMF ingest — read these first)
+
+The **BMF org-spine ingest exists** under the `Nonprofiteer.Ingest` domain — the concrete
+reference for every principle below:
+
+- **`Nonprofiteer.Ingest.BmfCoordinatorWorker`** — monthly `Oban.Plugins.Cron` entry; fans out
+  one extract job per EO BMF file (`Oban.insert_all`). Extract list is overridable via
+  `:nonprofiteer, :bmf_extracts` (tests inject a stub extract).
+- **`Nonprofiteer.Ingest.BmfExtractWorker`** (`:ingest_bulk` queue) — download → parse →
+  upsert → run-log. Idempotent; EIN-less rows counted as orphan skips; writes an `Ingest.Run`
+  on both success and failure, reraising so Oban retries.
+- **`Nonprofiteer.Ingest.Bmf`** — pure parser; `NimbleCSV.define`d, **header-pinned** (raises
+  `Bmf.LayoutError` on drift), returns `%{org: ..., address: ...}` maps. No persistence.
+- **`Nonprofiteer.Ingest.Client`** — thin `Req` wrapper reading opts from `:http_req_opts` so
+  `Req.Test` stubs it (no real network under test).
+- **`Nonprofiteer.Ingest.Run`** — the durable run-log resource.
+- Upsert identity is the **partial `:unique_bmf_ein`** on `Organization` (`[:ein] WHERE
+  source = 'bmf'`, D12) — the "source's stable key, not global EIN" made concrete. `source` is
+  a nullable provenance atom; the 990-XML pass will add its own source value + merge on it.
+
+The 990 Part VII / XML detail pass is **not built yet** — the sections below still describe the
+shape to build toward for it.
 
 ## Two paths: cold-start vs. steady-state
 
 - **Steady-state (monthly)** never backfills history on its own — the cron ingest only pulls the current IRS drop. Getting from an empty DB to "3 filing years of history" (D9) is a **deliberate one-off**, not something the monthly cadence reaches.
 - **Cold-start** is therefore a separate entry point (a mix task, e.g. `mix nonprofiteer.bootstrap`), run once against a live node. Two stages, mirroring the data model's spine-then-detail shape:
-  1. **BMF bulk seed** — download the EO BMF extract(s), upsert `organizations`. Fast (CSV, MB-scale), no XML. Establishes the spine so detail has something to attach to.
+  1. **BMF bulk seed** — download the EO BMF extract(s), upsert `organizations`. Fast (CSV, MB-scale), no XML. Establishes the spine so detail has something to attach to. **In practice the BMF is full-universe every monthly drop, so `BmfCoordinatorWorker`'s normal cron path already seeds from empty — BMF needs no separate bootstrap task.** The cold-start/steady-state split matters for the *XML* pass (backfill ~3 years once, then incremental), not the spine.
   2. **990 XML detail pass** — parse Part VII → `people`/addresses, link to the org spine. Slower; enqueue through Oban so it's paced, durable, and resumable, rather than run inline.
 - Bulk and detail **upsert on the same identity** (per resource's upsert action, keyed on the source's stable key — *not* EIN, per D7). So the detail pass merges cleanly over the bulk seed, filling fields the BMF doesn't carry. Run order never corrupts; re-runs converge.
 

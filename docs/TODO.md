@@ -1,16 +1,17 @@
 # Nonprofiteer — TODO
 
 Status: **app scaffolded + quality gate in place; the Phase-1 data model is in
-(Organization / Address / Filing / Person).** Next up is BMF ingest. This tracks the path to
-a running Phase 1 (BMF ingest + 990 Part VII parse → changed-since sync feed). See
-[DECISIONS.md](DECISIONS.md) for the locked reasoning behind each item.
+(Organization / Address / Filing / Person); BMF ingest has landed** (org spine — download,
+header-pinned parse, idempotent upsert, fan-out, run log). Next up is the 990 Part VII parse.
+This tracks the path to a running Phase 1 (BMF ingest + 990 Part VII parse → changed-since
+sync feed). See [DECISIONS.md](DECISIONS.md) for the locked reasoning behind each item.
 
 Phase 1 scope is the **ohfec-useful slice**: org spine + people/addresses, served over the
 sync feed. All financial schedules are Phase 2.
 
 ## Critical path
 
-~~Scaffold~~ → resolve cursor + parse-location decisions → data model → BMF ingest →
+~~Scaffold~~ → resolve cursor + parse-location decisions → ~~data model~~ → ~~BMF ingest~~ →
 Part VII parse → sync feed. Build validation fixtures throughout, not at the end.
 
 **Biggest risks (from the docs):**
@@ -70,10 +71,21 @@ Ash resources per [ARCHITECTURE.md](ARCHITECTURE.md#data-model-sketch--see-futur
 
 ## BMF ingest (the org spine, no XML)
 
-- [ ] Oban job: download EO BMF CSV → upsert `organizations` (identity, address, NTEE,
-  central/subordinate).
-- [ ] Handle the state-split extracts (50 states + DC + PR + international).
-- [ ] Monthly cadence (matches IRS drop).
+- [x] Oban job: download EO BMF CSV → upsert `organizations` (identity, address, NTEE, group).
+  `BmfExtractWorker` fetches via `Ingest.Client` (Req, stubbable), parses via `Ingest.Bmf`
+  (header-pinned, raises `LayoutError` on drift), upserts on the partial `:unique_bmf_ein`
+  identity (D12), links/updates each org's address in place, and writes an `Ingest.Run` audit
+  row on success *and* failure. Central/subordinate wiring off `gen` (GEN) is a later
+  reconcile pass — the column is captured, not yet linked.
+- [x] Handle the state-split extracts — `BmfCoordinatorWorker` (monthly cron) fans out one
+  `BmfExtractWorker` per extract. **Extract file list (`eo1`–`eo4`) is a placeholder — confirm
+  the current IRS EO BMF file set against irs.gov before production.**
+- [x] Monthly cadence — `Oban.Plugins.Cron`, `:ingest_bulk` queue (concurrency 4).
+
+**Follow-ups surfaced by this slice:**
+- [ ] Confirm the live IRS EO BMF file set + URLs; re-capture `test/fixtures/bmf/` from real files.
+- [ ] Reconcile pass: wire group-exemption subordinates to their central org off `gen` (D7).
+- [ ] Track `:partial` run status (mid-batch failure count), not just `:success`/`:failure`.
 
 ## 990 Part VII parse (the deep slice)
 

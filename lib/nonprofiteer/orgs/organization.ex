@@ -26,6 +26,10 @@ defmodule Nonprofiteer.Orgs.Organization do
     custom_indexes do
       index [:ein]
     end
+
+    # Hand SQL for the `:unique_bmf_ein` partial-index predicate — ash_postgres can't infer it
+    # from the Ash `where` expression, so the two must be kept in lockstep by hand.
+    identity_wheres_to_sql unique_bmf_ein: "source = 'bmf'"
   end
 
   attributes do
@@ -39,6 +43,26 @@ defmodule Nonprofiteer.Orgs.Organization do
     attribute :name, :string, allow_nil?: false, public?: true
     attribute :ntee_code, :string, public?: true
 
+    attribute :source, :atom do
+      public? true
+      constraints one_of: [:bmf]
+
+      description """
+      Ingest provenance — which pipeline seeded/last-touched this org. Nullable: orgs first
+      seen via a non-BMF path (later 990 XML) carry no source. The BMF upsert keys on
+      `[:source, :ein]` as a partial unique identity, so EIN stays globally non-unique (D7).
+      """
+    end
+
+    attribute :gen, :string do
+      public? true
+
+      description """
+      IRS Group Exemption Number from the BMF. Links group-exemption subordinates to their
+      central org (D7); the central-vs-subordinate wiring off this is a later reconcile pass.
+      """
+    end
+
     attribute :tombstoned_at, :utc_datetime_usec do
       public? true
       description "When set, this org was withdrawn (soft delete) — see the `:tombstone` action."
@@ -48,7 +72,12 @@ defmodule Nonprofiteer.Orgs.Organization do
   end
 
   relationships do
-    belongs_to :address, Nonprofiteer.Orgs.Address, public?: true
+    belongs_to :address, Nonprofiteer.Orgs.Address do
+      public? true
+      # BMF ingest links the org to its address after upsert, then updates that same address
+      # row in place on re-runs — so the FK must be directly writable via an update action.
+      attribute_writable? true
+    end
 
     belongs_to :central_org, __MODULE__ do
       public? true
@@ -79,5 +108,29 @@ defmodule Nonprofiteer.Orgs.Organization do
       require_atomic? false
       change set_attribute(:tombstoned_at, &DateTime.utc_now/0)
     end
+
+    create :upsert_from_bmf do
+      description """
+      Idempotent BMF ingest entry point. Upserts on the partial `:unique_bmf_ein` identity so
+      a monthly re-run over the full extract converges instead of duplicating. Only the
+      registry-mutable fields overwrite on conflict; the surrogate id, `source`, and the org's
+      address linkage are left to first-insert / the worker's address reconcile.
+      """
+
+      upsert? true
+      upsert_identity :unique_bmf_ein
+      upsert_fields [:name, :ntee_code, :gen]
+
+      accept [:ein, :name, :ntee_code, :gen]
+      change set_attribute(:source, :bmf)
+    end
+  end
+
+  # A BMF extract is one row per EIN, so BMF-sourced orgs must upsert on EIN to stay
+  # idempotent across monthly re-runs. This identity is *partial* (`where: source == :bmf`),
+  # backing a partial unique index — EIN remains globally non-unique (D7) so future
+  # non-BMF sources can still introduce shared/reissued EINs.
+  identities do
+    identity :unique_bmf_ein, [:ein], where: expr(source == :bmf)
   end
 end

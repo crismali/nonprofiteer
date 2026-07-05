@@ -10,7 +10,16 @@ import Config
 config :nonprofiteer, Oban,
   engine: Oban.Engines.Basic,
   notifier: Oban.Notifiers.Postgres,
-  queues: [default: 10],
+  # `:ingest_bulk` is deliberately low-concurrency: a monthly BMF fan-out (a handful of large
+  # regional extracts) shouldn't saturate the box or starve other work. Bump when the
+  # incremental 990 parse queue lands alongside it.
+  queues: [default: 10, ingest_bulk: 4],
+  # Monthly BMF ingest — the coordinator fans out to per-extract jobs. IRS drops the EO BMF
+  # early each month; run on the 5th to let the drop settle. (Disabled in test via
+  # `testing: :manual`.)
+  plugins: [
+    {Oban.Plugins.Cron, crontab: [{"0 6 5 * *", Nonprofiteer.Ingest.BmfCoordinatorWorker}]}
+  ],
   repo: Nonprofiteer.Repo
 
 config :spark,
@@ -23,7 +32,7 @@ config :ash, known_types: [AshPostgres.Timestamptz, AshPostgres.TimestamptzUsec]
 
 config :nonprofiteer,
   ecto_repos: [Nonprofiteer.Repo],
-  ash_domains: [Nonprofiteer.Orgs],
+  ash_domains: [Nonprofiteer.Orgs, Nonprofiteer.Ingest],
   generators: [timestamp_type: :utc_datetime]
 
 # Configures the endpoint

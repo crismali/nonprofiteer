@@ -96,6 +96,19 @@ froze in 2021; the GivingTuesday Data Lake is a single third party). Given D10 (
 sacred), depending on someone else's read-time availability for our provenance would
 undercut the whole stance. Storage is cheap relative to that risk.
 
+## D12 — BMF upserts on a partial `[:source, :ein]` identity, not global EIN
+
+BMF ingest keys its idempotent upsert on the identity `:unique_bmf_ein` — EIN, but **only
+where `source == :bmf`** (a partial unique index). A new `source` attribute (nullable atom,
+`:bmf` today) records ingest provenance and scopes the constraint. **Why:** a BMF extract is
+one row per EIN, so a monthly re-run needs a stable per-EIN upsert target or it duplicates
+every org — yet D7 forbids making EIN globally unique (reissue, multi-EIN, group exemptions,
+and future non-BMF sources all break "EIN = org"). Scoping uniqueness to BMF-sourced rows
+gets idempotency for the one source where EIN *is* one-per-row, while EIN stays globally
+0/1/many for everyone else. Orgs first seen via a later 990-XML path carry a null `source`
+and are untouched by the constraint. The partial-index predicate is hand-mirrored in the
+resource (`identity_wheres_to_sql`) — the Ash `where` and the SQL must stay in lockstep.
+
 ## Open (not yet decided)
 
 - Sync cursor mechanism (IRS release month vs. `updated_at`) — the *what-changed* query;

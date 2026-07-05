@@ -1,6 +1,7 @@
 {
   "skip_files": [
     "test/",
+    "deps/",
     "lib/nonprofiteer/application.ex",
     "lib/nonprofiteer/mailer.ex",
     "lib/nonprofiteer/repo.ex",
