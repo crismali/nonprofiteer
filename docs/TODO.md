@@ -39,8 +39,9 @@ From [DECISIONS.md](DECISIONS.md) "Open" + [ARCHITECTURE.md](ARCHITECTURE.md) op
 - [x] Test/quality tooling — `mix check` alias + `bin/check` wrapper (format, `credo --strict`,
   `doctor`, warnings-as-errors, `coveralls` @ 80%).
 - [x] Populate the "Conventions" section of [CLAUDE.md](../CLAUDE.md).
-- [ ] **CI** — GitHub Actions running `bin/check` (Postgres service, deps + PLT/coveralls
-  caching) on push/PR.
+- [x] **CI** — GitHub Actions ([`.github/workflows/ci.yml`](../.github/workflows/ci.yml))
+  runs `mix check` on push to `main` + all PRs; Postgres 16 service, `deps`/`_build` cache
+  keyed on `mix.lock`. (No PLT cache — `check` has no dialyzer step.)
 - [x] **Dependency freshness** — audited via `mix hex.outdated`; all deps current. Bumped
   reqs *up* (`tailwind ~> 0.5`, `dns_cluster ~> 0.2`) + `deps.update swoosh dns_cluster
   tailwind`. `tailwind` is the installer only — CSS stays pinned at 3.4.3 (v4 migration is

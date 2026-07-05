@@ -1,5 +1,7 @@
 # Nonprofiteer
 
+[![CI](https://github.com/crismali/nonprofiteer/actions/workflows/ci.yml/badge.svg)](https://github.com/crismali/nonprofiteer/actions/workflows/ci.yml)
+
 An affordable, open alternative to GuideStar: public IRS Form 990 data turned into a
 browsable resource and a clean API.
 
