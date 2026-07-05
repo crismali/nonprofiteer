@@ -3,15 +3,30 @@
 An affordable, open alternative to GuideStar: public IRS Form 990 data turned into a
 browsable resource and a clean API.
 
-Early / planning stage — **infrastructure-first** (near-term goal: feed the sibling
+Early / **infrastructure-first** (near-term goal: feed the sibling
 [ohfec](docs/VISION.md#why-ohfec-needs-this-concretely) campaign-finance project; public
-product later). See the docs:
+product later). The Phoenix + Ash app is scaffolded and boots; domain code (Ash resources,
+ingest, sync feed) is not written yet. See the docs:
 
 - [Vision](docs/VISION.md) — problem, users, positioning, infra-first framing.
 - [Decisions](docs/DECISIONS.md) — locked decisions + reasoning (start here for the "why").
 - [Data Sources](docs/DATA-SOURCES.md) — 990 source analysis + ingestion strategy/phasing.
 - [Future Sources](docs/FUTURE-SOURCES.md) — catalog of supplementary sources beyond 990.
 - [Architecture](docs/ARCHITECTURE.md) — Elixir / Phoenix / Ash system design + sync feed.
+
+## Development
+
+Stack: Elixir 1.20 / OTP 29, Phoenix 1.8, Ash 3 (`ash_postgres`, `ash_phoenix`,
+`ash_admin`), Oban, Postgres with `pg_trgm`.
+
+```sh
+mix setup       # deps + create/migrate DB (ash.setup) + assets
+mix phx.server  # run the app
+bin/check       # format, credo --strict, doctor, warnings-as-errors, coveralls
+```
+
+DB config is env-driven — defaults to your OS user (`$USER`) with no password. Override with
+`DB_USERNAME` / `DB_PASSWORD` / `DB_HOST` / `DB_PORT`.
 
 ## AI tooling
 

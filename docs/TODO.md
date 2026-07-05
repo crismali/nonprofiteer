@@ -1,6 +1,6 @@
 # Nonprofiteer — TODO
 
-Status: **planning complete, no application code yet.** This tracks the path from planning
+Status: **app scaffolded + quality gate in place; no domain code yet.** This tracks the path
 to a running Phase 1 (BMF ingest + 990 Part VII parse → changed-since sync feed). See
 [DECISIONS.md](DECISIONS.md) for the locked reasoning behind each item.
 
@@ -9,7 +9,7 @@ sync feed. All financial schedules are Phase 2.
 
 ## Critical path
 
-Scaffold → resolve cursor + parse-location decisions → data model → BMF ingest →
+~~Scaffold~~ → resolve cursor + parse-location decisions → data model → BMF ingest →
 Part VII parse → sync feed. Build validation fixtures throughout, not at the end.
 
 **Biggest risks (from the docs):**
@@ -31,10 +31,19 @@ From [DECISIONS.md](DECISIONS.md) "Open" + [ARCHITECTURE.md](ARCHITECTURE.md) op
 
 ## Scaffold
 
-- [ ] `mix` Phoenix + Ash app; mirror sibling **ohfec** structure/conventions.
-- [ ] Deps: `ash`, `ash_postgres`, `oban`; enable `pg_trgm` + `tsvector` in Postgres.
-- [ ] Test/quality tooling (`mix check` equivalent to ohfec).
-- [ ] Populate the "Conventions" section of [CLAUDE.md](../CLAUDE.md) once patterns exist.
+- [x] `mix` Phoenix + Ash app; mirror sibling **ohfec** structure/conventions. *(Phoenix 1.8 +
+  Ash 3 + `ash_postgres`/`ash_phoenix`/`ash_admin` + Oban; boots clean.)*
+- [x] Deps: `ash`, `ash_postgres`, `oban`; enable `pg_trgm` in Postgres via `Repo`
+  `installed_extensions`. *(`tsvector` is native — no extension; add columns/indexes when a
+  resource needs full-text.)*
+- [x] Test/quality tooling — `mix check` alias + `bin/check` wrapper (format, `credo --strict`,
+  `doctor`, warnings-as-errors, `coveralls` @ 80%).
+- [x] Populate the "Conventions" section of [CLAUDE.md](../CLAUDE.md).
+- [ ] **CI** — GitHub Actions running `bin/check` (Postgres service, deps + PLT/coveralls
+  caching) on push/PR.
+- [ ] **Dependency freshness** — audit + update deps (`mix hex.outdated`); the scaffold pinned
+  a few conservatively. Prefer latest, bump *up* to resolve conflicts (not down for ohfec
+  parity). Consider Dependabot/Renovate once CI exists.
 
 ## Data model (needs its own DATA-MODEL.md)
 
