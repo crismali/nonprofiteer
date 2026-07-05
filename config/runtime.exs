@@ -16,6 +16,15 @@ import Config
 |> Dotenvy.source!()
 |> System.put_env()
 
+# Object storage for mirroring source 990 XML (D11). All four are deploy-time secrets; absent
+# any of them the mirror stays dormant (dev/test/pre-deploy skip it) — see
+# Nonprofiteer.Ingest.ObjectStore.
+config :nonprofiteer, :r2,
+  access_key_id: System.get_env("R2_ACCESS_KEY_ID"),
+  secret_access_key: System.get_env("R2_SECRET_ACCESS_KEY"),
+  bucket: System.get_env("R2_BUCKET"),
+  endpoint: System.get_env("R2_ENDPOINT")
+
 # ## Using releases
 #
 # If you use `mix release`, you need to explicitly enable the server
