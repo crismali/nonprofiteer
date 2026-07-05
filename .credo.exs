@@ -41,7 +41,7 @@
       # If you create your own checks, you must specify the source files for
       # them here, so they can be loaded by Credo before running the analysis.
       #
-      requires: [],
+      requires: ["./.credo/checks/defstruct_has_type.ex"],
       #
       # If you want to enforce a style guide and need a more traditional linting
       # experience, you can change `strict` to `true` below:
@@ -66,6 +66,11 @@
       #
       checks: %{
         enabled: [
+          #
+          ## Project-specific custom checks (loaded via `requires:` above)
+          #
+          {Nonprofiteer.Credo.Check.DefstructHasType, []},
+
           #
           ## Consistency Checks
           #
