@@ -9,7 +9,23 @@ defmodule Nonprofiteer.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      test_coverage: [tool: ExCoveralls]
+    ]
+  end
+
+  # Runs `mix check` (and the coveralls.* tasks it wraps) under MIX_ENV=test.
+  # An alias inherits whatever env it was invoked under (:dev by default), so
+  # without this the `test`/`coveralls` steps would run against the wrong env.
+  def cli do
+    [
+      preferred_envs: [
+        check: :test,
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.html": :test,
+        "coveralls.json": :test
+      ]
     ]
   end
 
@@ -33,6 +49,9 @@ defmodule Nonprofiteer.MixProject do
   defp deps do
     [
       {:oban, "~> 2.0"},
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
+      {:doctor, "~> 0.22", only: [:dev, :test], runtime: false},
+      {:excoveralls, "~> 0.18", only: :test},
       {:ash_admin, "~> 1.0"},
       {:ash_phoenix, "~> 2.0"},
       {:ash_postgres, "~> 2.0"},
@@ -79,6 +98,15 @@ defmodule Nonprofiteer.MixProject do
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ash.setup --quiet", "test"],
+      check: [
+        "format --check-formatted",
+        "credo --strict",
+        "doctor --raise",
+        "compile --warnings-as-errors --force",
+        # `coveralls` runs the full suite *and* enforces coveralls.json's minimum_coverage,
+        # so it stands in for a plain `test` step rather than running the tests twice.
+        "coveralls"
+      ],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
       "assets.build": ["tailwind nonprofiteer", "esbuild nonprofiteer"],
       "assets.deploy": [

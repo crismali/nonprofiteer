@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+#
+# AI/terminal-friendly wrapper around `mix check`.
+#
+# Runs the exact same `mix check` alias (single source of truth — this does NOT reimplement the
+# steps), but collapses the verbose green output to a few summary lines. On failure it surfaces the
+# decisive lines and the failing step's tail, plus a path to the full captured log.
+#
+# Why: `mix check`'s success output (the doctor + coveralls per-file tables) and the one-time
+# upstream-dependency compile-warning wall right after `mix deps.get` bury the actual signal.
+#
+# Exit code mirrors `mix check`. Any arguments are passed through.
+#
+#   bin/check
+#   bin/check --only credo      # whatever `mix check` accepts
+#
+# NOTE: intentionally trimmed vs. the sibling ohfec's bin/check — no LiveView sandbox-disconnect
+# gate and no bun/tailwind summary greps, since this app has neither LiveView tests nor JS hooks
+# yet. Re-add those checks here once that code exists.
+
+set -uo pipefail
+
+cd "$(dirname "$0")/.." || exit 1
+
+log="$(mktemp -t nonprofiteer-check.XXXXXX.log)"
+start=$(date +%s)
+
+MIX_ENV=test mix check "$@" >"$log" 2>&1
+status=$?
+
+secs=$(( $(date +%s) - start ))
+
+if [ "$status" -eq 0 ]; then
+  echo "✓ mix check passed (${secs}s)"
+  # The lines actually worth seeing on a green run.
+  grep -hE "Doctor validation has passed|^Result: |^\[TOTAL\]" "$log" | sed 's/^/  /'
+  rm -f "$log"
+else
+  echo "✗ mix check FAILED (${secs}s)"
+  echo "  --- decisive lines ---"
+  grep -nEi "not formatted|warning:|error:|[0-9]+ failures?|minimum coverage|Doctor validation has failed|^\s+[0-9]+\) (test|property)" "$log" \
+    | head -n 40 | sed 's/^/  /'
+  echo "  --- tail (failing step) ---"
+  tail -n 30 "$log" | sed 's/^/  /'
+  echo "  full log: $log"
+fi
+
+exit "$status"

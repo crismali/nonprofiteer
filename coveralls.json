@@ -1,0 +1,20 @@
+{
+  "skip_files": [
+    "test/",
+    "lib/nonprofiteer/application.ex",
+    "lib/nonprofiteer/mailer.ex",
+    "lib/nonprofiteer/repo.ex",
+    "lib/nonprofiteer_web.ex",
+    "lib/nonprofiteer_web/telemetry.ex",
+    "lib/nonprofiteer_web/router.ex",
+    "lib/nonprofiteer_web/endpoint.ex",
+    "lib/nonprofiteer_web/gettext.ex",
+    "lib/nonprofiteer_web/components/core_components.ex",
+    "lib/nonprofiteer_web/components/layouts.ex",
+    "lib/nonprofiteer_web/controllers/error_html.ex",
+    "lib/nonprofiteer_web/controllers/error_json.ex"
+  ],
+  "coverage_options": {
+    "minimum_coverage": 80
+  }
+}
