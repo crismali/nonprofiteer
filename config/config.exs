@@ -23,6 +23,7 @@ config :ash, known_types: [AshPostgres.Timestamptz, AshPostgres.TimestamptzUsec]
 
 config :nonprofiteer,
   ecto_repos: [Nonprofiteer.Repo],
+  ash_domains: [Nonprofiteer.Orgs],
   generators: [timestamp_type: :utc_datetime]
 
 # Configures the endpoint
