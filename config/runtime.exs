@@ -7,6 +7,15 @@ import Config
 # any compile-time configuration in here, as it won't be applied.
 # The block below contains prod specific runtime configuration.
 
+# Load a local `.env` into the process environment (single read path for secrets across all
+# envs). config.exs can't do this — Mix evaluates it before deps are on the code path — and
+# dev.exs/test.exs read `System.get_env` at compile time, so the dev/test block at the bottom
+# re-applies anything from `.env`. Idempotent in production: no `.env` is deployed (gitignored),
+# so this just re-exposes whatever real env vars the host already provides.
+[Path.absname(".env"), System.get_env()]
+|> Dotenvy.source!()
+|> System.put_env()
+
 # ## Using releases
 #
 # If you use `mix release`, you need to explicitly enable the server
@@ -114,4 +123,25 @@ if config_env() == :prod do
   #     config :swoosh, :api_client, Swoosh.ApiClient.Hackney
   #
   # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
+end
+
+if config_env() in [:dev, :test] do
+  # dev.exs/test.exs set defaults for these (matching this box's local Postgres, which has no
+  # `postgres` role — see CLAUDE.md), but they read `System.get_env` at compile time, before
+  # `.env` was sourced above. Re-apply here now that it has been. Only set keys actually
+  # present, so an unset one falls back to the dev.exs/test.exs default rather than nil.
+  db_port = if port = System.get_env("DB_PORT"), do: String.to_integer(port)
+
+  db_overrides =
+    [
+      username: System.get_env("DB_USERNAME"),
+      password: System.get_env("DB_PASSWORD"),
+      hostname: System.get_env("DB_HOST"),
+      port: db_port
+    ]
+    |> Enum.reject(fn {_key, value} -> is_nil(value) end)
+
+  if db_overrides != [] do
+    config :nonprofiteer, Nonprofiteer.Repo, db_overrides
+  end
 end
