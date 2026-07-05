@@ -10,5 +10,7 @@ defmodule Nonprofiteer.Orgs do
   resources do
     resource Nonprofiteer.Orgs.Address
     resource Nonprofiteer.Orgs.Organization
+    resource Nonprofiteer.Orgs.Filing
+    resource Nonprofiteer.Orgs.Person
   end
 end

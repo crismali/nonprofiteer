@@ -60,6 +60,9 @@ defmodule Nonprofiteer.Orgs.Organization do
       destination_attribute :central_org_id
     end
 
+    has_many :filings, Nonprofiteer.Orgs.Filing, public?: true
+    has_many :people, Nonprofiteer.Orgs.Person, public?: true
+
     belongs_to :superseded_by, __MODULE__ do
       public? true
       description "The organization record that supersedes this one — amendment/merge (D10)."

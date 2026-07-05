@@ -8,10 +8,12 @@ defmodule Mix.Tasks.Nonprofiteer.ResourcesTest do
   test "with no argument, lists resources grouped by domain" do
     output = capture_io(fn -> Resources.run([]) end)
 
-    assert output =~ "Registered resources (2)"
+    assert output =~ "Registered resources (4)"
     assert output =~ "Nonprofiteer.Orgs:"
     assert output =~ "Nonprofiteer.Orgs.Organization"
     assert output =~ "Nonprofiteer.Orgs.Address"
+    assert output =~ "Nonprofiteer.Orgs.Filing"
+    assert output =~ "Nonprofiteer.Orgs.Person"
   end
 
   test "prints a resource's shape by short name" do
