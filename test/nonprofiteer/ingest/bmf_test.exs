@@ -12,7 +12,8 @@ defmodule Nonprofiteer.Ingest.BmfTest do
              ein: "010000028",
              name: "ALEXANDRIA MUSEUM, INC",
              ntee_code: "A20",
-             gen: nil
+             gen: nil,
+             affiliation_code: "3"
            }
 
     assert alexandria.address == %{
@@ -23,9 +24,11 @@ defmodule Nonprofiteer.Ingest.BmfTest do
              country: "US"
            }
 
-    # A real GROUP exemption number is kept; the address region tracks the STATE column.
+    # A real GROUP exemption number is kept; the address region tracks the STATE column. The
+    # AFFILIATION code (9 = group subordinate) is captured raw for the later GEN reconcile.
     assert red_cross.org.gen == "0928"
     assert red_cross.org.ntee_code == "E60"
+    assert red_cross.org.affiliation_code == "9"
     assert red_cross.address.region == "DC"
 
     # Blank NTEE normalizes to nil; GROUP "0000" means "no group" → nil.

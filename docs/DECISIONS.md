@@ -109,6 +109,22 @@ gets idempotency for the one source where EIN *is* one-per-row, while EIN stays 
 and are untouched by the constraint. The partial-index predicate is hand-mirrored in the
 resource (`identity_wheres_to_sql`) — the Ash `where` and the SQL must stay in lockstep.
 
+## D13 — BMF fan-out is per-state; capture AFFILIATION for the GEN reconcile
+
+The BMF coordinator fans out over the IRS **per-state** extract files (50 states + DC +
+Puerto Rico + international `xx` = 53), not the 3 coarse regional files, verified live against
+irs.gov (2026-07). **Why:** finer fan-out means one bad state can't fail a whole region, and
+each run's `extract_id` is a meaningful state code for the run log. Same universe either way;
+the trade is 53 small monthly downloads vs. 5 large ones — cheap for the observability.
+
+Linking group-exemption subordinates to their central org is deferred, but the input for it
+is captured **now**: `Organization.affiliation_code` (raw BMF AFFILIATION). A group's central
+(codes 6/8) and its subordinates (9) share the same `gen`, so AFFILIATION is the only thing
+that tells them apart. Capturing it during ingest means the reconcile can land later with no
+re-ingest. The reconcile itself must be **global** (a central and its subordinates routinely
+sit in different state files — e.g. American Legion posts nationwide under one Indiana
+central), so it's a post-ingest pass over the whole table, not per-extract work.
+
 ## Open (not yet decided)
 
 - Sync cursor mechanism (IRS release month vs. `updated_at`) — the *what-changed* query;

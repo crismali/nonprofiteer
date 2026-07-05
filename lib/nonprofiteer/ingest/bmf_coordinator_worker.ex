@@ -11,15 +11,19 @@ defmodule Nonprofiteer.Ingest.BmfCoordinatorWorker do
 
   alias Nonprofiteer.Ingest.BmfExtractWorker
 
-  # IRS EO BMF regional extracts. These cover all states + DC + PR + international between them.
-  # NOTE: confirm the current published file set against irs.gov before relying on this in
-  # production — the IRS has changed the split (per-state vs. regional) over time.
-  @default_extracts [
-    %{id: "eo1", url: "https://www.irs.gov/pub/irs-soi/eo1.csv"},
-    %{id: "eo2", url: "https://www.irs.gov/pub/irs-soi/eo2.csv"},
-    %{id: "eo3", url: "https://www.irs.gov/pub/irs-soi/eo3.csv"},
-    %{id: "eo4", url: "https://www.irs.gov/pub/irs-soi/eo4.csv"}
-  ]
+  # The IRS publishes the EO BMF two ways: per-state files and 3 coarse regional files. We fan
+  # out over the **per-state** set (verified live against irs.gov, 2026-07) — 50 states + DC +
+  # Puerto Rico (`pr`) + international (`xx`) — so one bad state can't fail a whole region and
+  # each run's `extract_id` is a meaningful state code. URL pattern: `/pub/irs-soi/eo_<code>.csv`.
+  @state_codes ~w(
+    al ak az ar ca co ct de fl ga hi id il in ia ks ky la me md ma mi mn ms mo mt ne nv nh nj
+    nm ny nc nd oh ok or pa ri sc sd tn tx ut vt va wa wv wi wy dc pr xx
+  )
+
+  @default_extracts Enum.map(
+                      @state_codes,
+                      &%{id: &1, url: "https://www.irs.gov/pub/irs-soi/eo_#{&1}.csv"}
+                    )
 
   @impl Oban.Worker
   def perform(%Oban.Job{}) do

@@ -22,10 +22,11 @@ consumers use it. See the docs:
 provenance pointer, Person source-filing pointer + address for D8, `:tombstone` soft-delete
 history on all three history-bearing resources). **BMF ingest has landed** — the
 `Nonprofiteer.Ingest` domain: `BmfCoordinatorWorker` (monthly cron) fans out per-extract
-`BmfExtractWorker`s that download (`Ingest.Client`, Req), parse (`Ingest.Bmf`, header-pinned,
-raises `LayoutError` on drift), upsert orgs on a partial `[:source, :ein]` identity (D12),
-link addresses, and write an `Ingest.Run` audit row on success and failure. No 990 parse or
-sync feed yet. Near-term goal is feeding the sibling ohfec project, not a public launch.
+`BmfExtractWorker`s (one per state, 53 files) that download (`Ingest.Client`, Req), parse
+(`Ingest.Bmf`, header-pinned, raises `LayoutError` on drift), upsert orgs on a partial
+`[:source, :ein]` identity (D12), link addresses, and write an `Ingest.Run` audit row on
+success and failure. `gen` + `affiliation_code` are captured for a deferred group-exemption
+reconcile (D13). No 990 parse or sync feed yet. Near-term goal is feeding the sibling ohfec project, not a public launch.
 Stack: Elixir 1.20 / OTP 29 + Phoenix 1.8 + Ash 3 (`ash_postgres`, `ash_phoenix`,
 `ash_admin`) + Oban, Postgres with `pg_trgm`.
 

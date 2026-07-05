@@ -46,7 +46,9 @@ defmodule Nonprofiteer.Ingest.BmfExtractWorkerTest do
     assert org.address.region == "VA"
     assert org.address.postal_code == "22301"
 
-    assert org_by_ein("530196605").gen == "0928"
+    red_cross = org_by_ein("530196605")
+    assert red_cross.gen == "0928"
+    assert red_cross.affiliation_code == "9"
   end
 
   test "records a success run row with counts" do

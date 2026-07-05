@@ -20,7 +20,17 @@ defmodule Nonprofiteer.Ingest.BmfCoordinatorWorkerTest do
     )
   end
 
-  test "defaults to the IRS regional EO BMF extract set" do
-    assert length(BmfCoordinatorWorker.extracts()) == 4
+  test "defaults to the per-state EO BMF extract set (50 states + DC + PR + international)" do
+    extracts = BmfCoordinatorWorker.extracts()
+
+    assert length(extracts) == 53
+
+    ids = Enum.map(extracts, & &1.id)
+    assert "wy" in ids
+    assert "dc" in ids
+    assert "pr" in ids
+    assert "xx" in ids
+
+    assert %{id: "ca", url: "https://www.irs.gov/pub/irs-soi/eo_ca.csv"} in extracts
   end
 end

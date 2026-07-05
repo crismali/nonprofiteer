@@ -63,6 +63,16 @@ defmodule Nonprofiteer.Orgs.Organization do
       """
     end
 
+    attribute :affiliation_code, :string do
+      public? true
+
+      description """
+      Raw BMF AFFILIATION code. A group's central org (6/8) and its subordinates (9) share the
+      same `gen`, so this code is what tells them apart — it drives the later GEN→`central_org`
+      reconcile. Stored raw; interpretation lives in that pass.
+      """
+    end
+
     attribute :tombstoned_at, :utc_datetime_usec do
       public? true
       description "When set, this org was withdrawn (soft delete) — see the `:tombstone` action."
@@ -119,9 +129,9 @@ defmodule Nonprofiteer.Orgs.Organization do
 
       upsert? true
       upsert_identity :unique_bmf_ein
-      upsert_fields [:name, :ntee_code, :gen]
+      upsert_fields [:name, :ntee_code, :gen, :affiliation_code]
 
-      accept [:ein, :name, :ntee_code, :gen]
+      accept [:ein, :name, :ntee_code, :gen, :affiliation_code]
       change set_attribute(:source, :bmf)
     end
   end

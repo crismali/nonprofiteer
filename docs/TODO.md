@@ -78,14 +78,21 @@ Ash resources per [ARCHITECTURE.md](ARCHITECTURE.md#data-model-sketch--see-futur
   row on success *and* failure. Central/subordinate wiring off `gen` (GEN) is a later
   reconcile pass — the column is captured, not yet linked.
 - [x] Handle the state-split extracts — `BmfCoordinatorWorker` (monthly cron) fans out one
-  `BmfExtractWorker` per extract. **Extract file list (`eo1`–`eo4`) is a placeholder — confirm
-  the current IRS EO BMF file set against irs.gov before production.**
+  `BmfExtractWorker` per **per-state** file (50 states + DC + `pr` + international `xx` = 53),
+  verified live against irs.gov 2026-07 (D13). URL pattern `/pub/irs-soi/eo_<code>.csv`.
 - [x] Monthly cadence — `Oban.Plugins.Cron`, `:ingest_bulk` queue (concurrency 4).
+- [x] Capture `AFFILIATION` on `Organization` (`affiliation_code`) — distinguishes a group's
+  central (6/8) from its subordinates (9); prerequisite for the reconcile below (D13).
 
 **Follow-ups surfaced by this slice:**
-- [ ] Confirm the live IRS EO BMF file set + URLs; re-capture `test/fixtures/bmf/` from real files.
-- [ ] Reconcile pass: wire group-exemption subordinates to their central org off `gen` (D7).
+- [ ] **GEN→central reconcile** — a *global* post-ingest pass (subordinates and their central
+  live in different state files, so it can't run inside an extract worker): build a
+  `gen`→central map from `affiliation_code in (6, 8)` orgs, set subordinates' (`= 9`)
+  `central_org_id`, count GENs whose central isn't in the dataset (D7). Data's already
+  captured — no re-ingest needed.
 - [ ] Track `:partial` run status (mid-batch failure count), not just `:success`/`:failure`.
+- [ ] Re-capture `test/fixtures/bmf/` periodically from real files and diff, to catch layout
+  drift deliberately.
 
 ## 990 Part VII parse (the deep slice)
 

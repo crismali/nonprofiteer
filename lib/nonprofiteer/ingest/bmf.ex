@@ -24,7 +24,10 @@ defmodule Nonprofiteer.Ingest.Bmf do
     FILING_REQ_CD PF_FILING_REQ_CD ACCT_PD ASSET_AMT INCOME_AMT REVENUE_AMT NTEE_CD SORT_NAME
   )
 
-  # Column positions we actually map into the spine (Phase 1: identity, address, NTEE, group).
+  # Column positions we actually map into the spine (Phase 1: identity, address, NTEE, group,
+  # affiliation). AFFILIATION distinguishes a group's central org (6/8) from its subordinates
+  # (9) — both share the same GROUP number — so it's required for the later GEN→central
+  # reconcile, not just decoration.
   @col %{
     ein: 0,
     name: 1,
@@ -33,6 +36,7 @@ defmodule Nonprofiteer.Ingest.Bmf do
     state: 5,
     zip: 6,
     group: 7,
+    affiliation: 9,
     ntee: 26
   }
 
@@ -74,7 +78,8 @@ defmodule Nonprofiteer.Ingest.Bmf do
         ein: at(row, @col.ein),
         name: at(row, @col.name),
         ntee_code: at(row, @col.ntee),
-        gen: group_to_gen(at(row, @col.group))
+        gen: group_to_gen(at(row, @col.group)),
+        affiliation_code: at(row, @col.affiliation)
       },
       address: %{
         line1: at(row, @col.street),

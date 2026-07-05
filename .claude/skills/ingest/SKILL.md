@@ -15,8 +15,9 @@ The **BMF org-spine ingest exists** under the `Nonprofiteer.Ingest` domain — t
 reference for every principle below:
 
 - **`Nonprofiteer.Ingest.BmfCoordinatorWorker`** — monthly `Oban.Plugins.Cron` entry; fans out
-  one extract job per EO BMF file (`Oban.insert_all`). Extract list is overridable via
-  `:nonprofiteer, :bmf_extracts` (tests inject a stub extract).
+  one extract job per **per-state** EO BMF file (53: 50 states + DC + `pr` + international `xx`,
+  D13) via `Oban.insert_all`. Extract list is overridable via `:nonprofiteer, :bmf_extracts`
+  (tests inject a stub extract).
 - **`Nonprofiteer.Ingest.BmfExtractWorker`** (`:ingest_bulk` queue) — download → parse →
   upsert → run-log. Idempotent; EIN-less rows counted as orphan skips; writes an `Ingest.Run`
   on both success and failure, reraising so Oban retries.
@@ -28,6 +29,10 @@ reference for every principle below:
 - Upsert identity is the **partial `:unique_bmf_ein`** on `Organization` (`[:ein] WHERE
   source = 'bmf'`, D12) — the "source's stable key, not global EIN" made concrete. `source` is
   a nullable provenance atom; the 990-XML pass will add its own source value + merge on it.
+- **Group-exemption structure** is captured but not yet linked: `gen` (GROUP) + raw
+  `affiliation_code` (AFFILIATION — central 6/8 vs subordinate 9 share a `gen`, D13). The
+  GEN→`central_org` reconcile is a deferred **global** pass (a central and its subordinates
+  sit in different state files), not per-extract work.
 
 The 990 Part VII / XML detail pass is **not built yet** — the sections below still describe the
 shape to build toward for it.
