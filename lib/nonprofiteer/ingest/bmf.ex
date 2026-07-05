@@ -14,6 +14,7 @@ defmodule Nonprofiteer.Ingest.Bmf do
   `%{org: org_attrs, address: address_attrs}`; the worker is what upserts through Ash actions.
   """
   alias Nonprofiteer.Ingest.Bmf.Csv
+  alias Nonprofiteer.Ingest.Ein
 
   # The canonical EO BMF extract layout, in order. Pinned so drift raises. If the IRS revises
   # this, update the list *and* re-capture the fixtures in the same change — never loosen the
@@ -79,7 +80,7 @@ defmodule Nonprofiteer.Ingest.Bmf do
   defp row_to_attrs(row) do
     %{
       org: %{
-        ein: at(row, @col.ein),
+        ein: Ein.normalize(at(row, @col.ein)),
         name: at(row, @col.name),
         ntee_code: at(row, @col.ntee),
         gen: group_to_gen(at(row, @col.group)),
