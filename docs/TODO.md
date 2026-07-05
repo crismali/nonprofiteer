@@ -41,9 +41,10 @@ From [DECISIONS.md](DECISIONS.md) "Open" + [ARCHITECTURE.md](ARCHITECTURE.md) op
 - [x] Populate the "Conventions" section of [CLAUDE.md](../CLAUDE.md).
 - [ ] **CI** — GitHub Actions running `bin/check` (Postgres service, deps + PLT/coveralls
   caching) on push/PR.
-- [ ] **Dependency freshness** — audit + update deps (`mix hex.outdated`); the scaffold pinned
-  a few conservatively. Prefer latest, bump *up* to resolve conflicts (not down for ohfec
-  parity). Consider Dependabot/Renovate once CI exists.
+- [x] **Dependency freshness** — audited via `mix hex.outdated`; all deps current. Bumped
+  reqs *up* (`tailwind ~> 0.5`, `dns_cluster ~> 0.2`) + `deps.update swoosh dns_cluster
+  tailwind`. `tailwind` is the installer only — CSS stays pinned at 3.4.3 (v4 migration is
+  separate). Automated freshness (Dependabot/Renovate) still deferred until CI exists.
 
 ## Data model (needs its own DATA-MODEL.md)
 
