@@ -1,9 +1,9 @@
 # Nonprofiteer — TODO
 
-Status: **app scaffolded + quality gate in place; first resources (Organization / Address)
-landed.** This tracks the path to a running Phase 1 (BMF ingest + 990 Part VII parse →
-changed-since sync feed). See [DECISIONS.md](DECISIONS.md) for the locked reasoning behind
-each item.
+Status: **app scaffolded + quality gate in place; the Phase-1 data model is in
+(Organization / Address / Filing / Person).** Next up is BMF ingest. This tracks the path to
+a running Phase 1 (BMF ingest + 990 Part VII parse → changed-since sync feed). See
+[DECISIONS.md](DECISIONS.md) for the locked reasoning behind each item.
 
 Phase 1 scope is the **ohfec-useful slice**: org spine + people/addresses, served over the
 sync feed. All financial schedules are Phase 2.
@@ -55,15 +55,16 @@ Ash resources per [ARCHITECTURE.md](ARCHITECTURE.md#data-model-sketch--see-futur
 - [x] **Organization** — surrogate primary id; EIN as indexed (non-unique) attribute,
   cardinality 0/1/many; explicit central-vs-subordinate self-reference (D7). Domain
   `Nonprofiteer.Orgs`; migration + snapshots generated.
-- [ ] **Filing** — one per submitted return per year; source-filing pointer (provenance).
-- [ ] **Person** — Part VII officers/directors/key employees: name, role, associated
-  address. (Compensation/tenure = Phase 2.)
-- [x] **Address** — normalized; attached to orgs (and, once Person lands, people via Part VII).
-- [ ] Bake in the **corroboration guarantee** — every Org/Person ships address + EIN (where
-  present) + source-filing pointer (D8). *(Partial: Org carries address + EIN; source-filing
-  pointer waits on Filing.)*
-- [x] Bake in **history** (Organization) — `superseded_by` self-pointer for amendments/merges;
-  `:tombstone` soft-delete action; no hard `:destroy` (D10). Apply the same to Filing/Person.
+- [x] **Filing** — one per submitted return (990/990-EZ/990-PF) per tax year; belongs_to Org;
+  `source_object_id` provenance pointer (D11); indexed on `organization_id`/`tax_year`.
+- [x] **Person** — Part VII people: `name`, `title`, belongs_to Org + Filing + (optional)
+  Address. (Compensation/tenure = Phase 2.)
+- [x] **Address** — normalized; attached to orgs and people (via Part VII).
+- [x] Bake in the **corroboration guarantee** — Org ships address + EIN (where present);
+  Person ships address + source-filing pointer (belongs_to Filing, required) (D8). *(Structure
+  in place; non-null-where-present enforcement lands with ingest validations.)*
+- [x] Bake in **history** — `superseded_by` self-pointer + `:tombstone` soft-delete + no hard
+  `:destroy` on Organization, Filing, and Person (D10).
 - [x] **Port `nonprofiteer.resources` mix task** — Ash introspection over `:nonprofiteer,
   :ash_domains` (`mix nonprofiteer.resources [Name]`), with tests.
 
