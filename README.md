@@ -42,6 +42,7 @@ The alias runs, in order, and stops at the first failure:
 | Lint | `mix credo --strict` | Credo static analysis at strict level. |
 | Docs | `mix doctor --raise` | Module/function doc + doctest coverage per [`.doctor.exs`](.doctor.exs). |
 | Compile | `mix compile --warnings-as-errors --force` | Clean full recompile — any warning fails. |
+| Assets | `mix tailwind nonprofiteer` | Tailwind CSS bundle builds — catches a broken `tailwind.config.js`/`app.css`. Auto-downloads the pinned binary if missing (cached in `_build`); output is gitignored. |
 | Tests + coverage | `mix coveralls` | Full test suite plus ≥ minimum coverage in [`coveralls.json`](coveralls.json). |
 
 `coveralls` runs the suite *and* enforces the coverage floor, so it stands in for a plain

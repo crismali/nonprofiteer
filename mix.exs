@@ -103,6 +103,10 @@ defmodule Nonprofiteer.MixProject do
         "credo --strict",
         "doctor --raise",
         "compile --warnings-as-errors --force",
+        # Build the Tailwind CSS bundle so a broken `tailwind.config.js`/`app.css` fails the
+        # gate here rather than at deploy. The task auto-downloads the pinned binary if missing
+        # (cached in `_build`); output lands in gitignored `priv/static/assets/`.
+        "tailwind nonprofiteer",
         # `coveralls` runs the full suite *and* enforces coveralls.json's minimum_coverage,
         # so it stands in for a plain `test` step rather than running the tests twice.
         "coveralls"

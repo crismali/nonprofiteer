@@ -62,7 +62,8 @@ satisfy `ash_admin`, not pinning `ash_admin` back).
 - `mix setup` — deps, `ash.setup` (create DB + migrate), assets.
 - `mix ash.setup` / `mix ash.reset` — DB lifecycle via Ash codegen.
 - **`bin/check`** — run before considering work done. Wraps `mix check` (format,
-  `credo --strict`, `doctor --raise`, `compile --warnings-as-errors`, `coveralls` at 80%),
+  `credo --strict`, `doctor --raise`, `compile --warnings-as-errors`, Tailwind build,
+  `coveralls` at 80%),
   collapsing green output and surfacing decisive lines on failure. Single source of truth is
   the `check` alias in `mix.exs`; `bin/check` only reformats output.
 - **CI** — GitHub Actions (`.github/workflows/ci.yml`) runs `mix check` on push to `main` and
