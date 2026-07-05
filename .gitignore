@@ -35,3 +35,10 @@ nonprofiteer-*.tar
 npm-debug.log
 /assets/node_modules/
 
+# Local secrets / env files — never commit these. Ignored from the first commit so a secret
+# can't slip into history before an .env exists (per elixir-ash-phoenix-prefs). Keep a
+# committed .env.example for the documented, non-secret template if one is ever needed.
+.env
+.env.*
+!.env.example
+
