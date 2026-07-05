@@ -16,15 +16,18 @@ consumers use it. See the docs:
 
 ## Status
 
-**Early / infrastructure-first.** App is **scaffolded** (Phoenix + Ash, boots clean) but has
-**no domain code yet** — no Ash resources, ingest, or sync feed. Near-term goal is feeding
+**Early / infrastructure-first.** App is **scaffolded** (Phoenix + Ash, boots clean); the
+**first domain resources have landed** — `Organization` + `Address` under the
+`Nonprofiteer.Orgs` domain (EIN indexed-not-unique, central/subordinate self-ref, `:tombstone`
+soft-delete history). No `Filing`/`Person`, ingest, or sync feed yet. Near-term goal is feeding
 the sibling ohfec project, not a public launch. Stack: Elixir 1.20 / OTP 29 + Phoenix 1.8 +
 Ash 3 (`ash_postgres`, `ash_phoenix`, `ash_admin`) + Oban, Postgres with `pg_trgm`.
 
 **Phase 1 scope:** BMF ingest (orgs) + 990 Part VII parse (people/addresses) only, served
 over a generic changed-since sync feed. Financial schedules deferred to Phase 2. See
-[DECISIONS.md](docs/DECISIONS.md). Next build step is the data model (Organization / Filing /
-Person / Address resources); see [docs/TODO.md](docs/TODO.md).
+[DECISIONS.md](docs/DECISIONS.md). Next build steps: `Filing`/`Person` resources, then BMF
+ingest; see [docs/TODO.md](docs/TODO.md). `mix nonprofiteer.resources [Name]` prints a
+resource's shape.
 
 ## Sibling project: ohfec
 
