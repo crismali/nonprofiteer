@@ -83,14 +83,17 @@ Ash resources per [ARCHITECTURE.md](ARCHITECTURE.md#data-model-sketch--see-futur
 - [x] Monthly cadence — `Oban.Plugins.Cron`, `:ingest_bulk` queue (concurrency 4).
 - [x] Capture `AFFILIATION` on `Organization` (`affiliation_code`) — distinguishes a group's
   central (6/8) from its subordinates (9); prerequisite for the reconcile below (D13).
+- [x] **GEN→central reconcile** — `BmfReconcileWorker`, a *global* post-ingest pass (monthly
+  cron, day after the fan-out): builds a `gen`→central map from `affiliation_code in (6, 8)`
+  orgs, streams subordinates (`= 9`) and sets `central_org_id`, counting GENs whose central
+  isn't in the dataset as unresolved (D7/D13). Idempotent (only writes on change); logs an
+  `Ingest.Run` (`extract_id: "reconcile"`).
 
 **Follow-ups surfaced by this slice:**
-- [ ] **GEN→central reconcile** — a *global* post-ingest pass (subordinates and their central
-  live in different state files, so it can't run inside an extract worker): build a
-  `gen`→central map from `affiliation_code in (6, 8)` orgs, set subordinates' (`= 9`)
-  `central_org_id`, count GENs whose central isn't in the dataset (D7). Data's already
-  captured — no re-ingest needed.
 - [ ] Track `:partial` run status (mid-batch failure count), not just `:success`/`:failure`.
+- [ ] Reconcile: handle >1 central sharing a GEN (currently last-wins) — count/flag the anomaly.
+- [ ] Reconcile perf: if per-row subordinate updates get slow at national scale, move to a
+  set-based `UPDATE … FROM` (accepting the Ash-action bypass for a pure FK set).
 - [ ] Re-capture `test/fixtures/bmf/` periodically from real files and diff, to catch layout
   drift deliberately.
 

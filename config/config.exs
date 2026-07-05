@@ -15,10 +15,15 @@ config :nonprofiteer, Oban,
   # incremental 990 parse queue lands alongside it.
   queues: [default: 10, ingest_bulk: 4],
   # Monthly BMF ingest — the coordinator fans out to per-extract jobs. IRS drops the EO BMF
-  # early each month; run on the 5th to let the drop settle. (Disabled in test via
-  # `testing: :manual`.)
+  # early each month; run on the 5th to let the drop settle. The group-exemption reconcile runs
+  # a day later (6th), once the fan-out has landed, since it's global across all state files.
+  # (Both disabled in test via `testing: :manual`.)
   plugins: [
-    {Oban.Plugins.Cron, crontab: [{"0 6 5 * *", Nonprofiteer.Ingest.BmfCoordinatorWorker}]}
+    {Oban.Plugins.Cron,
+     crontab: [
+       {"0 6 5 * *", Nonprofiteer.Ingest.BmfCoordinatorWorker},
+       {"0 6 6 * *", Nonprofiteer.Ingest.BmfReconcileWorker}
+     ]}
   ],
   repo: Nonprofiteer.Repo
 

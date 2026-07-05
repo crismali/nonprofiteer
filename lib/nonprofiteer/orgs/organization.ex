@@ -92,6 +92,9 @@ defmodule Nonprofiteer.Orgs.Organization do
     belongs_to :central_org, __MODULE__ do
       public? true
       description "For a group-exemption subordinate, the central org it falls under (D7)."
+      # The post-ingest GEN reconcile (D13) sets this FK directly on already-persisted
+      # subordinates, so it must be writable via an update action.
+      attribute_writable? true
     end
 
     has_many :subordinates, __MODULE__ do

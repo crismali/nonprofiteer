@@ -117,13 +117,14 @@ irs.gov (2026-07). **Why:** finer fan-out means one bad state can't fail a whole
 each run's `extract_id` is a meaningful state code for the run log. Same universe either way;
 the trade is 53 small monthly downloads vs. 5 large ones — cheap for the observability.
 
-Linking group-exemption subordinates to their central org is deferred, but the input for it
-is captured **now**: `Organization.affiliation_code` (raw BMF AFFILIATION). A group's central
-(codes 6/8) and its subordinates (9) share the same `gen`, so AFFILIATION is the only thing
-that tells them apart. Capturing it during ingest means the reconcile can land later with no
-re-ingest. The reconcile itself must be **global** (a central and its subordinates routinely
-sit in different state files — e.g. American Legion posts nationwide under one Indiana
-central), so it's a post-ingest pass over the whole table, not per-extract work.
+Linking group-exemption subordinates to their central org (`BmfReconcileWorker`) is driven by
+`Organization.affiliation_code` (raw BMF AFFILIATION): a group's central (codes 6/8) and its
+subordinates (9) share the same `gen`, so AFFILIATION is the only thing that tells them apart.
+The reconcile is **global** — a central and its subordinates routinely sit in different state
+files (American Legion posts nationwide under one Indiana central) — so it's a post-ingest
+pass over the whole table (monthly cron, the day after the fan-out), not per-extract work. It
+builds a `gen`→central map, streams subordinates and sets `central_org_id`, and counts
+subordinates whose central isn't in the dataset rather than forcing a link.
 
 ## Open (not yet decided)
 

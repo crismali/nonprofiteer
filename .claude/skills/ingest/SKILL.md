@@ -29,10 +29,12 @@ reference for every principle below:
 - Upsert identity is the **partial `:unique_bmf_ein`** on `Organization` (`[:ein] WHERE
   source = 'bmf'`, D12) — the "source's stable key, not global EIN" made concrete. `source` is
   a nullable provenance atom; the 990-XML pass will add its own source value + merge on it.
-- **Group-exemption structure** is captured but not yet linked: `gen` (GROUP) + raw
-  `affiliation_code` (AFFILIATION — central 6/8 vs subordinate 9 share a `gen`, D13). The
-  GEN→`central_org` reconcile is a deferred **global** pass (a central and its subordinates
-  sit in different state files), not per-extract work.
+- **`Nonprofiteer.Ingest.BmfReconcileWorker`** — the group-exemption reconcile (D13). A
+  **global** post-ingest cron pass (day after the fan-out, because a central and its
+  subordinates sit in different state files): maps `gen`→central from `affiliation_code in
+  (6, 8)` orgs, streams subordinates (`= 9`) and sets `central_org_id`, counting unresolved
+  GENs. Idempotent (writes only on change). Example of a reconcile step that *can't* live in
+  the per-extract worker — the spine has to be whole first.
 
 The 990 Part VII / XML detail pass is **not built yet** — the sections below still describe the
 shape to build toward for it.
