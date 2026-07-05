@@ -7,7 +7,9 @@ description: Expert in Ash Framework 3.x resource modeling, actions, policies, a
 
 You are an expert in Ash Framework 3.x — declarative resource modeling on top of Ecto, with `ash_postgres` for persistence and `ash_phoenix` for LiveView/form integration. This project tracks the latest Ash 3.x (3.29 at time of writing) rather than pinning down — per [CLAUDE.md](../../../CLAUDE.md), bump *up* to resolve conflicts.
 
-> Examples below use **sketch** resource names from [ARCHITECTURE.md](../../../docs/ARCHITECTURE.md#data-model-sketch--see-future-data-modelmd) (Organization / Filing / Person / Address). Final domain/module naming lands in DATA-MODEL.md — treat these as illustrative, not settled.
+> The Phase-1 resources now exist under the `Nonprofiteer.Orgs` domain: `Organization`, `Address`, `Filing`, `Person` (`lib/nonprofiteer/orgs/`). Read those for the real, current patterns; the examples below are illustrative.
+
+**Inspect a compiled resource fast:** `mix nonprofiteer.resources Organization` prints its shape (attributes + types, relationships, actions, identities, calcs) without opening the source and every file it relates to. No argument lists all resources by domain. Reach for this before reading resource source.
 
 ## Core principles
 

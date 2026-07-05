@@ -66,6 +66,9 @@ satisfy `ash_admin`, not pinning `ash_admin` back).
 **Setup / commands:**
 - `mix setup` — deps, `ash.setup` (create DB + migrate), assets.
 - `mix ash.setup` / `mix ash.reset` — DB lifecycle via Ash codegen.
+- `mix nonprofiteer.resources [Name]` — print a compiled Ash resource's shape (attributes,
+  relationships, actions, identities, calcs); no arg lists every resource by domain. Faster
+  than opening the source + its related files.
 - **`bin/check`** — run before considering work done. Wraps `mix check` (format,
   `credo --strict`, `doctor --raise`, `compile --warnings-as-errors`, Tailwind build,
   `coveralls` at 80%),
