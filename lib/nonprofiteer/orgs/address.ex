@@ -9,7 +9,8 @@ defmodule Nonprofiteer.Orgs.Address do
     otp_app: :nonprofiteer,
     domain: Nonprofiteer.Orgs,
     data_layer: AshPostgres.DataLayer,
-    extensions: [AshJsonApi.Resource]
+    extensions: [AshJsonApi.Resource],
+    fragments: [Nonprofiteer.Orgs.Fragments.SyncFeed]
 
   @type t :: %__MODULE__{}
 
@@ -42,12 +43,6 @@ defmodule Nonprofiteer.Orgs.Address do
 
   actions do
     defaults [:read, :destroy, create: :*, update: :*]
-
-    read :changed_since do
-      description "Sync feed (D16): records changed up to the watermark, keyset-ordered."
-      pagination keyset?: true, default_limit: 200, max_page_size: 2000, required?: false
-      prepare Nonprofiteer.Orgs.Preparations.ChangedSince
-    end
   end
 
   calculations do

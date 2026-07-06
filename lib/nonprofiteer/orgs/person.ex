@@ -11,7 +11,8 @@ defmodule Nonprofiteer.Orgs.Person do
     otp_app: :nonprofiteer,
     domain: Nonprofiteer.Orgs,
     data_layer: AshPostgres.DataLayer,
-    extensions: [AshJsonApi.Resource]
+    extensions: [AshJsonApi.Resource],
+    fragments: [Nonprofiteer.Orgs.Fragments.SyncFeed, Nonprofiteer.Orgs.Fragments.SoftDelete]
 
   @type t :: %__MODULE__{}
 
@@ -53,11 +54,6 @@ defmodule Nonprofiteer.Orgs.Person do
       """
     end
 
-    attribute :tombstoned_at, :utc_datetime_usec do
-      public? true
-      description "When set, this person record was withdrawn (soft delete)."
-    end
-
     timestamps()
   end
 
@@ -84,19 +80,6 @@ defmodule Nonprofiteer.Orgs.Person do
     # No `:destroy` — history is never hard-deleted (D10); use `:tombstone` instead.
     defaults [:read, create: :*, update: :*]
 
-    read :changed_since do
-      description "Sync feed (D16): records changed up to the watermark, keyset-ordered."
-      pagination keyset?: true, default_limit: 200, max_page_size: 2000, required?: false
-      prepare Nonprofiteer.Orgs.Preparations.ChangedSince
-    end
-
-    update :tombstone do
-      description "Soft-delete: mark the person record withdrawn without destroying history (D10)."
-      accept []
-      require_atomic? false
-      change set_attribute(:tombstoned_at, &DateTime.utc_now/0)
-    end
-
     create :upsert_from_efile do
       description """
       Idempotent Part VII person upsert, keyed on `(filing_id, part_vii_sequence)`. The parse
@@ -116,21 +99,5 @@ defmodule Nonprofiteer.Orgs.Person do
   # the same person in place instead of duplicating or churning tombstone history.
   identities do
     identity :unique_filing_person, [:filing_id, :part_vii_sequence]
-  end
-
-  calculations do
-    calculate :event_type,
-              :atom,
-              expr(
-                cond do
-                  not is_nil(tombstoned_at) -> :tombstoned
-                  not is_nil(superseded_by_id) -> :superseded
-                  true -> :upsert
-                end
-              ) do
-      public? true
-      constraints one_of: [:upsert, :superseded, :tombstoned]
-      description "Sync-feed status of this record, derived from its state (D10/D16)."
-    end
   end
 end
