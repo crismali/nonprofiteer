@@ -101,6 +101,41 @@ end
 - `calculations do calculate :full_name, :string, expr(first_name <> " " <> last_name) end` for derived attributes computable in Postgres.
 - `aggregates do count :filing_count, :filings end` for relationship rollups — avoids hand-written `Ecto.Query` joins for simple counts/sums/exists checks.
 
+## Sharing DSL across resources
+
+- When the same DSL block repeats verbatim across resources (this project's `:changed_since`
+  sync-feed action, the `tombstoned_at` + `:tombstone` + `event_type` soft-delete trio), extract
+  it into a **Spark DSL fragment** rather than copy-pasting:
+  ```elixir
+  defmodule Nonprofiteer.Orgs.Fragments.SyncFeed do
+    use Spark.Dsl.Fragment, of: Ash.Resource
+    actions do
+      read :changed_since do
+        pagination keyset?: true, default_limit: 200, required?: false
+        prepare Nonprofiteer.Orgs.Preparations.ChangedSince
+      end
+    end
+  end
+  ```
+  ```elixir
+  use Ash.Resource,
+    domain: Nonprofiteer.Orgs,
+    fragments: [Nonprofiteer.Orgs.Fragments.SyncFeed]
+  ```
+  Fragments merge section-by-section into the resource DSL at compile time, so `attributes`,
+  `actions`, `calculations`, etc. combine with whatever the resource also declares.
+- **`__MODULE__` gotcha:** inside a fragment it resolves to the *fragment* module, not the
+  resource. So a self-referential `belongs_to :superseded_by, __MODULE__` **cannot** live in a
+  fragment — keep it on each resource. An `expr` that *references* such a relationship's FK
+  (e.g. `superseded_by_id` in `event_type`) is fine in a fragment: the column exists in the
+  merged resource, and merge happens before validation.
+- A fragment can't be run through the code interface itself — it has no `domain:`; it only
+  contributes DSL to resources that list it.
+- After extracting to fragments, run `mix ash.codegen --check` (or
+  `mix ash_postgres.generate_migrations`) — a clean result confirms the merged schema is
+  identical and no migration is needed (attribute *order* moving between file and fragment does
+  not change the generated table).
+
 ## Migrations
 
 - Never hand-write Ecto migrations for Ash-backed tables. After changing a resource's `attributes`/`identities`/`relationships`:
