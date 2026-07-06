@@ -19,18 +19,18 @@ remaining correctness guard.
 **Biggest risks (from the docs):**
 - **Schema-version drift** — Part VII parse bugs fail *silently*; known-answer fixtures are
   the only guard. Build them early.
-- **Licensing/ToS** — GivingTuesday Data Lake + ProPublica review blocks any resale/API
-  tier. Owner task.
+- **Licensing/ToS** — reviewed (D18 / [LICENSING.md](LICENSING.md)): IRS public domain + Data
+  Lake ODbL (compatible with our open posture), ProPublica excluded. Counsel sign-off still
+  needed before a paid launch.
 
-## Resolve open decisions (before schema locks)
+## Resolve open decisions — all resolved
 
-From [DECISIONS.md](DECISIONS.md) "Open" + [ARCHITECTURE.md](ARCHITECTURE.md) open questions.
+From [DECISIONS.md](DECISIONS.md); kept as a record of the Phase-1 forks and where they landed.
 
-- [ ] **Sync cursor mechanism** — IRS release month vs. monotonic `updated_at`. Must emit
-  supersede/tombstone events, not just upserts (D10).
-- [ ] **API layer** — Ash-generated (AshJsonApi/AshGraphql) vs. hand-rolled Phoenix JSON.
-- [ ] **XML parsing home** — in-BEAM parse vs. separate service reusing IRSx directly.
-- [ ] **Licensing/ToS review** — GivingTuesday Data Lake + ProPublica, before any resale.
+- [x] **Sync cursor mechanism** — monotonic `updated_at`, keyset, safety-lag watermark (D16).
+- [x] **API layer** — AshJsonApi (D17).
+- [x] **XML parsing home** — in-BEAM Saxy; IRSx as offline validator (D14).
+- [x] **Licensing/ToS review** — D18 / [LICENSING.md](LICENSING.md).
   *(Owner task.)*
 
 ## Scaffold

@@ -98,8 +98,9 @@ only to de-risk the early build. Never let the core depend on someone else's API
   [DECISIONS.md](DECISIONS.md) D11).
 - **Backfill depth:** decided — ~3 filing years up front + going-forward (see
   [DECISIONS.md](DECISIONS.md) D9).
-- **Licensing/ToS:** review GivingTuesday Data Lake + ProPublica terms before any
-  resale/API-tier plans.
+- **Licensing/ToS:** reviewed — see [LICENSING.md](LICENSING.md) + [DECISIONS.md](DECISIONS.md)
+  D18. IRS data is public domain; the Data Lake is ODbL (compatible with our open posture);
+  ProPublica is excluded from the pipeline. Counsel sign-off still needed before a paid launch.
 - **Validation fixtures:** none yet — must find/build known-answer cases (see
   [ARCHITECTURE.md](ARCHITECTURE.md) validation).
 

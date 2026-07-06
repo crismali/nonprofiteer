@@ -207,6 +207,27 @@ monthly cadence. Amendment supersede (deferred in D15) now ships alongside
 Feed reads are **unauthenticated** by design (ARCHITECTURE); an interim Basic-auth gate for the
 early-access window is a follow-up (see TODO).
 
+## D18 — Data-source licensing posture: IRS public domain + Data Lake ODbL, ProPublica excluded
+
+Full analysis in [LICENSING.md](LICENSING.md); the locked posture:
+
+- **Core data is unencumbered.** BMF (irs.gov) and the 990 XML *content* are IRS public domain
+  (17 U.S.C. § 105) — freely usable and commercializable. The 990 corpus is *accessed* via the
+  GivingTuesday Data Lake, whose **index/curation is ODbL** (attribution + share-alike); ODbL
+  governs their compilation, not the public-domain returns we serve.
+- **ODbL is compatible because we're open** (VISION). ODbL permits commercial use + charging for
+  access; it only requires the database stay open + attributed. So: license Nonprofiteer's own
+  dataset ODbL, **attribute IRS + GivingTuesday**, and charge for hosted access — GuideStar's
+  model over the same public data. You can't own public records.
+- **ProPublica is never in the pipeline or served data** — its ToS forbids charging, redistributing,
+  and reselling. Zero code references; keep it a manual dev cross-check only.
+- **Never ingest legally non-public 990 data** — Schedule B donor names, SSNs, etc. Phase 2
+  schedules use a public-field *allowlist*, not a denylist.
+- **Before any paid launch, confirm with counsel** — chiefly whether index-driven ingestion makes
+  our whole DB an ODbL "derivative database." Exit path if we ever go proprietary: source XML from
+  IRS directly (~2–3 days, fetch layer only; availability already covered by D11's mirror).
+
 ## Open (not yet decided)
 
-- Licensing/ToS review (GivingTuesday Data Lake, ProPublica) before any resale — my task.
+- *(none blocking — a paid launch needs counsel sign-off on the D18 ODbL question, not an
+  engineering decision.)*
