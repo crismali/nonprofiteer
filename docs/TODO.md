@@ -161,4 +161,9 @@ identifier (`Ingest.Ein.normalize/1`). Orphan filings (EIN not in the BMF spine)
   the source of truth (D2/D4). Idea to explore: a **shared normalization library** depended on
   by both ohfec and nonprofiteer, surfaced as an **opt-in API option** (e.g. `?normalized=true`)
   so consumers can request normalized values without the stored facts being mangled.
+  - **Trigger to revisit:** if nonprofiteer ever needs to normalize for a *nonprofiteer-specific*
+    reason (e.g. its own dedupe/search beyond `pg_trgm`, not just serving ohfec), treat that as
+    the signal to **extract ohfec's normalization into that shared library** rather than
+    reimplementing it here — so both projects (and future ones like them) share one
+    implementation. Don't copy ohfec's normalizer in; lift it out.
 - Supplementary sources — see [FUTURE-SOURCES.md](FUTURE-SOURCES.md).
