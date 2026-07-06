@@ -95,15 +95,21 @@ Ash resources per [ARCHITECTURE.md](ARCHITECTURE.md#data-model-sketch--see-futur
 - [x] Track `:partial` run status (mid-batch failure count) in `BmfExtractWorker` — a tolerant
   `Ingest.Batch.reduce/3` fold keeps the committed-row count when a row fails partway, so the
   audit row reads `:partial` (some orgs in) vs `:failure` (none) instead of hiding landed rows.
-  - [ ] Adopt the same in `BmfReconcileWorker` — deferred: its per-row update only fails on a
-    DB-level error that's impractical to induce in a test, and its diagnostic value is lower.
+  - [ ] Adopt the same in `BmfReconcileWorker` — deferred (confirmed 2026-07-06): reconcile's
+    `central_map` is built from live DB reads *inside* `perform`, so it can never hold a bogus
+    central id — the only per-row failure is a DB fault (connection death), uninducible without
+    mocking Ash/Repo. Code-only symmetry with `BmfExtractWorker` has no honest test, so left as-is.
 - [x] Reconcile: handle >1 central sharing a GEN — was silent last-wins (also read-order
   dependent, so non-deterministic across runs); now picks the lowest-EIN central deterministically
   and logs a warning naming the ambiguous GEN(s).
 - [ ] Reconcile perf: if per-row subordinate updates get slow at national scale, move to a
   set-based `UPDATE … FROM` (accepting the Ash-action bypass for a pure FK set).
-- [ ] Re-capture `test/fixtures/bmf/` periodically from real files and diff, to catch layout
-  drift deliberately.
+- [x] Layout-drift canary — `mix nonprofiteer.capture_known_answers` already re-captures a real
+  irs.gov extract into `test/fixtures/known_answers/bmf_dc_known.csv`; a `bmf_test` now runs the
+  pinned parser against that live header, so a re-capture that picks up an IRS layout change fails
+  loud (deliberate diff) instead of waiting for a production `BmfExtractWorker` to raise.
+  (`eo_sample.csv` stays hand-crafted — it backs the known-answer value assertions, can't be a
+  live canary.)
 
 ## 990 Part VII parse (the deep slice)
 

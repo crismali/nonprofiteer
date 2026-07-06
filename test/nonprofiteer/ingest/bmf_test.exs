@@ -47,4 +47,16 @@ defmodule Nonprofiteer.Ingest.BmfTest do
 
     assert_raise Bmf.LayoutError, ~r/header drift/, fn -> Bmf.parse!(drifted) end
   end
+
+  # The layout pin only catches drift when *some* extract runs it. `eo_sample.csv` above is
+  # hand-crafted (its rows back the known-answer assertions), so it can't double as a live
+  # canary. `bmf_dc_known.csv` is captured from a real irs.gov extract by
+  # `mix nonprofiteer.capture_known_answers` — re-run that periodically and this test turns a
+  # silently-drifted IRS layout into a loud, deliberate failure the moment the fixture updates,
+  # instead of waiting for a production BmfExtractWorker to raise.
+  test "the live-captured IRS header still matches the pinned layout (drift canary)" do
+    real = File.read!("test/fixtures/known_answers/bmf_dc_known.csv")
+
+    assert [_ | _] = Bmf.parse!(real)
+  end
 end
