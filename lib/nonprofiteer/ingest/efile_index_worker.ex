@@ -14,9 +14,10 @@ defmodule Nonprofiteer.Ingest.EfileIndexWorker do
   defaults from the current year but can be overridden per-job (`"min_tax_year"`) or via
   `:nonprofiteer, :efile_min_tax_year`.
 
-  > Scale follow-up: the all-years index is large and is currently fetched/parsed whole. Stream
-  > it (Req `into:` + `NimbleCSV.parse_stream`) and narrow the ingested-id diff before this runs
-  > against the full national corpus on a small VPS.
+  The index is **streamed** (`Client.stream!` + `Index.parse_stream`) and processed in batches,
+  so the all-years national corpus is never held whole in memory; the already-ingested diff is
+  narrowed to each batch's object ids (a single `IN (...)` per batch) rather than loading every
+  ingested id up front.
   """
   use Oban.Worker, queue: :ingest_incremental, max_attempts: 3
 
@@ -32,19 +33,27 @@ defmodule Nonprofiteer.Ingest.EfileIndexWorker do
   @index_bucket_url "https://gt990datalake-rawdata.s3.amazonaws.com"
   @index_prefix "Indices/990xmls/"
 
+  # In-scope candidates are diffed + enqueued a batch at a time so memory stays bounded no
+  # matter how large the index is.
+  @batch_size 1_000
+
   @impl Oban.Worker
   def perform(%Oban.Job{args: args}) do
     min_tax_year = args["min_tax_year"] || default_min_tax_year()
 
-    candidates =
+    {candidate_count, enqueued_count} =
       index_url()
-      |> Client.fetch!()
-      |> Index.parse!()
-      |> Enum.filter(&in_scope?(&1, min_tax_year))
+      |> Client.stream!()
+      |> Index.parse_stream()
+      |> Stream.filter(&in_scope?(&1, min_tax_year))
+      |> Stream.chunk_every(@batch_size)
+      |> Enum.reduce({0, 0}, fn batch, {seen, enqueued} ->
+        new_refs = reject_already_ingested(batch)
+        enqueue(new_refs)
+        {seen + length(batch), enqueued + length(new_refs)}
+      end)
 
-    new_refs = reject_already_ingested(candidates)
-    enqueue(new_refs)
-    record_run!(length(candidates), length(new_refs))
+    record_run!(candidate_count, enqueued_count)
 
     :ok
   end
@@ -54,12 +63,14 @@ defmodule Nonprofiteer.Ingest.EfileIndexWorker do
       is_binary(ref.object_id) and is_binary(ref.xml_url)
   end
 
-  # Diff against filings we already have. Loads the ingested id set — fine at Phase-1 volume;
-  # see the scale follow-up in the moduledoc.
+  # Diff this batch against filings we already have. Narrowed to the batch's object ids (one
+  # `IN (...)` query), so memory doesn't grow with the ingested corpus.
   defp reject_already_ingested(refs) do
+    object_ids = Enum.map(refs, & &1.object_id)
+
     ingested =
       Filing
-      |> Ash.Query.filter(not is_nil(source_object_id))
+      |> Ash.Query.filter(source_object_id in ^object_ids)
       |> Ash.read!()
       |> MapSet.new(& &1.source_object_id)
 

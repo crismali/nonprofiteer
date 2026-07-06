@@ -50,15 +50,51 @@ defmodule Nonprofiteer.Ingest.Efile.Index do
     [header | rows] = Csv.parse_string(csv, skip_headers: false)
     column = column_index!(header)
 
-    Enum.map(rows, fn row ->
-      %{
-        object_id: cell(row, column, @object_id),
-        form_type: cell(row, column, @form_type),
-        tax_year: cell(row, column, @tax_year) |> to_int(),
-        filed_on: cell(row, column, @submitted_on) |> to_date(),
-        xml_url: cell(row, column, @url)
-      }
+    Enum.map(rows, &ref(&1, column))
+  end
+
+  @doc """
+  Lazily parses an index CSV *stream* — an enumerable of binary chunks (see `Client.stream!/1`)
+  — into a stream of filing refs, so the whole index isn't held in memory. Resolves columns
+  from the first (header) row, then emits a ref per data row. Raises `LayoutError` (during
+  consumption) if a required column is missing.
+  """
+  @spec parse_stream(Enumerable.t()) :: Enumerable.t()
+  def parse_stream(chunks) do
+    chunks
+    |> to_lines()
+    |> Csv.parse_stream(skip_headers: false)
+    |> Stream.transform(:awaiting_header, fn
+      header, :awaiting_header -> {[], column_index!(header)}
+      row, column -> {[ref(row, column)], column}
     end)
+  end
+
+  # Re-chunk an arbitrary byte stream (HTTP delivers whatever-sized chunks) into newline-
+  # terminated lines, the shape `NimbleCSV.parse_stream/2` expects. A partial trailing line is
+  # buffered until the next chunk completes it; a newline inside a quoted field is safe — it
+  # lands mid-line and `parse_stream` reassembles across elements on the open quote.
+  defp to_lines(chunks) do
+    Stream.transform(
+      chunks,
+      fn -> "" end,
+      fn chunk, buffer ->
+        parts = String.split(buffer <> chunk, "\n")
+        {complete, [rest]} = Enum.split(parts, -1)
+        {Enum.map(complete, &(&1 <> "\n")), rest}
+      end,
+      fn buffer -> {if(buffer == "", do: [], else: [buffer]), ""} end
+    )
+  end
+
+  defp ref(row, column) do
+    %{
+      object_id: cell(row, column, @object_id),
+      form_type: cell(row, column, @form_type),
+      tax_year: cell(row, column, @tax_year) |> to_int(),
+      filed_on: cell(row, column, @submitted_on) |> to_date(),
+      xml_url: cell(row, column, @url)
+    }
   end
 
   defp column_index!(header) do

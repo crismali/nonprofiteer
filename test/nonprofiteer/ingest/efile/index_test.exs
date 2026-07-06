@@ -35,4 +35,38 @@ defmodule Nonprofiteer.Ingest.Efile.IndexTest do
 
     assert_raise Index.LayoutError, ~r/ObjectId/, fn -> Index.parse!(dropped) end
   end
+
+  test "parse_stream yields the same refs as parse! from a chunked byte stream" do
+    # Split the CSV into arbitrary byte chunks (mid-line, mid-field) to exercise the
+    # line-reassembly across chunk boundaries.
+    chunks = sample() |> chunk_bytes(17)
+
+    streamed = chunks |> Index.parse_stream() |> Enum.to_list()
+
+    assert streamed == Index.parse!(sample())
+  end
+
+  test "parse_stream is lazy — it doesn't parse past what's demanded" do
+    # An infinite stream of blank chunks after the real data would hang a non-lazy parser.
+    chunks = Stream.concat(chunk_bytes(sample(), 64), Stream.repeatedly(fn -> "" end))
+
+    assert [first | _] = chunks |> Index.parse_stream() |> Enum.take(1)
+    assert first.object_id == "202301529349200315"
+  end
+
+  test "parse_stream raises LayoutError on a missing column" do
+    dropped = String.replace(sample(), "ObjectId,", "", global: false)
+
+    assert_raise Index.LayoutError, ~r/ObjectId/, fn ->
+      [dropped] |> Index.parse_stream() |> Enum.to_list()
+    end
+  end
+
+  # Break a binary into `size`-byte chunks as a stream, mimicking an HTTP body.
+  defp chunk_bytes(binary, size) do
+    binary
+    |> :binary.bin_to_list()
+    |> Enum.chunk_every(size)
+    |> Enum.map(&:binary.list_to_bin/1)
+  end
 end

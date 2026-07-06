@@ -134,9 +134,10 @@ identifier (`Ingest.Ein.normalize/1`). Orphan filings (EIN not in the BMF spine)
   return_type)` group; landed with the sync feed (D17).
 - [ ] **990-EZ / 990-PF** Part VII/officer extraction (different elements than Form 990); index
   worker filters to Form 990 today.
-- [ ] **Stream the all-years index** (Req `into:` + `NimbleCSV.parse_stream`) and narrow the
-  ingested-id diff — it's fetched/parsed whole today, a memory risk on a small VPS at full
-  national volume.
+- [x] **Stream the all-years index** — `Client.stream!` (Req `into: :self`) + `Index.parse_stream`
+  (chunk→line reassembly → lazy `NimbleCSV.parse_stream`); the worker filters/chunks/enqueues in
+  1k batches and narrows the ingested-id diff to each batch's object ids (`IN (...)`). Memory is
+  now bounded by batch size, not the corpus.
 - [ ] Foreign filers (`ForeignAddress`) — parser handles `USAddress`; `xx` extract addresses
   fall through to nil today.
 - [x] Coverage/quality metrics off the data (`mix nonprofiteer.coverage`): % orgs with EIN /
