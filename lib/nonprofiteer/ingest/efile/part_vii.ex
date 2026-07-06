@@ -53,7 +53,7 @@ defmodule Nonprofiteer.Ingest.Efile.PartVii do
   @spec parse!(binary()) :: parsed()
   def parse!(xml) when is_binary(xml) do
     tree =
-      case Saxy.SimpleForm.parse_string(xml) do
+      case xml |> strip_bom() |> Saxy.SimpleForm.parse_string() do
         {:ok, tree} ->
           tree
 
@@ -76,6 +76,12 @@ defmodule Nonprofiteer.Ingest.Efile.PartVii do
       people: people(tree)
     }
   end
+
+  # Some IRS 990 XML files carry a leading UTF-8 byte-order mark, which Saxy rejects as an
+  # unexpected token — strip it so a BOM'd-but-valid return parses instead of being silently
+  # skipped as unparseable (caught by a known-answer fixture; see docs/EXAMPLES.md).
+  defp strip_bom(<<0xEF, 0xBB, 0xBF>> <> rest), do: rest
+  defp strip_bom(xml), do: xml
 
   defp guard_schema!(version) do
     year = schema_year(version)

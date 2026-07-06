@@ -92,4 +92,9 @@ defmodule Nonprofiteer.Ingest.Efile.PartViiTest do
   test "raises on unparseable XML rather than returning empty" do
     assert_raise UnsupportedReturnError, ~r/unparseable/, fn -> PartVii.parse!("not xml <<<") end
   end
+
+  test "strips a leading UTF-8 BOM (real IRS files carry one, Saxy rejects it)" do
+    bommed = <<0xEF, 0xBB, 0xBF>> <> return([])
+    assert %{ein: "123456789", tax_year: 2020} = PartVii.parse!(bommed)
+  end
 end
