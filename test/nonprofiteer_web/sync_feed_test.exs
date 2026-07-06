@@ -1,6 +1,7 @@
 defmodule NonprofiteerWeb.SyncFeedTest do
   use NonprofiteerWeb.ConnCase, async: false
 
+  alias Nonprofiteer.Orgs.Address
   alias Nonprofiteer.Orgs.Filing
   alias Nonprofiteer.Orgs.Organization
   alias Nonprofiteer.Orgs.Person
@@ -91,6 +92,39 @@ defmodule NonprofiteerWeb.SyncFeedTest do
     assert [record] = body["data"]
     assert record["type"] == "person"
     assert record["attributes"]["name"] == "Jane Director"
+    assert record["attributes"]["event_type"] == "upsert"
+  end
+
+  test "the addresses feed serves addresses with an :upsert event_type", %{conn: conn} do
+    # Regression guard: the addresses feed loads Address.event_type, whose bare-atom
+    # calculation once crashed the endpoint at runtime (`could not load module :upsert`).
+    Address
+    |> Ash.Changeset.for_create(:create, %{line1: "1 Main St", city: "Springfield", region: "IL"})
+    |> Ash.create!()
+
+    body = get_feed(conn, "/api/v1/sync/addresses")
+
+    assert [record] = body["data"]
+    assert record["type"] == "address"
+    assert record["attributes"]["line1"] == "1 Main St"
+    assert record["attributes"]["event_type"] == "upsert"
+  end
+
+  test "the filings feed serves filings with a derived event_type", %{conn: conn} do
+    org = create_org(%{name: "Org", ein: "222222222"})
+
+    Filing
+    |> Ash.Changeset.for_create(:create, %{
+      organization_id: org.id,
+      return_type: :form_990,
+      tax_year: 2023
+    })
+    |> Ash.create!()
+
+    body = get_feed(conn, "/api/v1/sync/filings")
+
+    assert [record] = body["data"]
+    assert record["type"] == "filing"
     assert record["attributes"]["event_type"] == "upsert"
   end
 
