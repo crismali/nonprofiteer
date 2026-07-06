@@ -39,14 +39,16 @@ defmodule Mix.Tasks.Nonprofiteer.ResourcesTest do
   end
 
   test "unknown name with near matches fuzzy-lists them" do
-    output = capture_io(fn -> Resources.run(["org"]) end)
+    # The not-found headline goes to stderr (`Mix.shell().error`); capture it too so it doesn't
+    # leak to the test console. The matches list we assert on goes to stdout.
+    output = capture_io(fn -> capture_io(:stderr, fn -> Resources.run(["org"]) end) end)
 
     assert output =~ "Matching resources (1)"
     assert output =~ "Nonprofiteer.Orgs.Organization"
   end
 
   test "unknown name with no matches says so" do
-    output = capture_io(fn -> Resources.run(["zzz-nope"]) end)
+    output = capture_io(fn -> capture_io(:stderr, fn -> Resources.run(["zzz-nope"]) end) end)
 
     assert output =~ "No matching resources"
   end
