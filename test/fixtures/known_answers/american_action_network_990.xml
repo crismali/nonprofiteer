@@ -1,0 +1,1211 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Return xmlns="http://www.irs.gov/efile" returnVersion="2020v4.1">
+  <ReturnHeader binaryAttachmentCnt="0">
+    <ReturnTs>2022-05-16T10:42:45-04:00</ReturnTs>
+    <TaxPeriodEndDt>2021-06-30</TaxPeriodEndDt>
+    <PreparerFirmGrp>
+      <PreparerFirmEIN>853956145</PreparerFirmEIN>
+      <PreparerFirmName>
+        <BusinessNameLine1Txt>JONATHAN T PROCH CPA LLC</BusinessNameLine1Txt>
+      </PreparerFirmName>
+      <PreparerUSAddress>
+        <AddressLine1Txt>1900 Campus Commons Dr Ste 100</AddressLine1Txt>
+        <CityNm>Reston</CityNm>
+        <StateAbbreviationCd>VA</StateAbbreviationCd>
+        <ZIPCd>20191</ZIPCd>
+      </PreparerUSAddress>
+    </PreparerFirmGrp>
+    <ReturnTypeCd>990</ReturnTypeCd>
+    <TaxPeriodBeginDt>2020-07-01</TaxPeriodBeginDt>
+    <Filer>
+      <EIN>270730508</EIN>
+      <BusinessName>
+        <BusinessNameLine1Txt>American Action Network Inc</BusinessNameLine1Txt>
+      </BusinessName>
+      <BusinessNameControlTxt>AMER</BusinessNameControlTxt>
+      <USAddress>
+        <AddressLine1Txt>1747 Pennsylvania Avenue NW 5th fl</AddressLine1Txt>
+        <CityNm>Washington</CityNm>
+        <StateAbbreviationCd>DC</StateAbbreviationCd>
+        <ZIPCd>20006</ZIPCd>
+      </USAddress>
+    </Filer>
+    <BusinessOfficerGrp>
+      <PersonNm>Daniel Conston</PersonNm>
+      <PersonTitleTxt>President</PersonTitleTxt>
+      <PhoneNum>2025596420</PhoneNum>
+      <SignatureDt>2022-05-16</SignatureDt>
+      <DiscussWithPaidPreparerInd>false</DiscussWithPaidPreparerInd>
+    </BusinessOfficerGrp>
+    <SigningOfficerGrp>
+      <PersonFullName>
+        <PersonFirstNm>Daniel</PersonFirstNm>
+        <PersonLastNm>Conston</PersonLastNm>
+      </PersonFullName>
+    </SigningOfficerGrp>
+    <PreparerPersonGrp>
+      <PreparerPersonNm>Jonathan Proch</PreparerPersonNm>
+      <PTIN>P00298677</PTIN>
+      <PhoneNum>5406685722</PhoneNum>
+      <PreparationDt>2022-05-16</PreparationDt>
+      <SelfEmployedInd>X</SelfEmployedInd>
+    </PreparerPersonGrp>
+    <AdditionalFilerInformation>
+      <TrustedCustomerGrp>
+        <TrustedCustomerCd>0</TrustedCustomerCd>
+        <OOBSecurityVerificationCd>00</OOBSecurityVerificationCd>
+        <AuthenticationAssuranceLevelCd>AAL1</AuthenticationAssuranceLevelCd>
+        <IdentityAssuranceLevelCd>IAL1</IdentityAssuranceLevelCd>
+      </TrustedCustomerGrp>
+    </AdditionalFilerInformation>
+    <TaxYr>2020</TaxYr>
+    <BuildTS>2022-09-23 18:48:47Z</BuildTS>
+  </ReturnHeader>
+  <ReturnData documentCnt="9">
+    <IRS990 documentId="IRS990">
+      <PrincipalOfficerNm>Daniel Conston</PrincipalOfficerNm>
+      <USAddress>
+        <AddressLine1Txt>1747 Pennsylvania Ave NW 5th fl</AddressLine1Txt>
+        <CityNm>Washington</CityNm>
+        <StateAbbreviationCd>DC</StateAbbreviationCd>
+        <ZIPCd>20006</ZIPCd>
+      </USAddress>
+      <GrossReceiptsAmt>29638224</GrossReceiptsAmt>
+      <GroupReturnForAffiliatesInd>false</GroupReturnForAffiliatesInd>
+      <Organization501cInd organization501cTypeTxt="4">X</Organization501cInd>
+      <WebsiteAddressTxt>www.americanactionnetwork.org</WebsiteAddressTxt>
+      <TypeOfOrganizationCorpInd>X</TypeOfOrganizationCorpInd>
+      <FormationYr>2009</FormationYr>
+      <LegalDomicileStateCd>DC</LegalDomicileStateCd>
+      <ActivityOrMissionDesc>The American Action Network creates, encourages and promotes center-right policies based on the principles of freedom, limited government, American exceptionalism and strong national security.</ActivityOrMissionDesc>
+      <VotingMembersGoverningBodyCnt>9</VotingMembersGoverningBodyCnt>
+      <VotingMembersIndependentCnt>9</VotingMembersIndependentCnt>
+      <TotalEmployeeCnt>20</TotalEmployeeCnt>
+      <TotalVolunteersCnt>9</TotalVolunteersCnt>
+      <TotalGrossUBIAmt>0</TotalGrossUBIAmt>
+      <NetUnrelatedBusTxblIncmAmt>0</NetUnrelatedBusTxblIncmAmt>
+      <PYContributionsGrantsAmt>47628548</PYContributionsGrantsAmt>
+      <CYContributionsGrantsAmt>29638224</CYContributionsGrantsAmt>
+      <CYProgramServiceRevenueAmt>0</CYProgramServiceRevenueAmt>
+      <PYInvestmentIncomeAmt>23064</PYInvestmentIncomeAmt>
+      <CYInvestmentIncomeAmt>0</CYInvestmentIncomeAmt>
+      <CYOtherRevenueAmt>0</CYOtherRevenueAmt>
+      <PYTotalRevenueAmt>47651612</PYTotalRevenueAmt>
+      <CYTotalRevenueAmt>29638224</CYTotalRevenueAmt>
+      <PYGrantsAndSimilarPaidAmt>17175000</PYGrantsAndSimilarPaidAmt>
+      <CYGrantsAndSimilarPaidAmt>18215000</CYGrantsAndSimilarPaidAmt>
+      <CYBenefitsPaidToMembersAmt>0</CYBenefitsPaidToMembersAmt>
+      <PYSalariesCompEmpBnftPaidAmt>1321460</PYSalariesCompEmpBnftPaidAmt>
+      <CYSalariesCompEmpBnftPaidAmt>1483526</CYSalariesCompEmpBnftPaidAmt>
+      <PYTotalProfFndrsngExpnsAmt>634898</PYTotalProfFndrsngExpnsAmt>
+      <CYTotalProfFndrsngExpnsAmt>608817</CYTotalProfFndrsngExpnsAmt>
+      <CYTotalFundraisingExpenseAmt>752946</CYTotalFundraisingExpenseAmt>
+      <PYOtherExpensesAmt>23119386</PYOtherExpensesAmt>
+      <CYOtherExpensesAmt>14650351</CYOtherExpensesAmt>
+      <PYTotalExpensesAmt>42250744</PYTotalExpensesAmt>
+      <CYTotalExpensesAmt>34957694</CYTotalExpensesAmt>
+      <PYRevenuesLessExpensesAmt>5400868</PYRevenuesLessExpensesAmt>
+      <CYRevenuesLessExpensesAmt>-5319470</CYRevenuesLessExpensesAmt>
+      <TotalAssetsBOYAmt>8932732</TotalAssetsBOYAmt>
+      <TotalAssetsEOYAmt>3726560</TotalAssetsEOYAmt>
+      <TotalLiabilitiesBOYAmt>422521</TotalLiabilitiesBOYAmt>
+      <TotalLiabilitiesEOYAmt>535819</TotalLiabilitiesEOYAmt>
+      <NetAssetsOrFundBalancesBOYAmt>8510211</NetAssetsOrFundBalancesBOYAmt>
+      <NetAssetsOrFundBalancesEOYAmt>3190741</NetAssetsOrFundBalancesEOYAmt>
+      <MissionDesc>The American Action Network creates, encourages and promotes center-right policies based on the principles of freedom, limited government, American exceptionalism and strong national security.</MissionDesc>
+      <SignificantNewProgramSrvcInd>false</SignificantNewProgramSrvcInd>
+      <SignificantChangeInd>false</SignificantChangeInd>
+      <ExpenseAmt>33303310</ExpenseAmt>
+      <GrantAmt>18215000</GrantAmt>
+      <Desc>American Action Network conducted extensive issue advocacy and grassroots mobilization, including television advertising, direct mail, automated phone calls, digital advocacy, public opinion surveys, and providing grants to allied organizations, in an effort across the country to advocate for, among other things, improving the Medicare Part D market with commonsense reforms while opposing socialist government price controls, vociferously opposing Build Back Better and its reckless tax hikes and wasteful spending, opposing wasteful spending and misplaced priorities in the American Recovery Act, and weighing in on other key policies and legislation from a center-right standpoint related to fiscal, budgetary, tax, regulatory, and constitutional issues.</Desc>
+      <TotalProgramServiceExpensesAmt>33303310</TotalProgramServiceExpensesAmt>
+      <DescribedInSection501c3Ind>false</DescribedInSection501c3Ind>
+      <ScheduleBRequiredInd referenceDocumentId="990B">true</ScheduleBRequiredInd>
+      <PoliticalCampaignActyInd referenceDocumentId="990C">true</PoliticalCampaignActyInd>
+      <SubjectToProxyTaxInd>false</SubjectToProxyTaxInd>
+      <DonorAdvisedFundInd>false</DonorAdvisedFundInd>
+      <ConservationEasementsInd>false</ConservationEasementsInd>
+      <CollectionsOfArtInd>false</CollectionsOfArtInd>
+      <CreditCounselingInd>false</CreditCounselingInd>
+      <DonorRstrOrQuasiEndowmentsInd>false</DonorRstrOrQuasiEndowmentsInd>
+      <ReportLandBuildingEquipmentInd referenceDocumentId="990D">true</ReportLandBuildingEquipmentInd>
+      <ReportInvestmentsOtherSecInd>false</ReportInvestmentsOtherSecInd>
+      <ReportProgramRelatedInvstInd>false</ReportProgramRelatedInvstInd>
+      <ReportOtherAssetsInd referenceDocumentId="990D">true</ReportOtherAssetsInd>
+      <ReportOtherLiabilitiesInd referenceDocumentId="990D">true</ReportOtherLiabilitiesInd>
+      <IncludeFIN48FootnoteInd referenceDocumentId="990D">true</IncludeFIN48FootnoteInd>
+      <IndependentAuditFinclStmtInd referenceDocumentId="990D">true</IndependentAuditFinclStmtInd>
+      <ConsolidatedAuditFinclStmtInd>false</ConsolidatedAuditFinclStmtInd>
+      <SchoolOperatingInd>false</SchoolOperatingInd>
+      <ForeignOfficeInd>false</ForeignOfficeInd>
+      <ForeignActivitiesInd>false</ForeignActivitiesInd>
+      <MoreThan5000KToOrgInd>false</MoreThan5000KToOrgInd>
+      <MoreThan5000KToIndividualsInd>false</MoreThan5000KToIndividualsInd>
+      <ProfessionalFundraisingInd referenceDocumentId="990G">true</ProfessionalFundraisingInd>
+      <FundraisingActivitiesInd>false</FundraisingActivitiesInd>
+      <GamingActivitiesInd>false</GamingActivitiesInd>
+      <OperateHospitalInd>false</OperateHospitalInd>
+      <GrantsToOrganizationsInd referenceDocumentId="990I">true</GrantsToOrganizationsInd>
+      <GrantsToIndividualsInd>false</GrantsToIndividualsInd>
+      <ScheduleJRequiredInd referenceDocumentId="990J">true</ScheduleJRequiredInd>
+      <TaxExemptBondsInd>false</TaxExemptBondsInd>
+      <EngagedInExcessBenefitTransInd>false</EngagedInExcessBenefitTransInd>
+      <PYExcessBenefitTransInd>false</PYExcessBenefitTransInd>
+      <LoanOutstandingInd>false</LoanOutstandingInd>
+      <GrantToRelatedPersonInd>false</GrantToRelatedPersonInd>
+      <BusinessRlnWithOrgMemInd>false</BusinessRlnWithOrgMemInd>
+      <BusinessRlnWithFamMemInd>false</BusinessRlnWithFamMemInd>
+      <BusinessRlnWith35CtrlEntInd>false</BusinessRlnWith35CtrlEntInd>
+      <DeductibleNonCashContriInd>false</DeductibleNonCashContriInd>
+      <DeductibleArtContributionInd>false</DeductibleArtContributionInd>
+      <TerminateOperationsInd>false</TerminateOperationsInd>
+      <PartialLiquidationInd>false</PartialLiquidationInd>
+      <DisregardedEntityInd>false</DisregardedEntityInd>
+      <RelatedEntityInd referenceDocumentId="990R">true</RelatedEntityInd>
+      <RelatedOrganizationCtrlEntInd>true</RelatedOrganizationCtrlEntInd>
+      <TransactionWithControlEntInd referenceDocumentId="990">true</TransactionWithControlEntInd>
+      <ActivitiesConductedPrtshpInd>false</ActivitiesConductedPrtshpInd>
+      <ScheduleORequiredInd>true</ScheduleORequiredInd>
+      <IRPDocumentCnt>22</IRPDocumentCnt>
+      <IRPDocumentW2GCnt>0</IRPDocumentW2GCnt>
+      <BackupWthldComplianceInd>true</BackupWthldComplianceInd>
+      <EmployeeCnt>20</EmployeeCnt>
+      <EmploymentTaxReturnsFiledInd>true</EmploymentTaxReturnsFiledInd>
+      <UnrelatedBusIncmOverLimitInd>false</UnrelatedBusIncmOverLimitInd>
+      <ForeignFinancialAccountInd>false</ForeignFinancialAccountInd>
+      <ProhibitedTaxShelterTransInd>false</ProhibitedTaxShelterTransInd>
+      <TaxablePartyNotificationInd>false</TaxablePartyNotificationInd>
+      <NondeductibleContributionsInd>true</NondeductibleContributionsInd>
+      <NondeductibleContriDisclInd>true</NondeductibleContriDisclInd>
+      <IndoorTanningServicesInd>false</IndoorTanningServicesInd>
+      <SubjToTaxRmnrtnExPrchtPymtInd>false</SubjToTaxRmnrtnExPrchtPymtInd>
+      <SubjectToExcsTaxNetInvstIncInd>false</SubjectToExcsTaxNetInvstIncInd>
+      <InfoInScheduleOPartVIInd>X</InfoInScheduleOPartVIInd>
+      <GoverningBodyVotingMembersCnt>9</GoverningBodyVotingMembersCnt>
+      <IndependentVotingMemberCnt>9</IndependentVotingMemberCnt>
+      <FamilyOrBusinessRlnInd>false</FamilyOrBusinessRlnInd>
+      <DelegationOfMgmtDutiesInd>false</DelegationOfMgmtDutiesInd>
+      <ChangeToOrgDocumentsInd>false</ChangeToOrgDocumentsInd>
+      <MaterialDiversionOrMisuseInd>false</MaterialDiversionOrMisuseInd>
+      <MembersOrStockholdersInd>false</MembersOrStockholdersInd>
+      <ElectionOfBoardMembersInd>false</ElectionOfBoardMembersInd>
+      <DecisionsSubjectToApprovaInd>false</DecisionsSubjectToApprovaInd>
+      <MinutesOfGoverningBodyInd>true</MinutesOfGoverningBodyInd>
+      <MinutesOfCommitteesInd>false</MinutesOfCommitteesInd>
+      <OfficerMailingAddressInd>false</OfficerMailingAddressInd>
+      <LocalChaptersInd>false</LocalChaptersInd>
+      <Form990ProvidedToGvrnBodyInd>true</Form990ProvidedToGvrnBodyInd>
+      <ConflictOfInterestPolicyInd>true</ConflictOfInterestPolicyInd>
+      <AnnualDisclosureCoveredPrsnInd>true</AnnualDisclosureCoveredPrsnInd>
+      <RegularMonitoringEnfrcInd>true</RegularMonitoringEnfrcInd>
+      <WhistleblowerPolicyInd>false</WhistleblowerPolicyInd>
+      <DocumentRetentionPolicyInd>true</DocumentRetentionPolicyInd>
+      <CompensationProcessCEOInd>false</CompensationProcessCEOInd>
+      <CompensationProcessOtherInd>false</CompensationProcessOtherInd>
+      <InvestmentInJointVentureInd>false</InvestmentInJointVentureInd>
+      <StatesWhereCopyOfReturnIsFldCd>CO</StatesWhereCopyOfReturnIsFldCd>
+      <StatesWhereCopyOfReturnIsFldCd>CT</StatesWhereCopyOfReturnIsFldCd>
+      <StatesWhereCopyOfReturnIsFldCd>FL</StatesWhereCopyOfReturnIsFldCd>
+      <StatesWhereCopyOfReturnIsFldCd>PA</StatesWhereCopyOfReturnIsFldCd>
+      <StatesWhereCopyOfReturnIsFldCd>UT</StatesWhereCopyOfReturnIsFldCd>
+      <StatesWhereCopyOfReturnIsFldCd>VA</StatesWhereCopyOfReturnIsFldCd>
+      <UponRequestInd>X</UponRequestInd>
+      <BooksInCareOfDetail>
+        <PersonNm>the organization</PersonNm>
+        <PhoneNum>2025596420</PhoneNum>
+        <USAddress>
+          <AddressLine1Txt>1747 Pennsylvania Ave NW 5th fl</AddressLine1Txt>
+          <CityNm>Washington</CityNm>
+          <StateAbbreviationCd>DC</StateAbbreviationCd>
+          <ZIPCd>20006</ZIPCd>
+        </USAddress>
+      </BooksInCareOfDetail>
+      <Form990PartVIISectionAGrp>
+        <PersonNm>Daniel Conston</PersonNm>
+        <TitleTxt>President</TitleTxt>
+        <AverageHoursPerWeekRt>26.98</AverageHoursPerWeekRt>
+        <AverageHoursPerWeekRltdOrgRt>13.63</AverageHoursPerWeekRltdOrgRt>
+        <OfficerInd>X</OfficerInd>
+        <ReportableCompFromOrgAmt>377541</ReportableCompFromOrgAmt>
+        <ReportableCompFromRltdOrgAmt>194049</ReportableCompFromRltdOrgAmt>
+        <OtherCompensationAmt>27056</OtherCompensationAmt>
+      </Form990PartVIISectionAGrp>
+      <Form990PartVIISectionAGrp>
+        <PersonNm>Cara Edmundowicz</PersonNm>
+        <TitleTxt>Director of Development</TitleTxt>
+        <AverageHoursPerWeekRt>14.52</AverageHoursPerWeekRt>
+        <AverageHoursPerWeekRltdOrgRt>25.33</AverageHoursPerWeekRltdOrgRt>
+        <HighestCompensatedEmployeeInd>X</HighestCompensatedEmployeeInd>
+        <ReportableCompFromOrgAmt>72261</ReportableCompFromOrgAmt>
+        <ReportableCompFromRltdOrgAmt>130264</ReportableCompFromRltdOrgAmt>
+        <OtherCompensationAmt>13692</OtherCompensationAmt>
+      </Form990PartVIISectionAGrp>
+      <Form990PartVIISectionAGrp>
+        <PersonNm>Zachary Hunter</PersonNm>
+        <TitleTxt>Vice President</TitleTxt>
+        <AverageHoursPerWeekRt>26.63</AverageHoursPerWeekRt>
+        <AverageHoursPerWeekRltdOrgRt>13.15</AverageHoursPerWeekRltdOrgRt>
+        <HighestCompensatedEmployeeInd>X</HighestCompensatedEmployeeInd>
+        <ReportableCompFromOrgAmt>125812</ReportableCompFromOrgAmt>
+        <ReportableCompFromRltdOrgAmt>64512</ReportableCompFromRltdOrgAmt>
+        <OtherCompensationAmt>15140</OtherCompensationAmt>
+      </Form990PartVIISectionAGrp>
+      <Form990PartVIISectionAGrp>
+        <PersonNm>Stephanie Fenjiro</PersonNm>
+        <TitleTxt>Director of Operations</TitleTxt>
+        <AverageHoursPerWeekRt>32.60</AverageHoursPerWeekRt>
+        <AverageHoursPerWeekRltdOrgRt>7.71</AverageHoursPerWeekRltdOrgRt>
+        <HighestCompensatedEmployeeInd>X</HighestCompensatedEmployeeInd>
+        <ReportableCompFromOrgAmt>124418</ReportableCompFromOrgAmt>
+        <ReportableCompFromRltdOrgAmt>30655</ReportableCompFromRltdOrgAmt>
+        <OtherCompensationAmt>19658</OtherCompensationAmt>
+      </Form990PartVIISectionAGrp>
+      <Form990PartVIISectionAGrp>
+        <PersonNm>Jennifer Choudhry</PersonNm>
+        <TitleTxt>Director of Research</TitleTxt>
+        <AverageHoursPerWeekRt>19.38</AverageHoursPerWeekRt>
+        <AverageHoursPerWeekRltdOrgRt>19.83</AverageHoursPerWeekRltdOrgRt>
+        <HighestCompensatedEmployeeInd>X</HighestCompensatedEmployeeInd>
+        <ReportableCompFromOrgAmt>72185</ReportableCompFromOrgAmt>
+        <ReportableCompFromRltdOrgAmt>76401</ReportableCompFromRltdOrgAmt>
+        <OtherCompensationAmt>9276</OtherCompensationAmt>
+      </Form990PartVIISectionAGrp>
+      <Form990PartVIISectionAGrp>
+        <PersonNm>Calvin Moore</PersonNm>
+        <TitleTxt>Communications Director</TitleTxt>
+        <AverageHoursPerWeekRt>23.48</AverageHoursPerWeekRt>
+        <AverageHoursPerWeekRltdOrgRt>33.71</AverageHoursPerWeekRltdOrgRt>
+        <HighestCompensatedEmployeeInd>X</HighestCompensatedEmployeeInd>
+        <ReportableCompFromOrgAmt>60719</ReportableCompFromOrgAmt>
+        <ReportableCompFromRltdOrgAmt>82909</ReportableCompFromRltdOrgAmt>
+        <OtherCompensationAmt>8398</OtherCompensationAmt>
+      </Form990PartVIISectionAGrp>
+      <Form990PartVIISectionAGrp>
+        <PersonNm>Jeff Larson</PersonNm>
+        <TitleTxt>Director</TitleTxt>
+        <AverageHoursPerWeekRt>1.00</AverageHoursPerWeekRt>
+        <AverageHoursPerWeekRltdOrgRt>0.00</AverageHoursPerWeekRltdOrgRt>
+        <IndividualTrusteeOrDirectorInd>X</IndividualTrusteeOrDirectorInd>
+        <ReportableCompFromOrgAmt>0</ReportableCompFromOrgAmt>
+        <ReportableCompFromRltdOrgAmt>0</ReportableCompFromRltdOrgAmt>
+        <OtherCompensationAmt>0</OtherCompensationAmt>
+      </Form990PartVIISectionAGrp>
+      <Form990PartVIISectionAGrp>
+        <PersonNm>Luis Fortuno</PersonNm>
+        <TitleTxt>Director</TitleTxt>
+        <AverageHoursPerWeekRt>1.00</AverageHoursPerWeekRt>
+        <AverageHoursPerWeekRltdOrgRt>0.00</AverageHoursPerWeekRltdOrgRt>
+        <IndividualTrusteeOrDirectorInd>X</IndividualTrusteeOrDirectorInd>
+        <ReportableCompFromOrgAmt>0</ReportableCompFromOrgAmt>
+        <ReportableCompFromRltdOrgAmt>0</ReportableCompFromRltdOrgAmt>
+        <OtherCompensationAmt>0</OtherCompensationAmt>
+      </Form990PartVIISectionAGrp>
+      <Form990PartVIISectionAGrp>
+        <PersonNm>Barry Jackson</PersonNm>
+        <TitleTxt>Director</TitleTxt>
+        <AverageHoursPerWeekRt>1.00</AverageHoursPerWeekRt>
+        <AverageHoursPerWeekRltdOrgRt>0.00</AverageHoursPerWeekRltdOrgRt>
+        <IndividualTrusteeOrDirectorInd>X</IndividualTrusteeOrDirectorInd>
+        <ReportableCompFromOrgAmt>0</ReportableCompFromOrgAmt>
+        <ReportableCompFromRltdOrgAmt>0</ReportableCompFromRltdOrgAmt>
+        <OtherCompensationAmt>0</OtherCompensationAmt>
+      </Form990PartVIISectionAGrp>
+      <Form990PartVIISectionAGrp>
+        <PersonNm>Tom Reynolds</PersonNm>
+        <TitleTxt>Director</TitleTxt>
+        <AverageHoursPerWeekRt>1.00</AverageHoursPerWeekRt>
+        <AverageHoursPerWeekRltdOrgRt>0.25</AverageHoursPerWeekRltdOrgRt>
+        <IndividualTrusteeOrDirectorInd>X</IndividualTrusteeOrDirectorInd>
+        <ReportableCompFromOrgAmt>0</ReportableCompFromOrgAmt>
+        <ReportableCompFromRltdOrgAmt>0</ReportableCompFromRltdOrgAmt>
+        <OtherCompensationAmt>0</OtherCompensationAmt>
+      </Form990PartVIISectionAGrp>
+      <Form990PartVIISectionAGrp>
+        <PersonNm>Isaac Applbaum</PersonNm>
+        <TitleTxt>Director</TitleTxt>
+        <AverageHoursPerWeekRt>1.00</AverageHoursPerWeekRt>
+        <AverageHoursPerWeekRltdOrgRt>0.00</AverageHoursPerWeekRltdOrgRt>
+        <IndividualTrusteeOrDirectorInd>X</IndividualTrusteeOrDirectorInd>
+        <ReportableCompFromOrgAmt>0</ReportableCompFromOrgAmt>
+        <ReportableCompFromRltdOrgAmt>0</ReportableCompFromRltdOrgAmt>
+        <OtherCompensationAmt>0</OtherCompensationAmt>
+      </Form990PartVIISectionAGrp>
+      <Form990PartVIISectionAGrp>
+        <PersonNm>Rick Berg</PersonNm>
+        <TitleTxt>Director</TitleTxt>
+        <AverageHoursPerWeekRt>1.00</AverageHoursPerWeekRt>
+        <AverageHoursPerWeekRltdOrgRt>0.00</AverageHoursPerWeekRltdOrgRt>
+        <IndividualTrusteeOrDirectorInd>X</IndividualTrusteeOrDirectorInd>
+        <ReportableCompFromOrgAmt>0</ReportableCompFromOrgAmt>
+        <ReportableCompFromRltdOrgAmt>0</ReportableCompFromRltdOrgAmt>
+        <OtherCompensationAmt>0</OtherCompensationAmt>
+      </Form990PartVIISectionAGrp>
+      <Form990PartVIISectionAGrp>
+        <PersonNm>Dylan Glenn</PersonNm>
+        <TitleTxt>Director</TitleTxt>
+        <AverageHoursPerWeekRt>1.00</AverageHoursPerWeekRt>
+        <AverageHoursPerWeekRltdOrgRt>0.00</AverageHoursPerWeekRltdOrgRt>
+        <IndividualTrusteeOrDirectorInd>X</IndividualTrusteeOrDirectorInd>
+        <ReportableCompFromOrgAmt>0</ReportableCompFromOrgAmt>
+        <ReportableCompFromRltdOrgAmt>0</ReportableCompFromRltdOrgAmt>
+        <OtherCompensationAmt>0</OtherCompensationAmt>
+      </Form990PartVIISectionAGrp>
+      <Form990PartVIISectionAGrp>
+        <PersonNm>Norm Coleman</PersonNm>
+        <TitleTxt>Director Chairman</TitleTxt>
+        <AverageHoursPerWeekRt>1.00</AverageHoursPerWeekRt>
+        <AverageHoursPerWeekRltdOrgRt>0.25</AverageHoursPerWeekRltdOrgRt>
+        <IndividualTrusteeOrDirectorInd>X</IndividualTrusteeOrDirectorInd>
+        <OfficerInd>X</OfficerInd>
+        <ReportableCompFromOrgAmt>0</ReportableCompFromOrgAmt>
+        <ReportableCompFromRltdOrgAmt>0</ReportableCompFromRltdOrgAmt>
+        <OtherCompensationAmt>0</OtherCompensationAmt>
+      </Form990PartVIISectionAGrp>
+      <Form990PartVIISectionAGrp>
+        <PersonNm>Vin Weber</PersonNm>
+        <TitleTxt>Director Secretary</TitleTxt>
+        <AverageHoursPerWeekRt>1.00</AverageHoursPerWeekRt>
+        <AverageHoursPerWeekRltdOrgRt>0.25</AverageHoursPerWeekRltdOrgRt>
+        <IndividualTrusteeOrDirectorInd>X</IndividualTrusteeOrDirectorInd>
+        <OfficerInd>X</OfficerInd>
+        <ReportableCompFromOrgAmt>0</ReportableCompFromOrgAmt>
+        <ReportableCompFromRltdOrgAmt>0</ReportableCompFromRltdOrgAmt>
+        <OtherCompensationAmt>0</OtherCompensationAmt>
+      </Form990PartVIISectionAGrp>
+      <TotalReportableCompFromOrgAmt>832936</TotalReportableCompFromOrgAmt>
+      <TotReportableCompRltdOrgAmt>578790</TotReportableCompRltdOrgAmt>
+      <TotalOtherCompensationAmt>93220</TotalOtherCompensationAmt>
+      <IndivRcvdGreaterThan100KCnt>7</IndivRcvdGreaterThan100KCnt>
+      <FormerOfcrEmployeesListedInd>false</FormerOfcrEmployeesListedInd>
+      <TotalCompGreaterThan150KInd>true</TotalCompGreaterThan150KInd>
+      <CompensationFromOtherSrcsInd>false</CompensationFromOtherSrcsInd>
+      <ContractorCompensationGrp>
+        <ContractorName>
+          <PersonNm>Strategic Consulting</PersonNm>
+        </ContractorName>
+        <ContractorAddress>
+          <USAddress>
+            <AddressLine1Txt>2700 Woodley Rd NW PH4</AddressLine1Txt>
+            <CityNm>Wash</CityNm>
+            <StateAbbreviationCd>DC</StateAbbreviationCd>
+            <ZIPCd>20008</ZIPCd>
+          </USAddress>
+        </ContractorAddress>
+        <ServicesDesc>media advocacy</ServicesDesc>
+        <CompensationAmt>4123980</CompensationAmt>
+      </ContractorCompensationGrp>
+      <ContractorCompensationGrp>
+        <ContractorName>
+          <PersonNm>NMRPP LLC Red Eagle Media</PersonNm>
+        </ContractorName>
+        <ContractorAddress>
+          <USAddress>
+            <AddressLine1Txt>815 Slaters</AddressLine1Txt>
+            <CityNm>Alexandria</CityNm>
+            <StateAbbreviationCd>VA</StateAbbreviationCd>
+            <ZIPCd>22314</ZIPCd>
+          </USAddress>
+        </ContractorAddress>
+        <ServicesDesc>media advocacy</ServicesDesc>
+        <CompensationAmt>2945160</CompensationAmt>
+      </ContractorCompensationGrp>
+      <ContractorCompensationGrp>
+        <ContractorName>
+          <PersonNm>Flexpoint Media Inc</PersonNm>
+        </ContractorName>
+        <ContractorAddress>
+          <USAddress>
+            <AddressLine1Txt>PO Box 1051</AddressLine1Txt>
+            <CityNm>New Albany</CityNm>
+            <StateAbbreviationCd>OH</StateAbbreviationCd>
+            <ZIPCd>43054</ZIPCd>
+          </USAddress>
+        </ContractorAddress>
+        <ServicesDesc>media advocacy</ServicesDesc>
+        <CompensationAmt>2452500</CompensationAmt>
+      </ContractorCompensationGrp>
+      <ContractorCompensationGrp>
+        <ContractorName>
+          <PersonNm>Finance Strategies Grp</PersonNm>
+        </ContractorName>
+        <ContractorAddress>
+          <USAddress>
+            <AddressLine1Txt>2024 3 Ave N 210</AddressLine1Txt>
+            <CityNm>Birmingham</CityNm>
+            <StateAbbreviationCd>AL</StateAbbreviationCd>
+            <ZIPCd>35203</ZIPCd>
+          </USAddress>
+        </ContractorAddress>
+        <ServicesDesc>fundraising</ServicesDesc>
+        <CompensationAmt>1185144</CompensationAmt>
+      </ContractorCompensationGrp>
+      <ContractorCompensationGrp>
+        <ContractorName>
+          <PersonNm>Wiley Rein LLP</PersonNm>
+        </ContractorName>
+        <ContractorAddress>
+          <USAddress>
+            <AddressLine1Txt>2050 M St NW</AddressLine1Txt>
+            <CityNm>Washington</CityNm>
+            <StateAbbreviationCd>DC</StateAbbreviationCd>
+            <ZIPCd>20036</ZIPCd>
+          </USAddress>
+        </ContractorAddress>
+        <ServicesDesc>legal</ServicesDesc>
+        <CompensationAmt>1148303</CompensationAmt>
+      </ContractorCompensationGrp>
+      <CntrctRcvdGreaterThan100KCnt>20</CntrctRcvdGreaterThan100KCnt>
+      <AllOtherContributionsAmt>29638224</AllOtherContributionsAmt>
+      <TotalContributionsAmt>29638224</TotalContributionsAmt>
+      <TotalRevenueGrp>
+        <TotalRevenueColumnAmt>29638224</TotalRevenueColumnAmt>
+        <RelatedOrExemptFuncIncomeAmt>0</RelatedOrExemptFuncIncomeAmt>
+        <UnrelatedBusinessRevenueAmt>0</UnrelatedBusinessRevenueAmt>
+        <ExclusionAmt>0</ExclusionAmt>
+      </TotalRevenueGrp>
+      <InfoInScheduleOPartIXInd>X</InfoInScheduleOPartIXInd>
+      <GrantsToDomesticOrgsGrp>
+        <TotalAmt>18215000</TotalAmt>
+        <ProgramServicesAmt>18215000</ProgramServicesAmt>
+      </GrantsToDomesticOrgsGrp>
+      <CompCurrentOfcrDirectorsGrp>
+        <TotalAmt>454837</TotalAmt>
+        <ProgramServicesAmt>312721</ProgramServicesAmt>
+        <ManagementAndGeneralAmt>105114</ManagementAndGeneralAmt>
+        <FundraisingAmt>37002</FundraisingAmt>
+      </CompCurrentOfcrDirectorsGrp>
+      <OtherSalariesAndWagesGrp>
+        <TotalAmt>872383</TotalAmt>
+        <ProgramServicesAmt>555889</ProgramServicesAmt>
+        <ManagementAndGeneralAmt>287357</ManagementAndGeneralAmt>
+        <FundraisingAmt>29137</FundraisingAmt>
+      </OtherSalariesAndWagesGrp>
+      <PensionPlanContributionsGrp>
+        <TotalAmt>7972</TotalAmt>
+        <ProgramServicesAmt>5080</ProgramServicesAmt>
+        <ManagementAndGeneralAmt>2626</ManagementAndGeneralAmt>
+        <FundraisingAmt>266</FundraisingAmt>
+      </PensionPlanContributionsGrp>
+      <OtherEmployeeBenefitsGrp>
+        <TotalAmt>62259</TotalAmt>
+        <ProgramServicesAmt>39672</ProgramServicesAmt>
+        <ManagementAndGeneralAmt>20508</ManagementAndGeneralAmt>
+        <FundraisingAmt>2079</FundraisingAmt>
+      </OtherEmployeeBenefitsGrp>
+      <PayrollTaxesGrp>
+        <TotalAmt>86075</TotalAmt>
+        <ProgramServicesAmt>55620</ProgramServicesAmt>
+        <ManagementAndGeneralAmt>26845</ManagementAndGeneralAmt>
+        <FundraisingAmt>3610</FundraisingAmt>
+      </PayrollTaxesGrp>
+      <FeesForServicesLegalGrp>
+        <TotalAmt>666825</TotalAmt>
+        <ProgramServicesAmt>435544</ProgramServicesAmt>
+        <ManagementAndGeneralAmt>198875</ManagementAndGeneralAmt>
+        <FundraisingAmt>32406</FundraisingAmt>
+      </FeesForServicesLegalGrp>
+      <FeesForServicesAccountingGrp>
+        <TotalAmt>111171</TotalAmt>
+        <ManagementAndGeneralAmt>111171</ManagementAndGeneralAmt>
+      </FeesForServicesAccountingGrp>
+      <FeesForServicesLobbyingGrp>
+        <TotalAmt>11627419</TotalAmt>
+        <ProgramServicesAmt>11627419</ProgramServicesAmt>
+      </FeesForServicesLobbyingGrp>
+      <FeesForServicesProfFundraising>
+        <TotalAmt>608817</TotalAmt>
+        <FundraisingAmt>608817</FundraisingAmt>
+      </FeesForServicesProfFundraising>
+      <FeesForServicesOtherGrp>
+        <TotalAmt>1963095</TotalAmt>
+        <ProgramServicesAmt>1884610</ProgramServicesAmt>
+        <ManagementAndGeneralAmt>78485</ManagementAndGeneralAmt>
+      </FeesForServicesOtherGrp>
+      <OfficeExpensesGrp>
+        <TotalAmt>40435</TotalAmt>
+        <ProgramServicesAmt>35908</ProgramServicesAmt>
+        <ManagementAndGeneralAmt>3901</ManagementAndGeneralAmt>
+        <FundraisingAmt>626</FundraisingAmt>
+      </OfficeExpensesGrp>
+      <InformationTechnologyGrp>
+        <TotalAmt>89163</TotalAmt>
+        <ProgramServicesAmt>58238</ProgramServicesAmt>
+        <ManagementAndGeneralAmt>26592</ManagementAndGeneralAmt>
+        <FundraisingAmt>4333</FundraisingAmt>
+      </InformationTechnologyGrp>
+      <OccupancyGrp>
+        <TotalAmt>72310</TotalAmt>
+        <ProgramServicesAmt>47230</ProgramServicesAmt>
+        <ManagementAndGeneralAmt>21566</ManagementAndGeneralAmt>
+        <FundraisingAmt>3514</FundraisingAmt>
+      </OccupancyGrp>
+      <TravelGrp>
+        <TotalAmt>46695</TotalAmt>
+        <ProgramServicesAmt>12989</ProgramServicesAmt>
+        <ManagementAndGeneralAmt>4762</ManagementAndGeneralAmt>
+        <FundraisingAmt>28944</FundraisingAmt>
+      </TravelGrp>
+      <ConferencesMeetingsGrp>
+        <TotalAmt>12735</TotalAmt>
+        <ProgramServicesAmt>7719</ProgramServicesAmt>
+        <ManagementAndGeneralAmt>3524</ManagementAndGeneralAmt>
+        <FundraisingAmt>1492</FundraisingAmt>
+      </ConferencesMeetingsGrp>
+      <DepreciationDepletionGrp>
+        <TotalAmt>14807</TotalAmt>
+        <ProgramServicesAmt>9671</ProgramServicesAmt>
+        <ManagementAndGeneralAmt>4416</ManagementAndGeneralAmt>
+        <FundraisingAmt>720</FundraisingAmt>
+      </DepreciationDepletionGrp>
+      <InsuranceGrp>
+        <TotalAmt>5696</TotalAmt>
+        <ManagementAndGeneralAmt>5696</ManagementAndGeneralAmt>
+      </InsuranceGrp>
+      <TotalFunctionalExpensesGrp>
+        <TotalAmt>34957694</TotalAmt>
+        <ProgramServicesAmt>33303310</ProgramServicesAmt>
+        <ManagementAndGeneralAmt>901438</ManagementAndGeneralAmt>
+        <FundraisingAmt>752946</FundraisingAmt>
+      </TotalFunctionalExpensesGrp>
+      <CashNonInterestBearingGrp>
+        <BOYAmt>8417477</BOYAmt>
+        <EOYAmt>3399802</EOYAmt>
+      </CashNonInterestBearingGrp>
+      <AccountsReceivableGrp>
+        <BOYAmt>98066</BOYAmt>
+        <EOYAmt>49020</EOYAmt>
+      </AccountsReceivableGrp>
+      <PrepaidExpensesDefrdChargesGrp>
+        <BOYAmt>376074</BOYAmt>
+        <EOYAmt>59382</EOYAmt>
+      </PrepaidExpensesDefrdChargesGrp>
+      <LandBldgEquipCostOrOtherBssAmt>232489</LandBldgEquipCostOrOtherBssAmt>
+      <LandBldgEquipAccumDeprecAmt>214686</LandBldgEquipAccumDeprecAmt>
+      <LandBldgEquipBasisNetGrp>
+        <BOYAmt>18708</BOYAmt>
+        <EOYAmt>17803</EOYAmt>
+      </LandBldgEquipBasisNetGrp>
+      <OtherAssetsTotalGrp>
+        <BOYAmt>22407</BOYAmt>
+        <EOYAmt>200553</EOYAmt>
+      </OtherAssetsTotalGrp>
+      <TotalAssetsGrp>
+        <BOYAmt>8932732</BOYAmt>
+        <EOYAmt>3726560</EOYAmt>
+      </TotalAssetsGrp>
+      <AccountsPayableAccrExpnssGrp>
+        <BOYAmt>255589</BOYAmt>
+        <EOYAmt>484278</EOYAmt>
+      </AccountsPayableAccrExpnssGrp>
+      <OtherLiabilitiesGrp>
+        <BOYAmt>166932</BOYAmt>
+        <EOYAmt>51541</EOYAmt>
+      </OtherLiabilitiesGrp>
+      <TotalLiabilitiesGrp>
+        <BOYAmt>422521</BOYAmt>
+        <EOYAmt>535819</EOYAmt>
+      </TotalLiabilitiesGrp>
+      <OrganizationFollowsFASB117Ind>X</OrganizationFollowsFASB117Ind>
+      <NoDonorRestrictionNetAssetsGrp>
+        <BOYAmt>8510211</BOYAmt>
+        <EOYAmt>3190741</EOYAmt>
+      </NoDonorRestrictionNetAssetsGrp>
+      <TotalNetAssetsFundBalanceGrp>
+        <BOYAmt>8510211</BOYAmt>
+        <EOYAmt>3190741</EOYAmt>
+      </TotalNetAssetsFundBalanceGrp>
+      <TotLiabNetAssetsFundBalanceGrp>
+        <BOYAmt>8932732</BOYAmt>
+        <EOYAmt>3726560</EOYAmt>
+      </TotLiabNetAssetsFundBalanceGrp>
+      <ReconcilationRevenueExpnssAmt>-5319470</ReconcilationRevenueExpnssAmt>
+      <OtherChangesInNetAssetsAmt>0</OtherChangesInNetAssetsAmt>
+      <MethodOfAccountingAccrualInd>X</MethodOfAccountingAccrualInd>
+      <AccountantCompileOrReviewInd>false</AccountantCompileOrReviewInd>
+      <FSAuditedInd>true</FSAuditedInd>
+      <FSAuditedBasisGrp>
+        <SeparateBasisFinclStmtInd>X</SeparateBasisFinclStmtInd>
+      </FSAuditedBasisGrp>
+      <AuditCommitteeInd>true</AuditCommitteeInd>
+      <FederalGrantAuditRequiredInd>false</FederalGrantAuditRequiredInd>
+    </IRS990>
+    <IRS990ScheduleB documentId="990B">
+      <ContributorInformationGrp>
+        <ContributorNum>RESTRICTED</ContributorNum>
+        <ContributorBusinessName>
+          <BusinessNameLine1>RESTRICTED</BusinessNameLine1>
+        </ContributorBusinessName>
+        <ContributorUSAddress>
+          <AddressLine1>RESTRICTED</AddressLine1>
+          <AddressLine2>RESTRICTED</AddressLine2>
+          <City>RESTRICTED</City>
+          <State>RESTRICTED</State>
+          <ZIPCode>RESTRICTED</ZIPCode>
+        </ContributorUSAddress>
+        <TotalContributionsAmt>RESTRICTED</TotalContributionsAmt>
+      </ContributorInformationGrp>
+    </IRS990ScheduleB>
+    <IRS990ScheduleC documentId="990C">
+      <PoliticalExpendituresAmt>13891742</PoliticalExpendituresAmt>
+      <Expended527ActivitiesAmt>1633280</Expended527ActivitiesAmt>
+      <InternalFundsContributedAmt>12250000</InternalFundsContributedAmt>
+      <TotalExemptFunctionExpendAmt>13883280</TotalExemptFunctionExpendAmt>
+      <Form1120POLFiledInd>false</Form1120POLFiledInd>
+      <Section527PoliticalOrgGrp>
+        <OrganizationBusinessName>
+          <BusinessNameLine1Txt>Congressional Leadership Fund</BusinessNameLine1Txt>
+        </OrganizationBusinessName>
+        <USAddress>
+          <AddressLine1Txt>1747 Pennsylvania Ave NW 5th fl</AddressLine1Txt>
+          <CityNm>Washington</CityNm>
+          <StateAbbreviationCd>DC</StateAbbreviationCd>
+          <ZIPCd>20006</ZIPCd>
+        </USAddress>
+        <EIN>453578123</EIN>
+        <PaidInternalFundsAmt>12200000</PaidInternalFundsAmt>
+      </Section527PoliticalOrgGrp>
+      <Section527PoliticalOrgGrp>
+        <OrganizationBusinessName>
+          <BusinessNameLine1Txt>Latino Vote for America PAC</BusinessNameLine1Txt>
+        </OrganizationBusinessName>
+        <USAddress>
+          <AddressLine1Txt>1200 South Pine Island Rd</AddressLine1Txt>
+          <CityNm>Fort Lauderdale</CityNm>
+          <StateAbbreviationCd>FL</StateAbbreviationCd>
+          <ZIPCd>33324</ZIPCd>
+        </USAddress>
+        <EIN>844734272</EIN>
+        <PaidInternalFundsAmt>50000</PaidInternalFundsAmt>
+      </Section527PoliticalOrgGrp>
+      <SupplementalInformationDetail>
+        <FormAndLineReferenceDesc>Direct and indirect political campaign activities (Part I-A, line 1)</FormAndLineReferenceDesc>
+        <ExplanationTxt>The vast majority of these expenditures were in-kind and cash contributions, mainly to a related 527 organization, the Congressional Leadership Fund, disclosed on Schedule I and R. The remaining expenditures were for AAN staff and vendor work on political matters, including strategic planning, research, polling, and data collection. During the tax year, the Network also ran grassroots lobbying communications and similar messages on issues of importance to the organization such as improving the Medicare Part D market with commonsense reforms while opposing socialist government price controls, vociferously opposing Build Back Better and its reckless tax hikes and wasteful spending, opposing wasteful spending and misplaced priorities in the American Recovery Act, and weighing in on other key policies and legislation from a center-right stand point related to fiscal, budgetary, tax, regulatory, and constitutional issues. These communications sometimes expressed views on the records of the officials the Network asked the public to contact, but the Network avoided any reference to voting or elections and did not disseminate the communications in close proximity to an election. The communications were not classified as political campaign intervention if they were in reference to an upcoming legislative action of interest to the organization, or if they were part of a series of communications on the same topic. Based on the instructions to the form, the amounts reported here include only the Networks actual spending on political activities, not the allocable part of its fundraising costs associated with raising funds that were subsequently used for, but not solicited for, political activities.</ExplanationTxt>
+      </SupplementalInformationDetail>
+      <SupplementalInformationDetail>
+        <FormAndLineReferenceDesc>Section 527 political organizations (Part I-C, line 5)</FormAndLineReferenceDesc>
+        <ExplanationTxt>Line 5 (1) Congressional Leadership FundLine 5 (2) Latino Vote for America PAC, Inc.</ExplanationTxt>
+      </SupplementalInformationDetail>
+    </IRS990ScheduleC>
+    <IRS990ScheduleD documentId="990D">
+      <LeaseholdImprovementsGrp>
+        <OtherCostOrOtherBasisAmt>27485</OtherCostOrOtherBasisAmt>
+        <DepreciationAmt>27485</DepreciationAmt>
+      </LeaseholdImprovementsGrp>
+      <EquipmentGrp>
+        <OtherCostOrOtherBasisAmt>205004</OtherCostOrOtherBasisAmt>
+        <DepreciationAmt>187201</DepreciationAmt>
+        <BookValueAmt>17803</BookValueAmt>
+      </EquipmentGrp>
+      <TotalBookValueLandBuildingsAmt>17803</TotalBookValueLandBuildingsAmt>
+      <OtherAssetsOrgGrp>
+        <Desc>Security deposit</Desc>
+        <BookValueAmt>200553</BookValueAmt>
+      </OtherAssetsOrgGrp>
+      <TotalBookValueOtherAssetsAmt>200553</TotalBookValueOtherAssetsAmt>
+      <OtherLiabilitiesOrgGrp>
+        <Desc>Deferred rent</Desc>
+        <Amt>51541</Amt>
+      </OtherLiabilitiesOrgGrp>
+      <TotalLiabilityAmt>51541</TotalLiabilityAmt>
+      <FootnoteTextInd>X</FootnoteTextInd>
+      <TotalRevEtcAuditedFinclStmtAmt>29642443</TotalRevEtcAuditedFinclStmtAmt>
+      <OtherRevenueAmt>4219</OtherRevenueAmt>
+      <RevenueNotReportedAmt>4219</RevenueNotReportedAmt>
+      <RevenueSubtotalAmt>29638224</RevenueSubtotalAmt>
+      <TotalRevenuePerForm990Amt>29638224</TotalRevenuePerForm990Amt>
+      <TotExpnsEtcAuditedFinclStmtAmt>34961913</TotExpnsEtcAuditedFinclStmtAmt>
+      <OtherExpensesIncludedAmt>4219</OtherExpensesIncludedAmt>
+      <ExpensesNotReportedAmt>4219</ExpensesNotReportedAmt>
+      <ExpensesSubtotalAmt>34957694</ExpensesSubtotalAmt>
+      <TotalExpensesPerForm990Amt>34957694</TotalExpensesPerForm990Amt>
+      <SupplementalInformationDetail>
+        <FormAndLineReferenceDesc>Other revenues not included on Form 990 (Part XI, line 2d)</FormAndLineReferenceDesc>
+        <ExplanationTxt>Tax refunds</ExplanationTxt>
+      </SupplementalInformationDetail>
+      <SupplementalInformationDetail>
+        <FormAndLineReferenceDesc>Other expenses not included on Form 990 (Part XII, line 2d)</FormAndLineReferenceDesc>
+        <ExplanationTxt>Tax refunds</ExplanationTxt>
+      </SupplementalInformationDetail>
+      <SupplementalInformationDetail>
+        <FormAndLineReferenceDesc>Footnote for uncertain tax position under FIN 48 (Part X)</FormAndLineReferenceDesc>
+        <ExplanationTxt>The organization has adopted FASB ASC 740-10, Accounting for Uncertainty in Income Taxes. That standard prescribes a comprehensive model for how an organization should measure, recognize, present and disclose in its financial statements uncertain tax positions that an organization has taken or expects to take on a tax return.</ExplanationTxt>
+      </SupplementalInformationDetail>
+    </IRS990ScheduleD>
+    <IRS990ScheduleG documentId="990G">
+      <MailSolicitationsInd>X</MailSolicitationsInd>
+      <EmailSolicitationsInd>X</EmailSolicitationsInd>
+      <PhoneSolicitationsInd>X</PhoneSolicitationsInd>
+      <InPersonSolicitationsInd>X</InPersonSolicitationsInd>
+      <SolicitationOfNonGovtGrantsInd>X</SolicitationOfNonGovtGrantsInd>
+      <AgrmtProfFundraisingActyInd>true</AgrmtProfFundraisingActyInd>
+      <FundraiserActivityInfoGrp>
+        <PersonNm>Finance Strategies Group LLC</PersonNm>
+        <USAddress>
+          <AddressLine1Txt>2024 3rd Ave N 210</AddressLine1Txt>
+          <CityNm>Birmingham</CityNm>
+          <StateAbbreviationCd>AL</StateAbbreviationCd>
+          <ZIPCd>35203</ZIPCd>
+        </USAddress>
+        <ActivityTxt>various</ActivityTxt>
+        <FundraiserControlOfFundsInd>false</FundraiserControlOfFundsInd>
+        <GrossReceiptsAmt>3180600</GrossReceiptsAmt>
+        <RetainedByContractorAmt>608817</RetainedByContractorAmt>
+        <NetToOrganizationAmt>2571783</NetToOrganizationAmt>
+      </FundraiserActivityInfoGrp>
+      <TotalGrossReceiptsAmt>3180600</TotalGrossReceiptsAmt>
+      <TotalRetainedByContractorsAmt>608817</TotalRetainedByContractorsAmt>
+      <TotalNetToOrganizationAmt>2571783</TotalNetToOrganizationAmt>
+      <LicensedStatesCd>CO</LicensedStatesCd>
+      <LicensedStatesCd>CT</LicensedStatesCd>
+      <LicensedStatesCd>FL</LicensedStatesCd>
+      <LicensedStatesCd>PA</LicensedStatesCd>
+      <LicensedStatesCd>UT</LicensedStatesCd>
+      <LicensedStatesCd>VA</LicensedStatesCd>
+      <SupplementalInformationDetail>
+        <FormAndLineReferenceDesc>General Explanation Attachment</FormAndLineReferenceDesc>
+        <ExplanationTxt>Part I line 2b 1 Finance Strategies Group LLC, 2024 3rd Ave N, Ste 210, Birmingham, AL 35203</ExplanationTxt>
+      </SupplementalInformationDetail>
+    </IRS990ScheduleG>
+    <IRS990ScheduleI documentId="990I">
+      <GrantRecordsMaintainedInd>true</GrantRecordsMaintainedInd>
+      <RecipientTable>
+        <RecipientBusinessName>
+          <BusinessNameLine1Txt>N2 America</BusinessNameLine1Txt>
+        </RecipientBusinessName>
+        <USAddress>
+          <AddressLine1Txt>1825 I St NW 900</AddressLine1Txt>
+          <CityNm>Washington</CityNm>
+          <StateAbbreviationCd>DC</StateAbbreviationCd>
+          <ZIPCd>20006</ZIPCd>
+        </USAddress>
+        <RecipientEIN>834133867</RecipientEIN>
+        <IRCSectionDesc>501 c 4</IRCSectionDesc>
+        <CashGrantAmt>90000</CashGrantAmt>
+        <PurposeOfGrantTxt>issue support</PurposeOfGrantTxt>
+      </RecipientTable>
+      <RecipientTable>
+        <RecipientBusinessName>
+          <BusinessNameLine1Txt>Center for Campaign Innovation</BusinessNameLine1Txt>
+        </RecipientBusinessName>
+        <USAddress>
+          <AddressLine1Txt>PO Box 26141</AddressLine1Txt>
+          <CityNm>Alexandria</CityNm>
+          <StateAbbreviationCd>VA</StateAbbreviationCd>
+          <ZIPCd>22313</ZIPCd>
+        </USAddress>
+        <RecipientEIN>844722658</RecipientEIN>
+        <IRCSectionDesc>501 c 4</IRCSectionDesc>
+        <CashGrantAmt>50000</CashGrantAmt>
+        <PurposeOfGrantTxt>issue support</PurposeOfGrantTxt>
+      </RecipientTable>
+      <RecipientTable>
+        <RecipientBusinessName>
+          <BusinessNameLine1Txt>Main Street Advocacy Fund</BusinessNameLine1Txt>
+        </RecipientBusinessName>
+        <USAddress>
+          <AddressLine1Txt>410 First St SE 200</AddressLine1Txt>
+          <CityNm>Washington</CityNm>
+          <StateAbbreviationCd>DC</StateAbbreviationCd>
+          <ZIPCd>20003</ZIPCd>
+        </USAddress>
+        <RecipientEIN>270273223</RecipientEIN>
+        <IRCSectionDesc>501 c 4</IRCSectionDesc>
+        <CashGrantAmt>75000</CashGrantAmt>
+        <PurposeOfGrantTxt>issue support</PurposeOfGrantTxt>
+      </RecipientTable>
+      <RecipientTable>
+        <RecipientBusinessName>
+          <BusinessNameLine1Txt>American Economic Freedom Alliance</BusinessNameLine1Txt>
+        </RecipientBusinessName>
+        <USAddress>
+          <AddressLine1Txt>1015 15th St NW 1000</AddressLine1Txt>
+          <CityNm>Washington</CityNm>
+          <StateAbbreviationCd>DC</StateAbbreviationCd>
+          <ZIPCd>20005</ZIPCd>
+        </USAddress>
+        <RecipientEIN>821876204</RecipientEIN>
+        <IRCSectionDesc>501 c 4</IRCSectionDesc>
+        <CashGrantAmt>425000</CashGrantAmt>
+        <PurposeOfGrantTxt>issue support</PurposeOfGrantTxt>
+      </RecipientTable>
+      <RecipientTable>
+        <RecipientBusinessName>
+          <BusinessNameLine1Txt>Republican Jewish Coalition</BusinessNameLine1Txt>
+        </RecipientBusinessName>
+        <USAddress>
+          <AddressLine1Txt>50 F St NW 100</AddressLine1Txt>
+          <CityNm>Washington</CityNm>
+          <StateAbbreviationCd>DC</StateAbbreviationCd>
+          <ZIPCd>20001</ZIPCd>
+        </USAddress>
+        <RecipientEIN>521386172</RecipientEIN>
+        <IRCSectionDesc>501 c 4</IRCSectionDesc>
+        <CashGrantAmt>1150000</CashGrantAmt>
+        <PurposeOfGrantTxt>issue support</PurposeOfGrantTxt>
+      </RecipientTable>
+      <RecipientTable>
+        <RecipientBusinessName>
+          <BusinessNameLine1Txt>CLA Inc</BusinessNameLine1Txt>
+        </RecipientBusinessName>
+        <USAddress>
+          <AddressLine1Txt>3116 Woodland Dr NW</AddressLine1Txt>
+          <CityNm>Washington</CityNm>
+          <StateAbbreviationCd>DC</StateAbbreviationCd>
+          <ZIPCd>20008</ZIPCd>
+        </USAddress>
+        <RecipientEIN>821313517</RecipientEIN>
+        <IRCSectionDesc>501 c 4</IRCSectionDesc>
+        <CashGrantAmt>525000</CashGrantAmt>
+        <PurposeOfGrantTxt>issue support</PurposeOfGrantTxt>
+      </RecipientTable>
+      <RecipientTable>
+        <RecipientBusinessName>
+          <BusinessNameLine1Txt>Heritage Action for America</BusinessNameLine1Txt>
+        </RecipientBusinessName>
+        <USAddress>
+          <AddressLine1Txt>214 Massachusetts Ave NE</AddressLine1Txt>
+          <CityNm>Washington</CityNm>
+          <StateAbbreviationCd>DC</StateAbbreviationCd>
+          <ZIPCd>20002</ZIPCd>
+        </USAddress>
+        <RecipientEIN>272244700</RecipientEIN>
+        <IRCSectionDesc>501 c 4</IRCSectionDesc>
+        <CashGrantAmt>200000</CashGrantAmt>
+        <PurposeOfGrantTxt>issue support</PurposeOfGrantTxt>
+      </RecipientTable>
+      <RecipientTable>
+        <RecipientBusinessName>
+          <BusinessNameLine1Txt>45 Committee Inc</BusinessNameLine1Txt>
+        </RecipientBusinessName>
+        <USAddress>
+          <AddressLine1Txt>PO Box 710993</AddressLine1Txt>
+          <CityNm>Herndon</CityNm>
+          <StateAbbreviationCd>VA</StateAbbreviationCd>
+          <ZIPCd>20171</ZIPCd>
+        </USAddress>
+        <RecipientEIN>473803487</RecipientEIN>
+        <IRCSectionDesc>501 c 4</IRCSectionDesc>
+        <CashGrantAmt>500000</CashGrantAmt>
+        <PurposeOfGrantTxt>issue support</PurposeOfGrantTxt>
+      </RecipientTable>
+      <RecipientTable>
+        <RecipientBusinessName>
+          <BusinessNameLine1Txt>Fair Lines America Inc</BusinessNameLine1Txt>
+        </RecipientBusinessName>
+        <USAddress>
+          <AddressLine1Txt>2308 Mt Vernon Ave 716</AddressLine1Txt>
+          <CityNm>Alexandria</CityNm>
+          <StateAbbreviationCd>VA</StateAbbreviationCd>
+          <ZIPCd>22301</ZIPCd>
+        </USAddress>
+        <RecipientEIN>272885687</RecipientEIN>
+        <IRCSectionDesc>501 c 4</IRCSectionDesc>
+        <CashGrantAmt>1650000</CashGrantAmt>
+        <PurposeOfGrantTxt>issue support</PurposeOfGrantTxt>
+      </RecipientTable>
+      <RecipientTable>
+        <RecipientBusinessName>
+          <BusinessNameLine1Txt>Latino Vote for America PAC</BusinessNameLine1Txt>
+        </RecipientBusinessName>
+        <USAddress>
+          <AddressLine1Txt>1200 South Pine Island Rd</AddressLine1Txt>
+          <CityNm>Fort Lauderdale</CityNm>
+          <StateAbbreviationCd>FL</StateAbbreviationCd>
+          <ZIPCd>33324</ZIPCd>
+        </USAddress>
+        <RecipientEIN>844734272</RecipientEIN>
+        <IRCSectionDesc>527</IRCSectionDesc>
+        <CashGrantAmt>50000</CashGrantAmt>
+        <PurposeOfGrantTxt>general support</PurposeOfGrantTxt>
+      </RecipientTable>
+      <RecipientTable>
+        <RecipientBusinessName>
+          <BusinessNameLine1Txt>Congressional Leadership Fund</BusinessNameLine1Txt>
+        </RecipientBusinessName>
+        <USAddress>
+          <AddressLine1Txt>1747 PA Ave NW 5th fl</AddressLine1Txt>
+          <CityNm>Washington</CityNm>
+          <StateAbbreviationCd>DC</StateAbbreviationCd>
+          <ZIPCd>20006</ZIPCd>
+        </USAddress>
+        <RecipientEIN>453578123</RecipientEIN>
+        <IRCSectionDesc>527</IRCSectionDesc>
+        <CashGrantAmt>12200000</CashGrantAmt>
+        <PurposeOfGrantTxt>general support</PurposeOfGrantTxt>
+      </RecipientTable>
+      <RecipientTable>
+        <RecipientBusinessName>
+          <BusinessNameLine1Txt>America First Policies Inc</BusinessNameLine1Txt>
+        </RecipientBusinessName>
+        <USAddress>
+          <AddressLine1Txt>1900 Campus Commons Dr 100</AddressLine1Txt>
+          <CityNm>Reston</CityNm>
+          <StateAbbreviationCd>VA</StateAbbreviationCd>
+          <ZIPCd>20191</ZIPCd>
+        </USAddress>
+        <RecipientEIN>815137380</RecipientEIN>
+        <IRCSectionDesc>501 c 4</IRCSectionDesc>
+        <CashGrantAmt>1000000</CashGrantAmt>
+        <PurposeOfGrantTxt>issue support</PurposeOfGrantTxt>
+      </RecipientTable>
+      <RecipientTable>
+        <RecipientBusinessName>
+          <BusinessNameLine1Txt>American Action Forum</BusinessNameLine1Txt>
+        </RecipientBusinessName>
+        <USAddress>
+          <AddressLine1Txt>1747 PA Ave NW 5th fl</AddressLine1Txt>
+          <CityNm>Washington</CityNm>
+          <StateAbbreviationCd>DC</StateAbbreviationCd>
+          <ZIPCd>20006</ZIPCd>
+        </USAddress>
+        <RecipientEIN>270567765</RecipientEIN>
+        <IRCSectionDesc>501 c 3</IRCSectionDesc>
+        <CashGrantAmt>300000</CashGrantAmt>
+        <PurposeOfGrantTxt>issue support</PurposeOfGrantTxt>
+      </RecipientTable>
+      <Total501c3OrgCnt>1</Total501c3OrgCnt>
+      <TotalOtherOrgCnt>12</TotalOtherOrgCnt>
+      <SupplementalInformationDetail>
+        <FormAndLineReferenceDesc>Monitoring procedures (Part I, line 2)</FormAndLineReferenceDesc>
+        <ExplanationTxt>The Network maintains records that substantiate the amounts and recipients of all grants. For grants designated as issue support the Network generally reviews grant proposals or other information about grantees to make sure the activity funded is in furtherance of the Networks social welfare purposes, requires the grant funds to be used for social welfare purposes and not to be used for political campaign activity and obtains grantee reports to confirm appropriate use of all grant funds.</ExplanationTxt>
+      </SupplementalInformationDetail>
+    </IRS990ScheduleI>
+    <IRS990ScheduleJ documentId="990J">
+      <CompensationCommitteeInd>X</CompensationCommitteeInd>
+      <Form990OfOtherOrganizationsInd>X</Form990OfOtherOrganizationsInd>
+      <WrittenEmploymentContractInd>X</WrittenEmploymentContractInd>
+      <CompensationSurveyInd>X</CompensationSurveyInd>
+      <BoardOrCommitteeApprovalInd>X</BoardOrCommitteeApprovalInd>
+      <SeverancePaymentInd>false</SeverancePaymentInd>
+      <SupplementalNonqualRtrPlanInd>false</SupplementalNonqualRtrPlanInd>
+      <EquityBasedCompArrngmInd>false</EquityBasedCompArrngmInd>
+      <CompBasedOnRevenueOfFlngOrgInd>false</CompBasedOnRevenueOfFlngOrgInd>
+      <CompBsdOnRevRelatedOrgsInd>false</CompBsdOnRevRelatedOrgsInd>
+      <CompBsdNetEarnsFlngOrgInd>false</CompBsdNetEarnsFlngOrgInd>
+      <CompBsdNetEarnsRltdOrgsInd>false</CompBsdNetEarnsRltdOrgsInd>
+      <AnyNonFixedPaymentsInd>true</AnyNonFixedPaymentsInd>
+      <InitialContractExceptionInd>false</InitialContractExceptionInd>
+      <RltdOrgOfficerTrstKeyEmplGrp>
+        <PersonNm>Daniel Conston</PersonNm>
+        <TitleTxt>President</TitleTxt>
+        <BaseCompensationFilingOrgAmt>194859</BaseCompensationFilingOrgAmt>
+        <CompensationBasedOnRltdOrgsAmt>101731</CompensationBasedOnRltdOrgsAmt>
+        <BonusFilingOrganizationAmount>182682</BonusFilingOrganizationAmount>
+        <BonusRelatedOrganizationsAmt>92318</BonusRelatedOrganizationsAmt>
+        <DeferredCompensationFlngOrgAmt>1288</DeferredCompensationFlngOrgAmt>
+        <DeferredCompRltdOrgsAmt>662</DeferredCompRltdOrgsAmt>
+        <NontaxableBenefitsFilingOrgAmt>16583</NontaxableBenefitsFilingOrgAmt>
+        <NontaxableBenefitsRltdOrgsAmt>8523</NontaxableBenefitsRltdOrgsAmt>
+        <TotalCompensationFilingOrgAmt>395412</TotalCompensationFilingOrgAmt>
+        <TotalCompensationRltdOrgsAmt>203234</TotalCompensationRltdOrgsAmt>
+      </RltdOrgOfficerTrstKeyEmplGrp>
+      <RltdOrgOfficerTrstKeyEmplGrp>
+        <PersonNm>Cara Edmundowicz</PersonNm>
+        <TitleTxt>Director of Development</TitleTxt>
+        <BaseCompensationFilingOrgAmt>59508</BaseCompensationFilingOrgAmt>
+        <CompensationBasedOnRltdOrgsAmt>108017</CompensationBasedOnRltdOrgsAmt>
+        <BonusFilingOrganizationAmount>12753</BonusFilingOrganizationAmount>
+        <BonusRelatedOrganizationsAmt>22247</BonusRelatedOrganizationsAmt>
+        <DeferredCompensationFlngOrgAmt>621</DeferredCompensationFlngOrgAmt>
+        <DeferredCompRltdOrgsAmt>1120</DeferredCompRltdOrgsAmt>
+        <NontaxableBenefitsFilingOrgAmt>4264</NontaxableBenefitsFilingOrgAmt>
+        <NontaxableBenefitsRltdOrgsAmt>7687</NontaxableBenefitsRltdOrgsAmt>
+        <TotalCompensationFilingOrgAmt>77146</TotalCompensationFilingOrgAmt>
+        <TotalCompensationRltdOrgsAmt>139071</TotalCompensationRltdOrgsAmt>
+      </RltdOrgOfficerTrstKeyEmplGrp>
+      <RltdOrgOfficerTrstKeyEmplGrp>
+        <PersonNm>Zachary Hunter</PersonNm>
+        <TitleTxt>Vice President</TitleTxt>
+        <BaseCompensationFilingOrgAmt>108407</BaseCompensationFilingOrgAmt>
+        <CompensationBasedOnRltdOrgsAmt>55917</CompensationBasedOnRltdOrgsAmt>
+        <BonusFilingOrganizationAmount>17405</BonusFilingOrganizationAmount>
+        <BonusRelatedOrganizationsAmt>8595</BonusRelatedOrganizationsAmt>
+        <DeferredCompensationFlngOrgAmt>1289</DeferredCompensationFlngOrgAmt>
+        <DeferredCompRltdOrgsAmt>661</DeferredCompRltdOrgsAmt>
+        <NontaxableBenefitsFilingOrgAmt>8719</NontaxableBenefitsFilingOrgAmt>
+        <NontaxableBenefitsRltdOrgsAmt>4471</NontaxableBenefitsRltdOrgsAmt>
+        <TotalCompensationFilingOrgAmt>135820</TotalCompensationFilingOrgAmt>
+        <TotalCompensationRltdOrgsAmt>69644</TotalCompensationRltdOrgsAmt>
+      </RltdOrgOfficerTrstKeyEmplGrp>
+      <RltdOrgOfficerTrstKeyEmplGrp>
+        <PersonNm>Stephanie Fenjiro</PersonNm>
+        <TitleTxt>Director of Operations</TitleTxt>
+        <BaseCompensationFilingOrgAmt>116331</BaseCompensationFilingOrgAmt>
+        <CompensationBasedOnRltdOrgsAmt>28742</CompensationBasedOnRltdOrgsAmt>
+        <BonusFilingOrganizationAmount>8087</BonusFilingOrganizationAmount>
+        <BonusRelatedOrganizationsAmt>1913</BonusRelatedOrganizationsAmt>
+        <DeferredCompensationFlngOrgAmt>1384</DeferredCompensationFlngOrgAmt>
+        <DeferredCompRltdOrgsAmt>341</DeferredCompRltdOrgsAmt>
+        <NontaxableBenefitsFilingOrgAmt>14388</NontaxableBenefitsFilingOrgAmt>
+        <NontaxableBenefitsRltdOrgsAmt>3545</NontaxableBenefitsRltdOrgsAmt>
+        <TotalCompensationFilingOrgAmt>140190</TotalCompensationFilingOrgAmt>
+        <TotalCompensationRltdOrgsAmt>34541</TotalCompensationRltdOrgsAmt>
+      </RltdOrgOfficerTrstKeyEmplGrp>
+      <RltdOrgOfficerTrstKeyEmplGrp>
+        <PersonNm>Jennifer Choudhry</PersonNm>
+        <TitleTxt>Director of Research</TitleTxt>
+        <BaseCompensationFilingOrgAmt>59826</BaseCompensationFilingOrgAmt>
+        <CompensationBasedOnRltdOrgsAmt>63760</CompensationBasedOnRltdOrgsAmt>
+        <BonusFilingOrganizationAmount>12359</BonusFilingOrganizationAmount>
+        <BonusRelatedOrganizationsAmt>12641</BonusRelatedOrganizationsAmt>
+        <DeferredCompensationFlngOrgAmt>947</DeferredCompensationFlngOrgAmt>
+        <DeferredCompRltdOrgsAmt>1003</DeferredCompRltdOrgsAmt>
+        <NontaxableBenefitsFilingOrgAmt>3559</NontaxableBenefitsFilingOrgAmt>
+        <NontaxableBenefitsRltdOrgsAmt>3767</NontaxableBenefitsRltdOrgsAmt>
+        <TotalCompensationFilingOrgAmt>76691</TotalCompensationFilingOrgAmt>
+        <TotalCompensationRltdOrgsAmt>81171</TotalCompensationRltdOrgsAmt>
+      </RltdOrgOfficerTrstKeyEmplGrp>
+      <RltdOrgOfficerTrstKeyEmplGrp>
+        <PersonNm>Calvin Moore</PersonNm>
+        <TitleTxt>Communications Director</TitleTxt>
+        <BaseCompensationFilingOrgAmt>53360</BaseCompensationFilingOrgAmt>
+        <CompensationBasedOnRltdOrgsAmt>70268</CompensationBasedOnRltdOrgsAmt>
+        <BonusFilingOrganizationAmount>7359</BonusFilingOrganizationAmount>
+        <BonusRelatedOrganizationsAmt>12641</BonusRelatedOrganizationsAmt>
+        <DeferredCompensationFlngOrgAmt>609</DeferredCompensationFlngOrgAmt>
+        <DeferredCompRltdOrgsAmt>832</DeferredCompRltdOrgsAmt>
+        <NontaxableBenefitsFilingOrgAmt>2941</NontaxableBenefitsFilingOrgAmt>
+        <NontaxableBenefitsRltdOrgsAmt>4016</NontaxableBenefitsRltdOrgsAmt>
+        <TotalCompensationFilingOrgAmt>64269</TotalCompensationFilingOrgAmt>
+        <TotalCompensationRltdOrgsAmt>87757</TotalCompensationRltdOrgsAmt>
+      </RltdOrgOfficerTrstKeyEmplGrp>
+      <SupplementalInformationDetail>
+        <FormAndLineReferenceDesc>Other non-fixed payments (Part I, line 7)</FormAndLineReferenceDesc>
+        <ExplanationTxt>Discretionary bonuses paid to President and other employees as shown in Part II column B (ii).</ExplanationTxt>
+      </SupplementalInformationDetail>
+    </IRS990ScheduleJ>
+    <IRS990ScheduleO documentId="990O">
+      <SupplementalInformationDetail>
+        <FormAndLineReferenceDesc>Officer directors etc family relationship Part VI line 2</FormAndLineReferenceDesc>
+        <ExplanationTxt>Two of the Networks directors, Barry Jackson and Jeff Larson, are also both directors of Majority Strategies, a for-profit corporation.</ExplanationTxt>
+      </SupplementalInformationDetail>
+      <SupplementalInformationDetail>
+        <FormAndLineReferenceDesc>Committee meeting documentation Part VI line 8b</FormAndLineReferenceDesc>
+        <ExplanationTxt>The audit and compensation committees keep contemporaneous minutes, but the executive committee does not. The executive committee serves primarily to advise management, and thus does not typically exercise board powers to pass resolutions with binding effect.</ExplanationTxt>
+      </SupplementalInformationDetail>
+      <SupplementalInformationDetail>
+        <FormAndLineReferenceDesc>Form 990 governing body review Part VI line 11</FormAndLineReferenceDesc>
+        <ExplanationTxt>The Fom 990 is reviewed by the President of the organization and Director of Operations, in consultation with accounting and legal professionals as appropriate. Thereafter, a final copy is circulated to all of the members of the organizations governing body prior to filing. The final copy includes the full Form 990 submitted to the IRS.</ExplanationTxt>
+      </SupplementalInformationDetail>
+      <SupplementalInformationDetail>
+        <FormAndLineReferenceDesc>Conflict of interest policy compliance Part VI line 12c</FormAndLineReferenceDesc>
+        <ExplanationTxt>The organization asks board members, officers, employees, and volunteers annually to disclose interests that may give rise to potential conflicts of interests under the Conflicts of Interest Policy. It does so in conjunction with asking for information about arrangements that may need to be disclosed on the Form 990.</ExplanationTxt>
+      </SupplementalInformationDetail>
+      <SupplementalInformationDetail>
+        <FormAndLineReferenceDesc>Other officer or key employee compensation Part VI line 15b</FormAndLineReferenceDesc>
+        <ExplanationTxt>The board (or a committee thereof) has periodically reviewed compensation at comparable organizations (using Forms 990 and survey data) to determine appropriate general compensation levels for the President. The board or a board committee also reviews any annual bonus, but does not regather comparables as part of every bonus decision. For other employees, the President or the Director of Operations reviews compensation for similar work at peer institutions to determine compensation levels. The President reviews and approves all staff compensation.</ExplanationTxt>
+      </SupplementalInformationDetail>
+      <SupplementalInformationDetail>
+        <FormAndLineReferenceDesc>Governing documents etc available to public Part VI line 19</FormAndLineReferenceDesc>
+        <ExplanationTxt>The certificate of incorporation and conflict of interest policy are provided upon request. Financial statements are provided to certain states for charitable solicitation purposes.</ExplanationTxt>
+      </SupplementalInformationDetail>
+      <SupplementalInformationDetail>
+        <FormAndLineReferenceDesc>Part VI response or note to any other line in Part VI</FormAndLineReferenceDesc>
+        <ExplanationTxt>Section A, Line 1a: The Network has a four-person executive committee, drawn from the directors of the organization. It is empowered to review and advise on decisions of mangement in between full board meetings, consistent with the direction set by the full board. It has no power to amend the Networks governing documents, dissolve or merge the Network, approve the sale or exchange of any assets of the corporation, or elect or remove directors or officers. Section C, Line 17: The organization is an action organization and is not a charity under the generally accepted legal definition of that term. The organization therefore does not register under state laws pertaining to charitable solicitation or similar laws except where it determines that state law is meant to apply to other organizations besides common law charities.</ExplanationTxt>
+      </SupplementalInformationDetail>
+      <SupplementalInformationDetail>
+        <FormAndLineReferenceDesc>Part IX response or note to any line in Part IX</FormAndLineReferenceDesc>
+        <ExplanationTxt>The organization incurred costs shared with other organizations, the American Action Forum and the Congressional Leadership Fund, often subject to reimbursement for their allocable share of the costs. In such circumstances the organization has reported only its net amount paid as expense on Part IX.</ExplanationTxt>
+      </SupplementalInformationDetail>
+      <SupplementalInformationDetail>
+        <FormAndLineReferenceDesc>General explanation attachment</FormAndLineReferenceDesc>
+        <ExplanationTxt>See attachment A.</ExplanationTxt>
+      </SupplementalInformationDetail>
+    </IRS990ScheduleO>
+    <IRS990ScheduleR documentId="990R">
+      <IdRelatedTaxExemptOrgGrp>
+        <DisregardedEntityName>
+          <BusinessNameLine1Txt>Congressional Leadership Fund</BusinessNameLine1Txt>
+        </DisregardedEntityName>
+        <USAddress>
+          <AddressLine1Txt>1747 Pennsylvania Ave NW 5th fl</AddressLine1Txt>
+          <CityNm>Washington</CityNm>
+          <StateAbbreviationCd>DC</StateAbbreviationCd>
+          <ZIPCd>20006</ZIPCd>
+        </USAddress>
+        <EIN>453578123</EIN>
+        <PrimaryActivitiesTxt>political</PrimaryActivitiesTxt>
+        <LegalDomicileStateCd>DE</LegalDomicileStateCd>
+        <ExemptCodeSectionTxt>527</ExemptCodeSectionTxt>
+        <DirectControllingEntityName>
+          <BusinessNameLine1Txt>American Action Network Inc</BusinessNameLine1Txt>
+        </DirectControllingEntityName>
+        <ControlledOrganizationInd>true</ControlledOrganizationInd>
+      </IdRelatedTaxExemptOrgGrp>
+      <IdRelatedTaxExemptOrgGrp>
+        <DisregardedEntityName>
+          <BusinessNameLine1Txt>American Action Voters Inc</BusinessNameLine1Txt>
+        </DisregardedEntityName>
+        <USAddress>
+          <AddressLine1Txt>1747 Pennsylvania Ave NW 5th fl</AddressLine1Txt>
+          <CityNm>Washington</CityNm>
+          <StateAbbreviationCd>DC</StateAbbreviationCd>
+          <ZIPCd>20006</ZIPCd>
+        </USAddress>
+        <EIN>843877428</EIN>
+        <PrimaryActivitiesTxt>advocacy</PrimaryActivitiesTxt>
+        <LegalDomicileStateCd>DE</LegalDomicileStateCd>
+        <ExemptCodeSectionTxt>501 c 4</ExemptCodeSectionTxt>
+        <DirectControllingEntityName>
+          <BusinessNameLine1Txt>American Action Network Inc</BusinessNameLine1Txt>
+        </DirectControllingEntityName>
+        <ControlledOrganizationInd>true</ControlledOrganizationInd>
+      </IdRelatedTaxExemptOrgGrp>
+      <ReceiptOfIntAnntsRntsRyltsInd>false</ReceiptOfIntAnntsRntsRyltsInd>
+      <GiftGrntOrCapContriToOthOrgInd>true</GiftGrntOrCapContriToOthOrgInd>
+      <GiftGrntCapContriFromOthOrgInd>false</GiftGrntCapContriFromOthOrgInd>
+      <LoansOrGuaranteesToOtherOrgInd>false</LoansOrGuaranteesToOtherOrgInd>
+      <LoansOrGuaranteesFromOthOrgInd>false</LoansOrGuaranteesFromOthOrgInd>
+      <DivRelatedOrganizationInd>false</DivRelatedOrganizationInd>
+      <AssetSaleToOtherOrgInd>false</AssetSaleToOtherOrgInd>
+      <AssetPurchaseFromOtherOrgInd>false</AssetPurchaseFromOtherOrgInd>
+      <AssetExchangeInd>false</AssetExchangeInd>
+      <RentalOfFacilitiesToOthOrgInd>false</RentalOfFacilitiesToOthOrgInd>
+      <RentalOfFcltsFromOthOrgInd>false</RentalOfFcltsFromOthOrgInd>
+      <PerformOfServicesForOthOrgInd>false</PerformOfServicesForOthOrgInd>
+      <PerformOfServicesByOtherOrgInd>false</PerformOfServicesByOtherOrgInd>
+      <SharingOfFacilitiesInd>true</SharingOfFacilitiesInd>
+      <PaidEmployeesSharingInd>true</PaidEmployeesSharingInd>
+      <ReimbursementPaidToOtherOrgInd>false</ReimbursementPaidToOtherOrgInd>
+      <ReimbursementPaidByOtherOrgInd>true</ReimbursementPaidByOtherOrgInd>
+      <TransferToOtherOrgInd>false</TransferToOtherOrgInd>
+      <TransferFromOtherOrgInd>false</TransferFromOtherOrgInd>
+      <TransactionsRelatedOrgGrp>
+        <OtherOrganizationName>
+          <BusinessNameLine1Txt>Congressional Leadership Fund</BusinessNameLine1Txt>
+        </OtherOrganizationName>
+        <TransactionTypeTxt>b</TransactionTypeTxt>
+        <InvolvedAmt>12200000</InvolvedAmt>
+        <MethodOfAmountDeterminationTxt>cash</MethodOfAmountDeterminationTxt>
+      </TransactionsRelatedOrgGrp>
+      <TransactionsRelatedOrgGrp>
+        <OtherOrganizationName>
+          <BusinessNameLine1Txt>Congressional Leadership Fund</BusinessNameLine1Txt>
+        </OtherOrganizationName>
+        <TransactionTypeTxt>n</TransactionTypeTxt>
+        <InvolvedAmt>1663956</InvolvedAmt>
+        <MethodOfAmountDeterminationTxt>accrual</MethodOfAmountDeterminationTxt>
+      </TransactionsRelatedOrgGrp>
+      <TransactionsRelatedOrgGrp>
+        <OtherOrganizationName>
+          <BusinessNameLine1Txt>Congressional Leadership Fund</BusinessNameLine1Txt>
+        </OtherOrganizationName>
+        <TransactionTypeTxt>o</TransactionTypeTxt>
+        <InvolvedAmt>938798</InvolvedAmt>
+        <MethodOfAmountDeterminationTxt>accrual</MethodOfAmountDeterminationTxt>
+      </TransactionsRelatedOrgGrp>
+      <TransactionsRelatedOrgGrp>
+        <OtherOrganizationName>
+          <BusinessNameLine1Txt>Congressional Leadership Fund</BusinessNameLine1Txt>
+        </OtherOrganizationName>
+        <TransactionTypeTxt>q</TransactionTypeTxt>
+        <InvolvedAmt>1281721</InvolvedAmt>
+        <MethodOfAmountDeterminationTxt>cash</MethodOfAmountDeterminationTxt>
+      </TransactionsRelatedOrgGrp>
+      <SupplementalInformationDetail>
+        <FormAndLineReferenceDesc>Explanation of information on Schedule R</FormAndLineReferenceDesc>
+        <ExplanationTxt>Part V Line 2 - AAN made grants to, and shared some staff, facilities, equipment and other assets and outside service providers with the Congressional Leadership Fund (CLF), a related organization. During the tax year the shared staff were concurrent common law employees of the Network and CLF but paid directly by the Network; time spent working for each organization was tracked. Some of the shared costs were simply covered by AAN and others were subject to reimbursement by CLF. AAN and CLF had separate relationships with other common vendors, but amounts spent on those vendors by AAN have not been reported here unless AAN paid amounts subject to reimbursement by CLF or AAN paid more than AAN owed to a vendor for that vendors services to AAN in order to cover the amount owed by CLF.</ExplanationTxt>
+      </SupplementalInformationDetail>
+    </IRS990ScheduleR>
+  </ReturnData>
+</Return>
