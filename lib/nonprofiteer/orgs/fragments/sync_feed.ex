@@ -9,8 +9,14 @@ defmodule Nonprofiteer.Orgs.Fragments.SyncFeed do
   use Spark.Dsl.Fragment, of: Ash.Resource
 
   actions do
+    # Bounded above by the sync watermark, keyset-ordered by (updated_at, id) — see the
+    # `ChangedSince` preparation (D16).
     read :changed_since do
-      description "Sync feed (D16): records changed up to the watermark, keyset-ordered."
+      description """
+      The incremental sync feed: records changed since your cursor, in change order. Page
+      through the results with the `page[after]` keyset cursor.
+      """
+
       pagination keyset?: true, default_limit: 200, max_page_size: 2000, required?: false
       prepare Nonprofiteer.Orgs.Preparations.ChangedSince
     end

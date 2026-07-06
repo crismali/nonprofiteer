@@ -45,13 +45,11 @@ defmodule Nonprofiteer.Orgs.Person do
       description ~s(Role/title as printed in Part VII, e.g. "PRESIDENT" or "TREASURER".)
     end
 
+    # Stable across re-parses, so it keys the idempotent upsert together with `filing_id`
+    # (see the `:unique_filing_person` identity below).
     attribute :part_vii_sequence, :integer do
       public? true
-
-      description """
-      Zero-based position of this person in the filing's Part VII Section A listing. Stable
-      across re-parses, so it keys the idempotent upsert together with `filing_id`.
-      """
+      description "Zero-based position of this person in the return's Part VII Section A listing."
     end
 
     timestamps()

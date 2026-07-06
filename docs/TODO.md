@@ -184,10 +184,12 @@ health → API keys → lookup/search → raw-source access. All are post-Phase-
   is already the pointer. **Depends on R2 being populated** by a real ingest run, so naturally
   later. (BMF isn't worth exposing — it's a public irs.gov CSV; the per-filing XML is the
   valuable, hard-to-locate one.)
-- [ ] **Strip internal doc references from resource `description` fields** — AshJsonApi/OpenAPI
-  exposes these to API consumers, so `D16`/`D10`/etc. (e.g. the `Address.changed_since` and
-  `event_type` descriptions) are meaningless to them. Write consumer-facing descriptions;
-  keep the decision rationale in code comments / DECISIONS, not in the public schema.
+- [x] **Strip internal doc references from resource `description` fields** — the exposed
+  descriptions (public attributes, the `:changed_since` action, `event_type`) are now
+  consumer-facing; the `D#` refs + ingest jargon moved to adjacent code comments. Audited
+  against the generated spec (`mix nonprofiteer.openapi`). Relationship and non-routed action
+  descriptions (`upsert_from_bmf`/`upsert_from_efile`) don't reach OpenAPI, so their rationale
+  stays put.
 
 ## Validation (build early — silent-failure guard)
 

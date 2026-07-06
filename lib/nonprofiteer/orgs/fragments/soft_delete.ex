@@ -12,22 +12,23 @@ defmodule Nonprofiteer.Orgs.Fragments.SoftDelete do
   use Spark.Dsl.Fragment, of: Ash.Resource
 
   attributes do
+    # Soft-delete marker (D10) — set by the `:tombstone` action; history is never hard-deleted.
     attribute :tombstoned_at, :utc_datetime_usec do
       public? true
-
-      description "When set, this record was withdrawn (soft delete) — see the `:tombstone` action."
+      description "Timestamp at which this record was withdrawn; null while the record is live."
     end
   end
 
   actions do
+    # Soft-delete: mark the record withdrawn without destroying history (D10).
     update :tombstone do
-      description "Soft-delete: mark the record withdrawn without destroying history (D10)."
       accept []
       require_atomic? false
       change set_attribute(:tombstoned_at, &DateTime.utc_now/0)
     end
   end
 
+  # Derived from tombstone/supersede state (D10/D16); the sync feed emits it per record.
   calculations do
     calculate :event_type,
               :atom,
@@ -40,7 +41,11 @@ defmodule Nonprofiteer.Orgs.Fragments.SoftDelete do
               ) do
       public? true
       constraints one_of: [:upsert, :superseded, :tombstoned]
-      description "Sync-feed status of this record, derived from its state (D10/D16)."
+
+      description """
+      This record's status in the sync feed: `upsert` (created or changed), `superseded`
+      (replaced by a newer version of the same record), or `tombstoned` (withdrawn).
+      """
     end
   end
 end

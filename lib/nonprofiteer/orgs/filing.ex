@@ -46,19 +46,22 @@ defmodule Nonprofiteer.Orgs.Filing do
 
     attribute :tax_year, :integer, allow_nil?: false, public?: true
 
+    # Pointer to the mirrored source XML / IRS DLN — provenance (D11).
     attribute :source_object_id, :string do
       public? true
-      description "Pointer to the mirrored source XML / IRS DLN — provenance (D11)."
+      description "Identifier of the source e-filed return (IRS DLN / object id)."
     end
 
+    # Sourced from the Data Lake index; used to order amendments within a tax year.
     attribute :filed_on, :date do
       public? true
-      description "Filing date from the Data Lake index — orders amendments within a tax year."
+      description "Date this return was filed. Orders amendments within a tax year."
     end
 
+    # Also drives parse dispatch — provenance of which schema the return was parsed against.
     attribute :schema_version, :string do
       public? true
-      description ~s(IRS return schema version, e.g. "2021v4.0" — provenance + parse dispatch.)
+      description ~s(IRS return schema version, e.g. "2021v4.0".)
     end
 
     timestamps()

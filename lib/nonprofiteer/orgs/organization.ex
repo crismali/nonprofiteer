@@ -46,42 +46,39 @@ defmodule Nonprofiteer.Orgs.Organization do
   attributes do
     uuid_primary_key :id
 
+    # EIN is indexed but not unique (D7): an org may have zero, one, or several — hence the
+    # consumer-facing "may be absent … not unique" rather than exposing the indexing detail.
     attribute :ein, :string do
       public? true
-      description "IRS Employer Identification Number. Indexed, cardinality 0/1/many (D7)."
+
+      description "IRS Employer Identification Number. May be absent, and is not unique — several records can share one."
     end
 
     attribute :name, :string, allow_nil?: false, public?: true
     attribute :ntee_code, :string, public?: true
 
+    # Nullable because orgs first seen via a non-BMF path (later 990 XML) carry no source; the
+    # BMF upsert keys on `[:source, :ein]` as a partial identity so EIN stays non-unique (D7).
     attribute :source, :atom do
       public? true
       constraints one_of: [:bmf]
 
-      description """
-      Ingest provenance — which pipeline seeded/last-touched this org. Nullable: orgs first
-      seen via a non-BMF path (later 990 XML) carry no source. The BMF upsert keys on
-      `[:source, :ein]` as a partial unique identity, so EIN stays globally non-unique (D7).
-      """
+      description "The data source this organization was first recorded from (e.g. the IRS Business Master File). May be absent."
     end
 
+    # Drives the later GEN→`central_org` reconcile (D7/D13); stored raw, interpretation there.
     attribute :gen, :string do
       public? true
 
-      description """
-      IRS Group Exemption Number from the BMF. Links group-exemption subordinates to their
-      central org (D7); the central-vs-subordinate wiring off this is a later reconcile pass.
-      """
+      description "IRS Group Exemption Number. Shared by a group ruling's central organization and its subordinates."
     end
 
+    # A group's central org (6/8) and subordinates (9) share a `gen`; this code tells them apart
+    # and drives the GEN→`central_org` reconcile (D13). Stored raw; interpretation lives there.
     attribute :affiliation_code, :string do
       public? true
 
-      description """
-      Raw BMF AFFILIATION code. A group's central org (6/8) and its subordinates (9) share the
-      same `gen`, so this code is what tells them apart — it drives the later GEN→`central_org`
-      reconcile. Stored raw; interpretation lives in that pass.
-      """
+      description "IRS BMF affiliation code. Distinguishes a group ruling's central organization (codes 6, 8) from its subordinates (code 9)."
     end
 
     timestamps()

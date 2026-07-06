@@ -53,7 +53,8 @@ defmodule Nonprofiteer.Orgs.Address do
     calculate :event_type, :atom, expr(type(:upsert, :atom)) do
       public? true
       constraints one_of: [:upsert]
-      description "Sync-feed status — always `:upsert` for addresses."
+
+      description "This record's status in the sync feed. Always `upsert` for addresses (they are not versioned)."
     end
   end
 end
