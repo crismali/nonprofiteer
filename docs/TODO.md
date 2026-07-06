@@ -92,7 +92,11 @@ Ash resources per [ARCHITECTURE.md](ARCHITECTURE.md#data-model-sketch--see-futur
   `Ingest.Run` (`extract_id: "reconcile"`).
 
 **Follow-ups surfaced by this slice:**
-- [ ] Track `:partial` run status (mid-batch failure count), not just `:success`/`:failure`.
+- [x] Track `:partial` run status (mid-batch failure count) in `BmfExtractWorker` — a tolerant
+  `Ingest.Batch.reduce/3` fold keeps the committed-row count when a row fails partway, so the
+  audit row reads `:partial` (some orgs in) vs `:failure` (none) instead of hiding landed rows.
+  - [ ] Adopt the same in `BmfReconcileWorker` — deferred: its per-row update only fails on a
+    DB-level error that's impractical to induce in a test, and its diagnostic value is lower.
 - [ ] Reconcile: handle >1 central sharing a GEN (currently last-wins) — count/flag the anomaly.
 - [ ] Reconcile perf: if per-row subordinate updates get slow at national scale, move to a
   set-based `UPDATE … FROM` (accepting the Ash-action bypass for a pure FK set).

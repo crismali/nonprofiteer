@@ -112,6 +112,33 @@ defmodule Nonprofiteer.Ingest.BmfExtractWorkerTest do
     assert run.orphan_skipped_count == 1
   end
 
+  test "records a :partial run when a row fails after others have upserted" do
+    header =
+      "test/fixtures/bmf/eo_sample.csv" |> File.read!() |> String.split("\n") |> hd()
+
+    valid =
+      "010000028,\"ALEXANDRIA MUSEUM, INC\",,123 MAIN ST,ALEXANDRIA,VA,22301,0000,03,3," <>
+        "1000,199001,1,15,0,1,01,201812,4,4,01,0,12,250000,300000,290000,A20,ALEXANDRIA MUSEUM"
+
+    # Valid EIN but blank NAME: blanks parse to nil, and `name` is `allow_nil? false`, so this
+    # row raises during upsert — after the valid row above has already committed.
+    blank_name =
+      "020000029,,,2 SOMEWHERE,SOMEWHERE,VA,22302,0000,03,3," <>
+        "1000,199001,1,15,0,1,01,201812,4,4,01,0,12,0,0,0,A20,"
+
+    stub_body(Enum.join([header, valid, blank_name], "\n") <> "\n")
+
+    assert_raise Ash.Error.Invalid, fn -> run_extract("eo1") end
+
+    # The valid org landed; the failing row did not.
+    assert length(Ash.read!(Organization)) == 1
+
+    assert [run] = Ash.read!(Run)
+    assert run.status == :partial
+    assert run.row_count == 1
+    assert run.error_message
+  end
+
   test "header drift fails loud and records a failure run row" do
     drifted =
       "test/fixtures/bmf/eo_sample.csv"

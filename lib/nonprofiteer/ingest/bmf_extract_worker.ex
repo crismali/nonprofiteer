@@ -13,6 +13,7 @@ defmodule Nonprofiteer.Ingest.BmfExtractWorker do
     max_attempts: 5,
     unique: [keys: [:extract_id], period: {1, :hour}]
 
+  alias Nonprofiteer.Ingest.Batch
   alias Nonprofiteer.Ingest.Bmf
   alias Nonprofiteer.Ingest.Client
   alias Nonprofiteer.Ingest.Run
@@ -21,45 +22,56 @@ defmodule Nonprofiteer.Ingest.BmfExtractWorker do
 
   @impl Oban.Worker
   def perform(%Oban.Job{args: %{"url" => url, "extract_id" => extract_id}}) do
+    case import_extract(url) do
+      {:ok, {row_count, orphan_skipped}} ->
+        record_run!(%{
+          extract_id: extract_id,
+          status: :success,
+          row_count: row_count,
+          orphan_skipped_count: orphan_skipped
+        })
+
+        :ok
+
+      {:error, {row_count, orphan_skipped}, exception, stacktrace} ->
+        record_run!(%{
+          extract_id: extract_id,
+          # `:partial` when some orgs upserted before the failure, `:failure` when none did
+          # (e.g. the download/parse itself failed) — so the audit row can't hide committed rows.
+          status: if(row_count > 0, do: :partial, else: :failure),
+          row_count: row_count,
+          orphan_skipped_count: orphan_skipped,
+          error_message: Exception.message(exception)
+        })
+
+        reraise exception, stacktrace
+    end
+  end
+
+  # `{:ok, counts}` | `{:error, counts, exception, stacktrace}`, matching `Batch.reduce/3`. A
+  # download/parse failure yields `{0, 0}` counts (nothing imported); a mid-batch upsert failure
+  # yields the counts committed before it.
+  @spec import_extract(String.t()) :: Batch.result()
+  defp import_extract(url) do
     rows =
       url
       |> Client.fetch!()
       |> Bmf.parse!()
 
-    {row_count, orphan_skipped} = import_rows(rows)
-
-    record_run!(%{
-      extract_id: extract_id,
-      status: :success,
-      row_count: row_count,
-      orphan_skipped_count: orphan_skipped
-    })
-
-    :ok
+    Batch.reduce(rows, {0, 0}, &import_row/2)
   rescue
-    error ->
-      record_run!(%{
-        extract_id: extract_id,
-        status: :failure,
-        error_message: Exception.message(error)
-      })
-
-      reraise error, __STACKTRACE__
+    exception -> {:error, {0, 0}, exception, __STACKTRACE__}
   end
 
-  # Upserts each parsed row, tallying successful upserts vs. EIN-less orphan skips.
-  defp import_rows(rows) do
-    Enum.reduce(rows, {0, 0}, fn
-      %{org: %{ein: nil}}, {ok, orphan} ->
-        {ok, orphan + 1}
+  # Upserts one parsed row, tallying a successful upsert vs. an EIN-less orphan skip.
+  defp import_row(%{org: %{ein: nil}}, {ok, orphan}), do: {ok, orphan + 1}
 
-      %{org: org_attrs, address: address_attrs}, {ok, orphan} ->
-        org_attrs
-        |> upsert_org!()
-        |> link_address!(address_attrs)
+  defp import_row(%{org: org_attrs, address: address_attrs}, {ok, orphan}) do
+    org_attrs
+    |> upsert_org!()
+    |> link_address!(address_attrs)
 
-        {ok + 1, orphan}
-    end)
+    {ok + 1, orphan}
   end
 
   defp upsert_org!(org_attrs) do
