@@ -183,8 +183,31 @@ ever needed, is the trigger for an append-only event log (Phase 2+). Resolves th
 item; amendment supersede (deferred in D15) composes with this for free — setting
 `superseded_by` bumps `updated_at`, re-emitting the old filing as a status change.
 
+## D17 — Sync feed is AshJsonApi; watermark realized as a safety lag
+
+The changed-since feed (`/api/v1/sync/{organizations,people,filings,addresses}`) is
+**AshJsonApi**, not hand-rolled Phoenix JSON. **Why:** Ash keyset pagination *is* the D16
+cursor — `page[after]` over a `(updated_at, id)` sort — so the cursor mechanism is native and
+opaque; endpoints/filtering/serialization generate from the resources we already have. The
+bespoke bits are idiomatic Ash: a shared `ChangedSince` preparation (watermark filter +
+`(updated_at, id)` sort + loads `event_type`) and an `event_type` calculation per resource
+(derived from `tombstoned_at`/`superseded_by_id`; a constant `:upsert` for the non-history
+`Address`). Hand-rolling would give a leaner envelope but reinvent pagination/serialization for
+no real gain at this scale. (AshGraphql was never the fit — cursor-based bulk sync over GraphQL
+is awkward.) Resolves the Ash-generated-vs-hand-rolled open item.
+
+D16's "bounded by the last completed ingest run" is realized as a **safety lag**
+(`Ingest.SyncWatermark`, `now - lag`, default 15 min) — because the 990 parse fans out into
+async Oban jobs with no crisp completion instant, "last completed run" isn't cleanly
+observable, whereas "older than a few minutes" guarantees every write's transaction has
+committed. Same invariant (never serve an in-flight batch), simpler mechanism; invisible at
+monthly cadence. Amendment supersede (deferred in D15) now ships alongside
+(`EfileSupersedeWorker`) and re-emits via the feed for free.
+
+Feed reads are **unauthenticated** by design (ARCHITECTURE); an interim Basic-auth gate for the
+early-access window is a follow-up (see TODO).
+
 ## Open (not yet decided)
 
 - Validation fixtures — to be developed (known-answer nonprofit↔committee cases).
 - Licensing/ToS review (GivingTuesday Data Lake, ProPublica) before any resale — my task.
-- Build-time technical: Ash-generated vs hand-rolled API for the public layer.

@@ -1,19 +1,20 @@
 # Nonprofiteer — TODO
 
-Status: **app scaffolded + quality gate in place; the Phase-1 data model is in
-(Organization / Address / Filing / Person); BMF ingest + 990 Part VII parse have landed** —
-the org spine (BMF) plus the deep slice (in-BEAM Saxy parse of Part VII people, R2 mirror,
-index-driven fan-out). Next up is the changed-since **sync feed** (the Phase-1 deliverable).
-See [DECISIONS.md](DECISIONS.md) for the locked reasoning behind each item.
+Status: **Phase-1 pipeline is functionally complete.** Data model (Organization / Address /
+Filing / Person) + BMF ingest (org spine) + 990 Part VII parse (people/addresses, R2 mirror,
+index-driven fan-out) + the changed-since **sync feed** (AshJsonApi at `/api/v1/sync/...`,
+D16/D17) with amendment supersede all landed. What remains is hardening/breadth (see
+follow-ups throughout) and the **known-answer validation** end-to-end into ohfec. See
+[DECISIONS.md](DECISIONS.md) for the locked reasoning behind each item.
 
 Phase 1 scope is the **ohfec-useful slice**: org spine + people/addresses, served over the
 sync feed. All financial schedules are Phase 2.
 
 ## Critical path
 
-~~Scaffold~~ → ~~resolve parse-location decision~~ → ~~data model~~ → ~~BMF ingest~~ →
-~~Part VII parse~~ → sync feed (cursor decision still open). Build validation fixtures
-throughout, not at the end.
+~~Scaffold~~ → ~~data model~~ → ~~BMF ingest~~ → ~~Part VII parse~~ → ~~sync feed~~.
+Phase-1 critical path is **complete**; validation fixtures (end-to-end into ohfec) are the
+remaining correctness guard.
 
 **Biggest risks (from the docs):**
 - **Schema-version drift** — Part VII parse bugs fail *silently*; known-answer fixtures are
@@ -122,10 +123,9 @@ identifier (`Ingest.Ein.normalize/1`). Orphan filings (EIN not in the BMF spine)
 - [ ] Validate output against **IRSx** as reference (documented dev-time diff, not CI).
 
 **Deferred (Phase-1 follow-ups, not the first cut):**
-- [ ] **Amendment supersede (D10)** — within a `(organization, tax_year, return_type)` group,
-  point earlier filings' `superseded_by` at the latest by `filed_on`. First cut ingests all
-  filings (incl. amendments) as distinct rows keyed on `source_object_id` — no data loss, just
-  no supersede links yet. Needed before the sync feed can emit supersede events.
+- [x] **Amendment supersede (D10)** — `EfileSupersedeWorker` points earlier filings'
+  `superseded_by` at the latest by `filed_on` within each `(organization, tax_year,
+  return_type)` group; landed with the sync feed (D17).
 - [ ] **990-EZ / 990-PF** Part VII/officer extraction (different elements than Form 990); index
   worker filters to Form 990 today.
 - [ ] **Stream the all-years index** (Req `into:` + `NimbleCSV.parse_stream`) and narrow the
@@ -140,21 +140,26 @@ identifier (`Ingest.Ein.normalize/1`). Orphan filings (EIN not in the BMF spine)
 
 ## Sync feed (the Phase-1 deliverable)
 
-Cursor decided (D16): monotonic **`updated_at`**, keyset `(updated_at, id)`, bounded above by
-the last completed ingest run; event type derived from row state; no event log.
+Cursor decided (D16), layer AshJsonApi (D17): monotonic **`updated_at`**, keyset
+`(updated_at, id)`, bounded by a safety-lag watermark; event type derived from row state.
 
-- [ ] Generic, per-resource **changed-since** feed (D3) — `?since=<cursor>`, keyset-paginated.
-- [ ] Bound the feed by the last completed ingest run (the consistency watermark, D16) so an
-  in-flight batch's writes aren't served mid-ingest.
-- [ ] Derive **upsert / supersede / tombstone** event type from row state (`tombstoned_at` /
-  `superseded_by_id`), so consumers learn status changes, not just new rows (D10/D16).
-- [ ] Bulk snapshot for first sync (cursor `0`), then monthly incrementals.
-- [ ] Land **amendment supersede** (deferred above) alongside this — it composes for free
-  (setting `superseded_by` bumps `updated_at`).
+- [x] Generic, per-resource **changed-since** feed (D3/D17) — AshJsonApi at
+  `/api/v1/sync/{organizations,people,filings,addresses}`, keyset-paginated (`page[after]` is
+  the cursor); first page with no cursor is the bulk snapshot.
+- [x] Bound the feed by the watermark (`Ingest.SyncWatermark`, safety lag — D16/D17) via the
+  shared `ChangedSince` preparation, so in-flight writes aren't served mid-ingest.
+- [x] Derive **upsert / supersede / tombstone** event type from row state (`tombstoned_at` /
+  `superseded_by_id`) — `event_type` calculation, rendered in each record (D10/D16).
+- [x] Land **amendment supersede** — `EfileSupersedeWorker` (cron after the parse); composes
+  with the feed for free (setting `superseded_by` bumps `updated_at`).
+
+**Follow-ups:**
 - [ ] **Interim Basic auth in front of the feed** — reads are unauthenticated *by design* long
   term (ARCHITECTURE), but during early access we likely want the whole API gated behind Basic
   auth (fail-closed, TLS-terminated in front) while ohfec is the only consumer, before public
   tiers exist. Mirror ohfec's `SiteAuth` interim gate; enable via config, off in dev/test.
+- [ ] Confirm the feed contract end-to-end into ohfec (the known-answer validation below).
+- [ ] Rate-limit / API tiers (Phase 3).
 
 ## Validation (build early — silent-failure guard)
 

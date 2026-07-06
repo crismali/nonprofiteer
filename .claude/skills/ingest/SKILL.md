@@ -58,6 +58,15 @@ The **990 Part VII / XML detail pass also exists** (D14/D15):
   9 digits, else nil. Used by BMF *and* e-file at the org-lookup boundary. Everything else
   (names/addresses) stays **raw** — normalization is the consumer's job (D2/D4/D15).
 
+- **`Nonprofiteer.Ingest.EfileSupersedeWorker`** — post-parse cron pass (D10/D15): within each
+  `(organization, tax_year, return_type)` group, points earlier filings' `superseded_by` at the
+  latest by `filed_on`. Global (a filing + its amendment can land in different parse jobs),
+  idempotent; composes with the sync feed for free (the update bumps `updated_at` → re-emits as
+  `:superseded`).
+- **Serving** is a read path, not ingest: the changed-since sync feed is **AshJsonApi**
+  (`/api/v1/sync/...`, D16/D17), keyset-paginated on `(updated_at, id)`, bounded by
+  `Ingest.SyncWatermark` (a safety lag). Don't push feed responses through Oban.
+
 The sections below are the underlying principles both passes follow.
 
 ## Two paths: cold-start vs. steady-state

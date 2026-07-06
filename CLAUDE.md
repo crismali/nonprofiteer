@@ -32,15 +32,20 @@ fans out `EfileParseWorker`s that mirror each XML to object storage (`Ingest.Obj
 D11), parse Part VII in-BEAM with Saxy (`Efile.PartVii`, Form 990 + modern schema only, raises
 `UnsupportedReturnError` out of scope — D14/D15), and upsert `Filing` + `Person`s + the filer
 address; orphan/unsupported returns skip-and-count. EINs are canonicalized (`Ingest.Ein`);
-names/addresses stay raw. No sync feed yet. Near-term goal is feeding the sibling ohfec
-project, not a public launch. Stack: Elixir 1.20 / OTP 29 + Phoenix 1.8 + Ash 3
-(`ash_postgres`, `ash_phoenix`, `ash_admin`) + Oban, Postgres with `pg_trgm`.
+names/addresses stay raw. **The changed-since sync feed has landed** — AshJsonApi at
+`/api/v1/sync/{organizations,people,filings,addresses}`, keyset-paginated on `(updated_at, id)`
+as the D16 cursor, bounded by a safety-lag watermark (`Ingest.SyncWatermark`), each record
+carrying a derived `event_type` (upsert/superseded/tombstoned); `EfileSupersedeWorker` links
+amendments so they emit as `:superseded` (D16/D17). **Phase-1 pipeline is functionally
+complete.** Near-term goal is feeding the sibling ohfec project, not a public launch. Stack:
+Elixir 1.20 / OTP 29 + Phoenix 1.8 + Ash 3 (`ash_postgres`, `ash_phoenix`, `ash_admin`,
+`ash_json_api`) + Oban, Postgres with `pg_trgm`.
 
-**Phase 1 scope:** BMF ingest (orgs) + 990 Part VII parse (people/addresses) only, served
-over a generic changed-since sync feed. Financial schedules deferred to Phase 2. See
-[DECISIONS.md](docs/DECISIONS.md). Next build step: the changed-since **sync feed** (the
-Phase-1 deliverable); see [docs/TODO.md](docs/TODO.md). `mix nonprofiteer.resources [Name]`
-prints a resource's shape.
+**Phase 1 scope:** BMF ingest (orgs) + 990 Part VII parse (people/addresses), served over the
+changed-since sync feed — all landed. Financial schedules deferred to Phase 2. See
+[DECISIONS.md](docs/DECISIONS.md). Remaining Phase-1 work is hardening + **known-answer
+validation** end-to-end into ohfec; see [docs/TODO.md](docs/TODO.md). `mix
+nonprofiteer.resources [Name]` prints a resource's shape.
 
 ## Sibling project: ohfec
 
