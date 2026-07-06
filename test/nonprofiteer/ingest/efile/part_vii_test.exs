@@ -6,11 +6,22 @@ defmodule Nonprofiteer.Ingest.Efile.PartViiTest do
 
   defp real_return, do: File.read!("test/fixtures/990/form990_2020.xml")
 
-  # A minimal but structurally-real modern 990 for edge cases.
+  @us_address """
+  <USAddress>
+    <AddressLine1Txt>1 A ST</AddressLine1Txt>
+    <CityNm>TOWN</CityNm>
+    <StateAbbreviationCd>CA</StateAbbreviationCd>
+    <ZIPCd>90001</ZIPCd>
+  </USAddress>
+  """
+
+  # A minimal but structurally-real modern 990 for edge cases. `:address` overrides the filer's
+  # address block (defaults to a US address); `""` omits it entirely.
   defp return(opts) do
     version = Keyword.get(opts, :version, "2020v4.0")
     return_type = Keyword.get(opts, :return_type, "990")
     body = Keyword.get(opts, :body, "")
+    address = Keyword.get(opts, :address, @us_address)
 
     """
     <Return xmlns="http://www.irs.gov/efile" returnVersion="#{version}">
@@ -19,12 +30,7 @@ defmodule Nonprofiteer.Ingest.Efile.PartViiTest do
         <TaxYr>2020</TaxYr>
         <Filer>
           <EIN>123456789</EIN>
-          <USAddress>
-            <AddressLine1Txt>1 A ST</AddressLine1Txt>
-            <CityNm>TOWN</CityNm>
-            <StateAbbreviationCd>CA</StateAbbreviationCd>
-            <ZIPCd>90001</ZIPCd>
-          </USAddress>
+          #{address}
         </Filer>
       </ReturnHeader>
       <ReturnData><IRS990>#{body}</IRS990></ReturnData>
@@ -75,6 +81,42 @@ defmodule Nonprofiteer.Ingest.Efile.PartViiTest do
 
     assert %{people: [person]} = PartVii.parse!(return(body: body))
     assert person == %{name: "ACME MGMT LLC", title: "MANAGER", part_vii_sequence: 0}
+  end
+
+  test "parses a ForeignAddress filer (international xx-extract orgs)" do
+    foreign = """
+    <ForeignAddress>
+      <AddressLine1Txt>10 RUE DE LA PAIX</AddressLine1Txt>
+      <CityNm>PARIS</CityNm>
+      <ProvinceOrStateNm>ILE-DE-FRANCE</ProvinceOrStateNm>
+      <CountryCd>FR</CountryCd>
+      <ForeignPostalCd>75002</ForeignPostalCd>
+    </ForeignAddress>
+    """
+
+    assert %{address: address} = PartVii.parse!(return(address: foreign))
+
+    assert address == %{
+             line1: "10 RUE DE LA PAIX",
+             line2: nil,
+             city: "PARIS",
+             region: "ILE-DE-FRANCE",
+             postal_code: "75002",
+             country: "FR"
+           }
+  end
+
+  test "a return with no filer address yields an all-nil address (not a false US default)" do
+    assert %{address: address} = PartVii.parse!(return(address: ""))
+
+    assert address == %{
+             line1: nil,
+             line2: nil,
+             city: nil,
+             region: nil,
+             postal_code: nil,
+             country: nil
+           }
   end
 
   test "raises (loud-skip) on a pre-2013 schema version" do

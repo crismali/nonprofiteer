@@ -122,9 +122,19 @@ defmodule Nonprofiteer.Ingest.Efile.PartVii do
     end
   end
 
+  # The filer's business address from the return header. Domestic filers carry a `USAddress`,
+  # international ones a `ForeignAddress` (different child elements + a real country code) — the
+  # `xx` BMF extract's orgs are exactly these. A return with neither yields the uniform all-nil
+  # shape (names/addresses stay raw per D2/D4; only the country is normalized: "US" vs the code).
   defp filer_address(filer) do
-    address = child(filer, "USAddress")
+    cond do
+      us = child(filer, "USAddress") -> us_address(us)
+      foreign = child(filer, "ForeignAddress") -> foreign_address(foreign)
+      true -> empty_address()
+    end
+  end
 
+  defp us_address(address) do
     %{
       line1: field(address, "AddressLine1Txt"),
       line2: field(address, "AddressLine2Txt"),
@@ -133,6 +143,21 @@ defmodule Nonprofiteer.Ingest.Efile.PartVii do
       postal_code: field(address, "ZIPCd"),
       country: "US"
     }
+  end
+
+  defp foreign_address(address) do
+    %{
+      line1: field(address, "AddressLine1Txt"),
+      line2: field(address, "AddressLine2Txt"),
+      city: field(address, "CityNm"),
+      region: field(address, "ProvinceOrStateNm"),
+      postal_code: field(address, "ForeignPostalCd"),
+      country: field(address, "CountryCd")
+    }
+  end
+
+  defp empty_address do
+    %{line1: nil, line2: nil, city: nil, region: nil, postal_code: nil, country: nil}
   end
 
   defp people(tree) do

@@ -138,8 +138,9 @@ identifier (`Ingest.Ein.normalize/1`). Orphan filings (EIN not in the BMF spine)
   (chunk→line reassembly → lazy `NimbleCSV.parse_stream`); the worker filters/chunks/enqueues in
   1k batches and narrows the ingested-id diff to each batch's object ids (`IN (...)`). Memory is
   now bounded by batch size, not the corpus.
-- [ ] Foreign filers (`ForeignAddress`) — parser handles `USAddress`; `xx` extract addresses
-  fall through to nil today.
+- [x] Foreign filers (`ForeignAddress`) — the Part VII parser now reads `ForeignAddress`
+  (`ProvinceOrStateNm`/`CountryCd`/`ForeignPostalCd`) as well as `USAddress`; a return with
+  neither yields an all-nil address instead of a false `country: "US"`.
 - [x] Coverage/quality metrics off the data (`mix nonprofiteer.coverage`): % orgs with EIN /
   address / parsed Part VII people, % filings & people populated, per-source run summary.
 - [ ] Older-schema (pre-2013) Part VII support, if history is extended past the D9 window.
