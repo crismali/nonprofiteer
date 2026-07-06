@@ -140,10 +140,17 @@ identifier (`Ingest.Ein.normalize/1`). Orphan filings (EIN not in the BMF spine)
 
 ## Sync feed (the Phase-1 deliverable)
 
-- [ ] Generic, per-resource **changed-since** feed (D3).
-- [ ] Bulk snapshot for first sync, then monthly incrementals.
-- [ ] Emit **upsert / supersede / tombstone** events so consumers learn status changes,
-  not just new rows (D10).
+Cursor decided (D16): monotonic **`updated_at`**, keyset `(updated_at, id)`, bounded above by
+the last completed ingest run; event type derived from row state; no event log.
+
+- [ ] Generic, per-resource **changed-since** feed (D3) — `?since=<cursor>`, keyset-paginated.
+- [ ] Bound the feed by the last completed ingest run (the consistency watermark, D16) so an
+  in-flight batch's writes aren't served mid-ingest.
+- [ ] Derive **upsert / supersede / tombstone** event type from row state (`tombstoned_at` /
+  `superseded_by_id`), so consumers learn status changes, not just new rows (D10/D16).
+- [ ] Bulk snapshot for first sync (cursor `0`), then monthly incrementals.
+- [ ] Land **amendment supersede** (deferred above) alongside this — it composes for free
+  (setting `superseded_by` bumps `updated_at`).
 
 ## Validation (build early — silent-failure guard)
 

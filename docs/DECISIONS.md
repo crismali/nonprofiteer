@@ -155,10 +155,36 @@ The first cut of the e-file parse is deliberately narrow, failing **loud** rathe
 - **Amendment supersede (D10) is deferred** — amendments land as distinct filings keyed on
   `source_object_id` (no data lost); the `superseded_by` links are a follow-up (see TODO).
 
+## D16 — Sync cursor is monotonic `updated_at`, bounded by the last completed batch
+
+The changed-since feed cursor is each resource's **`updated_at`**, keyset-paginated on
+`(updated_at, id)`; a consumer asks "changes since `<cursor>`." **Why:** Ash `timestamps()`
+already puts `updated_at` on every resource and bumps it on every write, so it's free,
+row-level resumable, and — because supersede and tombstone are *updates* — those status
+changes (D10) surface **automatically**, no separate event log or per-writer bookkeeping. The
+alternative (an IRS-release-month/batch cursor) is coarse (no mid-batch resume without a finer
+sub-cursor anyway), needs a new column every writer must remember to bump, and ties feed
+granularity to ingest batching — winning only on the consistency gap below, which ohfec never
+hits.
+
+`updated_at`'s one hazard is the **commit-ordering gap** (a row written at `T-1` in a
+transaction committing after a consumer synced past `T` is missed). Neutralized by serving the
+feed **bounded above by the last completed ingest run** — "changes since `<cursor>`, up to the
+last finished batch" — so an in-flight batch's writes are never exposed mid-ingest. The
+release-month idea survives here not as the cursor but as that **consistency watermark**.
+
+Consequences: the **event type is derived from row state** (`tombstoned_at` set → tombstone;
+`superseded_by_id` set → superseded; else upsert), no event log needed — we never hard-delete
+(D10), so tombstoned/superseded rows stay in the table and re-emit on their bumped
+`updated_at`. First sync uses cursor `0` (the bulk snapshot). **Accepted tradeoff:** a consumer
+sees a row's *current* state, not every intermediate state between syncs — correct for a
+facts-not-events source (D2/D4); history pointers carry the sequence. Per-change granularity, if
+ever needed, is the trigger for an append-only event log (Phase 2+). Resolves the open cursor
+item; amendment supersede (deferred in D15) composes with this for free — setting
+`superseded_by` bumps `updated_at`, re-emitting the old filing as a status change.
+
 ## Open (not yet decided)
 
-- Sync cursor mechanism (IRS release month vs. `updated_at`) — the *what-changed* query;
-  D10 settles that supersede/tombstone events must be emitted. (Build-time detail.)
 - Validation fixtures — to be developed (known-answer nonprofit↔committee cases).
 - Licensing/ToS review (GivingTuesday Data Lake, ProPublica) before any resale — my task.
 - Build-time technical: Ash-generated vs hand-rolled API for the public layer.
