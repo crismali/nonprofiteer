@@ -1,15 +1,10 @@
 defmodule Nonprofiteer.Orgs.FilingTest do
   use Nonprofiteer.DataCase, async: true
 
+  import Nonprofiteer.OrgsFixtures
+
   alias Ash.Resource.Info
   alias Nonprofiteer.Orgs.Filing
-  alias Nonprofiteer.Orgs.Organization
-
-  defp create_org(attrs \\ %{name: "ACME Foundation"}) do
-    Organization
-    |> Ash.Changeset.for_create(:create, attrs)
-    |> Ash.create!()
-  end
 
   defp create_filing(attrs) do
     Filing

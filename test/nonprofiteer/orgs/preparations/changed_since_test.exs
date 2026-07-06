@@ -2,11 +2,9 @@ defmodule Nonprofiteer.Orgs.Preparations.ChangedSinceTest do
   # One test flips the watermark lag (global app env), so keep this file out of the async pool.
   use Nonprofiteer.DataCase, async: false
 
-  alias Nonprofiteer.Orgs.Organization
+  import Nonprofiteer.OrgsFixtures
 
-  defp create_org(attrs) do
-    Organization |> Ash.Changeset.for_create(:create, attrs) |> Ash.create!()
-  end
+  alias Nonprofiteer.Orgs.Organization
 
   defp changed_since do
     Organization |> Ash.Query.for_read(:changed_since) |> Ash.read!(page: false)

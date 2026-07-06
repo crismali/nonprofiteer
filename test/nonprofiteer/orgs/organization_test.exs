@@ -1,15 +1,11 @@
 defmodule Nonprofiteer.Orgs.OrganizationTest do
   use Nonprofiteer.DataCase, async: true
 
+  import Nonprofiteer.OrgsFixtures
+
   alias Ash.Resource.Info
   alias Nonprofiteer.Orgs.Address
   alias Nonprofiteer.Orgs.Organization
-
-  defp create_org(attrs) do
-    Organization
-    |> Ash.Changeset.for_create(:create, attrs)
-    |> Ash.create!()
-  end
 
   test "creates an organization with a name and EIN" do
     org = create_org(%{name: "ACME Foundation", ein: "123456789"})

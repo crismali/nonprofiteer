@@ -1,14 +1,11 @@
 defmodule NonprofiteerWeb.SyncFeedTest do
   use NonprofiteerWeb.ConnCase, async: false
 
+  import Nonprofiteer.OrgsFixtures
+
   alias Nonprofiteer.Orgs.Address
   alias Nonprofiteer.Orgs.Filing
-  alias Nonprofiteer.Orgs.Organization
   alias Nonprofiteer.Orgs.Person
-
-  defp create_org(attrs) do
-    Organization |> Ash.Changeset.for_create(:create, attrs) |> Ash.create!()
-  end
 
   defp next_path(next_url) do
     uri = URI.parse(next_url)
