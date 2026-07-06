@@ -209,5 +209,4 @@ early-access window is a follow-up (see TODO).
 
 ## Open (not yet decided)
 
-- Validation fixtures — to be developed (known-answer nonprofit↔committee cases).
 - Licensing/ToS review (GivingTuesday Data Lake, ProPublica) before any resale — my task.

@@ -163,10 +163,17 @@ Cursor decided (D16), layer AshJsonApi (D17): monotonic **`updated_at`**, keyset
 
 ## Validation (build early — silent-failure guard)
 
-- [ ] **Known-answer fixtures** — real nonprofit↔committee pairs sharing an officer/address,
-  verified end-to-end into ohfec. Borrow candidates from ohfec's `docs/EXAMPLES.md`.
+- [x] **Known-answer fixtures** (nonprofiteer half) — real 501(c)↔committee bridges asserted
+  end-to-end through BMF→Part VII: American Action Network (Conston→Congressional Leadership
+  Fund, shared officer) + American Action Forum (shared 1747 Pennsylvania Ave address). See
+  [EXAMPLES.md](EXAMPLES.md) + `known_answers_test`; re-capture via
+  `mix nonprofiteer.capture_known_answers`. Already caught a real bug (BOM parse skip).
+- [ ] **Close the loop into ohfec** — verify the documented FEC match (the committee half)
+  once ohfec's sync consumer + `:exact`/name+address tiers consume the feed. Cross-repo.
+- [ ] Add a couple more known-answer cases for breadth (another shared-officer + shared-address
+  pair beyond the flagship ecosystem).
 - [ ] **Coverage/quality metrics** — % orgs with parsed Part VII; null rates on
-  name/address/EIN; dedupe/amendment correctness.
+  name/address/EIN; dedupe/amendment correctness (a `mix nonprofiteer.coverage` task).
 
 ## Deferred (Phase 2+)
 
