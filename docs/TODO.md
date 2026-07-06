@@ -1,18 +1,19 @@
 # Nonprofiteer — TODO
 
 Status: **app scaffolded + quality gate in place; the Phase-1 data model is in
-(Organization / Address / Filing / Person); BMF ingest has landed** (org spine — download,
-header-pinned parse, idempotent upsert, fan-out, run log). Next up is the 990 Part VII parse.
-This tracks the path to a running Phase 1 (BMF ingest + 990 Part VII parse → changed-since
-sync feed). See [DECISIONS.md](DECISIONS.md) for the locked reasoning behind each item.
+(Organization / Address / Filing / Person); BMF ingest + 990 Part VII parse have landed** —
+the org spine (BMF) plus the deep slice (in-BEAM Saxy parse of Part VII people, R2 mirror,
+index-driven fan-out). Next up is the changed-since **sync feed** (the Phase-1 deliverable).
+See [DECISIONS.md](DECISIONS.md) for the locked reasoning behind each item.
 
 Phase 1 scope is the **ohfec-useful slice**: org spine + people/addresses, served over the
 sync feed. All financial schedules are Phase 2.
 
 ## Critical path
 
-~~Scaffold~~ → resolve cursor + parse-location decisions → ~~data model~~ → ~~BMF ingest~~ →
-Part VII parse → sync feed. Build validation fixtures throughout, not at the end.
+~~Scaffold~~ → ~~resolve parse-location decision~~ → ~~data model~~ → ~~BMF ingest~~ →
+~~Part VII parse~~ → sync feed (cursor decision still open). Build validation fixtures
+throughout, not at the end.
 
 **Biggest risks (from the docs):**
 - **Schema-version drift** — Part VII parse bugs fail *silently*; known-answer fixtures are
@@ -106,15 +107,18 @@ stored **raw** (consumer normalizes — D2/D4); only the **EIN** is canonicalize
 identifier (`Ingest.Ein.normalize/1`). Orphan filings (EIN not in the BMF spine) are
 **skipped + counted**, not force-created.
 
-- [ ] Pull 990 XML + index files from the **GivingTuesday Data Lake** (`gt990datalake-rawdata`).
-- [ ] `Efile.PartVii` Saxy parser — Part VII Section A only, no financial schedules; version-
-  guarded (unrecognized schema raises, never silent-empty).
-- [ ] `Ingest.Ein.normalize/1` — digits-only, require 9; shared by BMF + e-file at the org
-  lookup/identity boundary. Retrofit BMF defensively.
-- [ ] Mirror each source XML into our own object storage (D11) — lift ohfec's R2 uploader;
-  dormant if unconfigured, required precondition when configured.
-- [ ] Backfill ~3 filing years up front + all new filings going forward (D9).
-- [ ] Incrementality via Data Lake index files — process only new/changed returns.
+- [x] Pull 990 XML + index files from the **GivingTuesday Data Lake** (`gt990datalake-rawdata`)
+  — `Efile.Index` parses `Indices/990xmls/...csv`; XML at `EfileData/XmlFiles/{id}_public.xml`.
+- [x] `Efile.PartVii` Saxy parser — Part VII Section A only, no financial schedules; version-
+  guarded (`UnsupportedReturnError`, never silent-empty). Form 990 + modern schema (D14/D15).
+- [x] `Ingest.Ein.normalize/1` — digits-only, require 9; shared by BMF + e-file at the org
+  lookup/identity boundary. BMF retrofitted.
+- [x] Mirror each source XML into our own object storage (D11) — `Ingest.ObjectStore` (lifted
+  from ohfec's R2 uploader); dormant if unconfigured, required precondition when configured.
+- [x] Backfill ~3 filing years up front + going forward (D9) — the index worker's first run
+  backfills the window (`efile_min_tax_year`); later runs are incremental (full-snapshot diff).
+- [x] Incrementality via Data Lake index files — `EfileIndexWorker` diffs against ingested
+  `source_object_id`s and fans out one `EfileParseWorker` per new Form 990.
 - [ ] Validate output against **IRSx** as reference (documented dev-time diff, not CI).
 
 **Deferred (Phase-1 follow-ups, not the first cut):**
@@ -122,7 +126,17 @@ identifier (`Ingest.Ein.normalize/1`). Orphan filings (EIN not in the BMF spine)
   point earlier filings' `superseded_by` at the latest by `filed_on`. First cut ingests all
   filings (incl. amendments) as distinct rows keyed on `source_object_id` — no data loss, just
   no supersede links yet. Needed before the sync feed can emit supersede events.
+- [ ] **990-EZ / 990-PF** Part VII/officer extraction (different elements than Form 990); index
+  worker filters to Form 990 today.
+- [ ] **Stream the all-years index** (Req `into:` + `NimbleCSV.parse_stream`) and narrow the
+  ingested-id diff — it's fetched/parsed whole today, a memory risk on a small VPS at full
+  national volume.
+- [ ] Foreign filers (`ForeignAddress`) — parser handles `USAddress`; `xx` extract addresses
+  fall through to nil today.
+- [ ] Coverage/quality metrics off the data (% orgs with parsed Part VII, orphan/unsupported
+  rates) rather than per-filing run rows.
 - [ ] Older-schema (pre-2013) Part VII support, if history is extended past the D9 window.
+- [ ] IRSx cross-check script (dev-time diff of our parse vs. IRSx on the fixtures).
 
 ## Sync feed (the Phase-1 deliverable)
 

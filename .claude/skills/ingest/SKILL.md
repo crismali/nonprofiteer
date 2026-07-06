@@ -36,8 +36,29 @@ reference for every principle below:
   GENs. Idempotent (writes only on change). Example of a reconcile step that *can't* live in
   the per-extract worker — the spine has to be whole first.
 
-The 990 Part VII / XML detail pass is **not built yet** — the sections below still describe the
-shape to build toward for it.
+The **990 Part VII / XML detail pass also exists** (D14/D15):
+
+- **`Nonprofiteer.Ingest.EfileIndexWorker`** (`:ingest_incremental`, monthly cron) — downloads
+  the GivingTuesday Data Lake index (`Efile.Index`, header-name-mapped CSV), filters to Form
+  990 within the D9 tax-year window, diffs against ingested `source_object_id`s, and fans out
+  one parse job per new return. First run backfills; later runs are incremental (full-snapshot
+  diff, like BMF). Writes the **batch-level** `Ingest.Run`.
+- **`Nonprofiteer.Ingest.EfileParseWorker`** — per filing: download XML → mirror to
+  `Ingest.ObjectStore` → `Efile.PartVii.parse!` → resolve org by canonical EIN → upsert
+  `Filing` + Part VII `Person`s + shared filer address. Idempotent. **No per-filing run row**
+  (millions/month) — the `Filing` row is the success audit; orphan (EIN not in spine) and
+  unsupported (pre-2013/non-990) returns are logged skips, not failures.
+- **`Nonprofiteer.Ingest.Efile.PartVii`** — Saxy `SimpleForm` (DOM, files are small) parser;
+  Form 990 + modern schema only, raising `UnsupportedReturnError` out of scope (**never** a
+  silent empty parse). Part VII has no per-person address → a person's D8 address is the filer
+  business address from the header.
+- **`Nonprofiteer.Ingest.ObjectStore`** — S3/R2 signed `PUT` for the D11 mirror; dormant until
+  `:nonprofiteer, :r2` is configured (precondition when configured, skip in dev/test).
+- **`Nonprofiteer.Ingest.Ein`** — the one normalized value (identifier hygiene): digits-only,
+  9 digits, else nil. Used by BMF *and* e-file at the org-lookup boundary. Everything else
+  (names/addresses) stays **raw** — normalization is the consumer's job (D2/D4/D15).
+
+The sections below are the underlying principles both passes follow.
 
 ## Two paths: cold-start vs. steady-state
 

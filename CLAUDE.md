@@ -26,16 +26,21 @@ history on all three history-bearing resources). **BMF ingest has landed** — t
 (`Ingest.Bmf`, header-pinned, raises `LayoutError` on drift), upsert orgs on a partial
 `[:source, :ein]` identity (D12), link addresses, and write an `Ingest.Run` audit row on
 success and failure. A separate global `BmfReconcileWorker` links group-exemption
-subordinates to their central org off `gen` + `affiliation_code` (D13). No 990 parse or sync
-feed yet. Near-term goal is feeding the sibling ohfec project, not a public launch.
-Stack: Elixir 1.20 / OTP 29 + Phoenix 1.8 + Ash 3 (`ash_postgres`, `ash_phoenix`,
-`ash_admin`) + Oban, Postgres with `pg_trgm`.
+subordinates to their central org off `gen` + `affiliation_code` (D13). **990 Part VII parse
+has landed** — `EfileIndexWorker` (monthly cron) diffs the GivingTuesday Data Lake index and
+fans out `EfileParseWorker`s that mirror each XML to object storage (`Ingest.ObjectStore`, R2,
+D11), parse Part VII in-BEAM with Saxy (`Efile.PartVii`, Form 990 + modern schema only, raises
+`UnsupportedReturnError` out of scope — D14/D15), and upsert `Filing` + `Person`s + the filer
+address; orphan/unsupported returns skip-and-count. EINs are canonicalized (`Ingest.Ein`);
+names/addresses stay raw. No sync feed yet. Near-term goal is feeding the sibling ohfec
+project, not a public launch. Stack: Elixir 1.20 / OTP 29 + Phoenix 1.8 + Ash 3
+(`ash_postgres`, `ash_phoenix`, `ash_admin`) + Oban, Postgres with `pg_trgm`.
 
 **Phase 1 scope:** BMF ingest (orgs) + 990 Part VII parse (people/addresses) only, served
 over a generic changed-since sync feed. Financial schedules deferred to Phase 2. See
-[DECISIONS.md](docs/DECISIONS.md). Next build step: 990 Part VII parse (the `ingest` skill has
-the patterns); see [docs/TODO.md](docs/TODO.md). `mix nonprofiteer.resources [Name]` prints a
-resource's shape.
+[DECISIONS.md](docs/DECISIONS.md). Next build step: the changed-since **sync feed** (the
+Phase-1 deliverable); see [docs/TODO.md](docs/TODO.md). `mix nonprofiteer.resources [Name]`
+prints a resource's shape.
 
 ## Sibling project: ohfec
 

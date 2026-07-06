@@ -126,11 +126,39 @@ pass over the whole table (monthly cron, the day after the fan-out), not per-ext
 builds a `gen`→central map, streams subordinates and sets `central_org_id`, and counts
 subordinates whose central isn't in the dataset rather than forcing a link.
 
+## D14 — 990 XML is parsed in-BEAM (Saxy), not via a separate IRSx service
+
+Part VII is extracted in Elixir with Saxy (`Efile.PartVii`); IRSx stays a **reference
+validator** run offline, never in the pipeline. **Why:** Part VII is a narrow slice (officer
+names/titles + the filer address), the returns are small (KB–low-MB, so `Saxy.SimpleForm`
+suffices — streaming is a Phase-2-schedules concern), and a single BEAM matches the single-
+node deployment stance. Owning the parse end to end beats operating a second Python runtime +
+an IPC boundary for a slice this small. We take on schema-version handling, but D9 keeps us in
+one stable modern schema (see D15). Resolves the "in-BEAM vs separate IRSx service" open item.
+
+## D15 — Part VII scope: Form 990 + modern schema only; skip-and-count orphans; raw except EIN
+
+The first cut of the e-file parse is deliberately narrow, failing **loud** rather than silent:
+
+- **Form 990 only** (990-EZ/990-PF carry officers in different elements — a follow-up) and
+  **modern schema (2013+)** — both matching D9's ~3-filing-year window. Out-of-scope returns
+  raise `UnsupportedReturnError`, a counted skip, never a silent empty parse.
+- **Orphans skip-and-count.** A return whose (canonical) EIN isn't in the BMF spine is logged
+  and dropped, not force-created — any 990 e-filer is in the EO BMF, and monthly BMF closes
+  the gap, so this avoids duplicate orgs that would need merging. (Chosen over provisional org
+  creation.)
+- **Raw except the EIN.** Names/addresses are stored verbatim — normalization for matching is
+  the consumer's job (ohfec's `EntityResolution`), per D2/D4 "ships facts only." Only the EIN
+  is canonicalized (`Ingest.Ein`, digits-only 9), because it's the identifier orgs are joined
+  on. A per-person Part VII address doesn't exist in the XML, so a person's D8 address is the
+  filer's business address from the return header.
+- **Amendment supersede (D10) is deferred** — amendments land as distinct filings keyed on
+  `source_object_id` (no data lost); the `superseded_by` links are a follow-up (see TODO).
+
 ## Open (not yet decided)
 
 - Sync cursor mechanism (IRS release month vs. `updated_at`) — the *what-changed* query;
   D10 settles that supersede/tombstone events must be emitted. (Build-time detail.)
 - Validation fixtures — to be developed (known-answer nonprofit↔committee cases).
 - Licensing/ToS review (GivingTuesday Data Lake, ProPublica) before any resale — my task.
-- Build-time technical: Ash-generated vs hand-rolled API; in-BEAM parse vs separate IRSx
-  service.
+- Build-time technical: Ash-generated vs hand-rolled API for the public layer.
