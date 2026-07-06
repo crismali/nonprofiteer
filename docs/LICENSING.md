@@ -58,6 +58,32 @@ domain) and, for the 990 e-file corpus, the **GivingTuesday 990 Data Infrastruct
 ODbL "derivative database" (share-alike on everything), or does it only require attribution? If we
 ever want a proprietary layer, the exit path below sidesteps the question.
 
+## How the incumbent (Candid/GuideStar) handles it — and why it doesn't bind us
+
+Candid (GuideStar's parent) builds on the *same* public IRS data. Its
+[Subscriber License Agreement](https://candid.org/terms-of-service/candid-subscriber-license-agreement/)
+treats **everything accessed through its platform** — including the raw public-domain 990/BMF
+data — as unified "Licensed Materials" **owned by Candid**, with no distinction between the IRS
+data and their enrichment. It forbids copying/redistributing (§2.1), selling or bulk-reproducing
+the database or any search output (§2.7), derivative works (§2.7), scraping or wholesale
+downloading/**storing** the database (§2.10), and text/data mining for AI without consent (§2.4).
+
+The thing to understand: **that is a contractual fence, not copyright.** Candid *cannot* own the
+990 facts — federal works are public domain (17 U.S.C. § 105) and facts aren't copyrightable
+(*Feist*). The lock-down binds only people who agree to it *by accessing data through Candid's
+platform*. It cannot stop anyone from getting the same returns from the IRS.
+
+**So it doesn't bind Nonprofiteer** — same pattern as ProPublica. We source BMF from irs.gov and
+990 XML from the IRS/Data Lake, **never from Candid**, so the SLA never attaches. This is exactly
+why the "affordable open alternative" thesis works: Candid's business is a *contractual moat
+around public-domain data* (access + enrichment + the fence), not ownership of it. Go to the
+public source and the moat is empty. Nonprofiteer is the deliberate inverse — same data, sourced
+from origin and licensed **open** (ODbL) rather than all-rights-reserved.
+
+*(Not legal advice; this is Candid's paid-subscriber SLA — its general site terms may differ in
+wording, but the "restriction on what you access through us" thrust holds. The rule for us is
+simple: never source from Candid/GuideStar.)*
+
 ## Compliance guardrail: never ingest non-public 990 data
 
 Independent of licensing — a legal line. Part VII officer names/titles and the org business
