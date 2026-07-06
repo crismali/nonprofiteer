@@ -13,7 +13,9 @@ config :nonprofiteer, Oban,
   # `:ingest_bulk` is deliberately low-concurrency: a monthly BMF fan-out (a handful of large
   # regional extracts) shouldn't saturate the box or starve other work. Bump when the
   # incremental 990 parse queue lands alongside it.
-  queues: [default: 10, ingest_bulk: 4],
+  # `:ingest_incremental` runs the index-driven 990 parse jobs — kept separate from the bulk
+  # BMF lane so a monthly backfill flood can't starve the current month's parse work.
+  queues: [default: 10, ingest_bulk: 4, ingest_incremental: 8],
   # Monthly BMF ingest — the coordinator fans out to per-extract jobs. IRS drops the EO BMF
   # early each month; run on the 5th to let the drop settle. The group-exemption reconcile runs
   # a day later (6th), once the fan-out has landed, since it's global across all state files.
@@ -22,7 +24,10 @@ config :nonprofiteer, Oban,
     {Oban.Plugins.Cron,
      crontab: [
        {"0 6 5 * *", Nonprofiteer.Ingest.BmfCoordinatorWorker},
-       {"0 6 6 * *", Nonprofiteer.Ingest.BmfReconcileWorker}
+       {"0 6 6 * *", Nonprofiteer.Ingest.BmfReconcileWorker},
+       # 990 e-file parse runs after the BMF spine + reconcile have settled, so org lookups by
+       # EIN hit a current spine (a missing org is an orphan skip, not a hard failure).
+       {"0 6 7 * *", Nonprofiteer.Ingest.EfileIndexWorker}
      ]}
   ],
   repo: Nonprofiteer.Repo
