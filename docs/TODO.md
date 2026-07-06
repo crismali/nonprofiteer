@@ -154,12 +154,36 @@ Cursor decided (D16), layer AshJsonApi (D17): monotonic **`updated_at`**, keyset
   with the feed for free (setting `superseded_by` bumps `updated_at`).
 
 **Follow-ups:**
-- [ ] **Interim Basic auth in front of the feed** — reads are unauthenticated *by design* long
-  term (ARCHITECTURE), but during early access we likely want the whole API gated behind Basic
-  auth (fail-closed, TLS-terminated in front) while ohfec is the only consumer, before public
-  tiers exist. Mirror ohfec's `SiteAuth` interim gate; enable via config, off in dev/test.
 - [ ] Confirm the feed contract end-to-end into ohfec (the known-answer validation below).
-- [ ] Rate-limit / API tiers (Phase 3).
+- [ ] Auth / rate-limiting in front of the feed — see **API / serving expansion** below
+  (API keys supersede the earlier interim-Basic-auth idea).
+
+## API / serving expansion
+
+Beyond the changed-since sync feed, the API surface consumers touch. Suggested order:
+health → API keys → lookup/search → raw-source access. All are post-Phase-1 product work.
+
+- [ ] **Health endpoint** — `GET /health` (or `/api/v1/health`), **unauthenticated** even once
+  keys land (monitors need it open). 200 + optionally DB-reachable + last-ingest-run time.
+  Small; worth doing soon for deploy/monitoring.
+- [ ] **Admin-managed API keys** — an `ApiKey` Ash resource (hashed key, owner, active flag,
+  maybe tier) managed via AshAdmin, plus an auth plug on the `/api/v1` pipeline. Use
+  `ash_authentication`'s API-key strategy, don't hand-roll. Foundation for traffic management +
+  the affordability tiers (VISION); **supersedes the interim-Basic-auth idea** (per-consumer
+  keys beat a shared password). Rate-limiting is a separate layer keyed on the authenticated key.
+- [ ] **Lookup / search endpoints** ("public API, later" — ARCHITECTURE) — org-by-EIN / by-id
+  (trivial AshJsonApi `get` route) + name/NTEE search (a `pg_trgm` read action; the extension
+  is already installed). Gate behind API keys, so land these *after* keys.
+- [ ] **Raw-source access** — expose the mirrored source 990 XML (D11) for provenance/trust and
+  maximal openness (the XML content is IRS public domain — the safest thing we redistribute).
+  `GET /api/v1/filings/:id/source` streaming/redirecting the R2-mirrored document; `source_object_id`
+  is already the pointer. **Depends on R2 being populated** by a real ingest run, so naturally
+  later. (BMF isn't worth exposing — it's a public irs.gov CSV; the per-filing XML is the
+  valuable, hard-to-locate one.)
+- [ ] **Strip internal doc references from resource `description` fields** — AshJsonApi/OpenAPI
+  exposes these to API consumers, so `D16`/`D10`/etc. (e.g. the `Address.changed_since` and
+  `event_type` descriptions) are meaningless to them. Write consumer-facing descriptions;
+  keep the decision rationale in code comments / DECISIONS, not in the public schema.
 
 ## Validation (build early — silent-failure guard)
 
