@@ -151,6 +151,10 @@ the last completed ingest run; event type derived from row state; no event log.
 - [ ] Bulk snapshot for first sync (cursor `0`), then monthly incrementals.
 - [ ] Land **amendment supersede** (deferred above) alongside this — it composes for free
   (setting `superseded_by` bumps `updated_at`).
+- [ ] **Interim Basic auth in front of the feed** — reads are unauthenticated *by design* long
+  term (ARCHITECTURE), but during early access we likely want the whole API gated behind Basic
+  auth (fail-closed, TLS-terminated in front) while ohfec is the only consumer, before public
+  tiers exist. Mirror ohfec's `SiteAuth` interim gate; enable via config, off in dev/test.
 
 ## Validation (build early — silent-failure guard)
 

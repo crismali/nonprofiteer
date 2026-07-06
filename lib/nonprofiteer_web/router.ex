@@ -14,6 +14,18 @@ defmodule NonprofiteerWeb.Router do
     plug :accepts, ["json"]
   end
 
+  # Public JSON:API sync feed (D3/D16). Unauthenticated by design (ARCHITECTURE); an interim
+  # Basic-auth gate is a follow-up (see TODO) for the early-access window.
+  scope "/api/v1" do
+    pipe_through [:api]
+
+    forward "/swaggerui", OpenApiSpex.Plug.SwaggerUI,
+      path: "/api/v1/open_api",
+      default_model_expand_depth: 4
+
+    forward "/", NonprofiteerWeb.AshJsonApiRouter
+  end
+
   scope "/", NonprofiteerWeb do
     pipe_through :browser
 

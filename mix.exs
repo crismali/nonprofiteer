@@ -48,6 +48,8 @@ defmodule Nonprofiteer.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:open_api_spex, "~> 3.0"},
+      {:ash_json_api, "~> 1.0"},
       {:oban, "~> 2.0"},
       {:req, "~> 0.6"},
       {:nimble_csv, "~> 1.0"},

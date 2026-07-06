@@ -8,9 +8,19 @@ defmodule Nonprofiteer.Orgs.Address do
   use Ash.Resource,
     otp_app: :nonprofiteer,
     domain: Nonprofiteer.Orgs,
-    data_layer: AshPostgres.DataLayer
+    data_layer: AshPostgres.DataLayer,
+    extensions: [AshJsonApi.Resource]
 
   @type t :: %__MODULE__{}
+
+  json_api do
+    type "address"
+
+    routes do
+      base "/sync/addresses"
+      index :changed_since
+    end
+  end
 
   postgres do
     table "addresses"
@@ -32,5 +42,21 @@ defmodule Nonprofiteer.Orgs.Address do
 
   actions do
     defaults [:read, :destroy, create: :*, update: :*]
+
+    read :changed_since do
+      description "Sync feed (D16): records changed up to the watermark, keyset-ordered."
+      pagination keyset?: true, default_limit: 200, max_page_size: 2000, required?: false
+      prepare Nonprofiteer.Orgs.Preparations.ChangedSince
+    end
+  end
+
+  calculations do
+    # Addresses aren't history-bearing (no tombstone/supersede), so the sync-feed event is
+    # always `:upsert` — present for a uniform feed shape across resources (D16).
+    calculate :event_type, :atom, expr(:upsert) do
+      public? true
+      constraints one_of: [:upsert]
+      description "Sync-feed status — always `:upsert` for addresses."
+    end
   end
 end

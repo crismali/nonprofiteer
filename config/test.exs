@@ -2,6 +2,10 @@ import Config
 config :nonprofiteer, Oban, testing: :manual
 config :ash, disable_async?: true
 
+# No sync-feed watermark lag in tests, so freshly-created rows are immediately visible to the
+# changed-since feed. Watermark-exclusion behaviour is tested by overriding this per-test.
+config :nonprofiteer, sync_watermark_lag_seconds: 0
+
 # Configure your database
 #
 # The MIX_TEST_PARTITION environment variable can be used

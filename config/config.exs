@@ -7,6 +7,16 @@
 # General application configuration
 import Config
 
+config :mime,
+  extensions: %{"json" => "application/vnd.api+json"},
+  types: %{"application/vnd.api+json" => ["json"]}
+
+config :ash_json_api,
+  # Render public calculations when a query loads them — the sync feed's `:changed_since` action
+  # loads `event_type` so it appears in each record's attributes (D16).
+  show_public_calculations_when_loaded?: true,
+  authorize_update_destroy_with_error?: true
+
 config :nonprofiteer, Oban,
   engine: Oban.Engines.Basic,
   notifier: Oban.Notifiers.Postgres,
@@ -34,8 +44,8 @@ config :nonprofiteer, Oban,
 
 config :spark,
   formatter: [
-    "Ash.Resource": [section_order: [:admin, :postgres]],
-    "Ash.Domain": [section_order: [:admin]]
+    "Ash.Resource": [section_order: [:json_api, :admin, :postgres]],
+    "Ash.Domain": [section_order: [:json_api, :admin]]
   ]
 
 config :ash, known_types: [AshPostgres.Timestamptz, AshPostgres.TimestamptzUsec]

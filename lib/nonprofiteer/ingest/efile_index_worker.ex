@@ -21,7 +21,6 @@ defmodule Nonprofiteer.Ingest.EfileIndexWorker do
   use Oban.Worker, queue: :ingest_incremental, max_attempts: 3
 
   require Ash.Query
-  require Logger
 
   alias Nonprofiteer.Ingest.Client
   alias Nonprofiteer.Ingest.Efile.Index

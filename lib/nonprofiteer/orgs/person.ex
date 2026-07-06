@@ -10,9 +10,19 @@ defmodule Nonprofiteer.Orgs.Person do
   use Ash.Resource,
     otp_app: :nonprofiteer,
     domain: Nonprofiteer.Orgs,
-    data_layer: AshPostgres.DataLayer
+    data_layer: AshPostgres.DataLayer,
+    extensions: [AshJsonApi.Resource]
 
   @type t :: %__MODULE__{}
+
+  json_api do
+    type "person"
+
+    routes do
+      base "/sync/people"
+      index :changed_since
+    end
+  end
 
   postgres do
     table "people"
@@ -74,6 +84,12 @@ defmodule Nonprofiteer.Orgs.Person do
     # No `:destroy` — history is never hard-deleted (D10); use `:tombstone` instead.
     defaults [:read, create: :*, update: :*]
 
+    read :changed_since do
+      description "Sync feed (D16): records changed up to the watermark, keyset-ordered."
+      pagination keyset?: true, default_limit: 200, max_page_size: 2000, required?: false
+      prepare Nonprofiteer.Orgs.Preparations.ChangedSince
+    end
+
     update :tombstone do
       description "Soft-delete: mark the person record withdrawn without destroying history (D10)."
       accept []
@@ -100,5 +116,21 @@ defmodule Nonprofiteer.Orgs.Person do
   # the same person in place instead of duplicating or churning tombstone history.
   identities do
     identity :unique_filing_person, [:filing_id, :part_vii_sequence]
+  end
+
+  calculations do
+    calculate :event_type,
+              :atom,
+              expr(
+                cond do
+                  not is_nil(tombstoned_at) -> :tombstoned
+                  not is_nil(superseded_by_id) -> :superseded
+                  true -> :upsert
+                end
+              ) do
+      public? true
+      constraints one_of: [:upsert, :superseded, :tombstoned]
+      description "Sync-feed status of this record, derived from its state (D10/D16)."
+    end
   end
 end
