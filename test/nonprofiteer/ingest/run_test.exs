@@ -36,6 +36,14 @@ defmodule Nonprofiteer.Ingest.RunTest do
     assert_raise Ash.Error.Invalid, fn -> create_run(%{source: :bmf}) end
   end
 
+  test "record!/1 writes an audit row from a bare attribute map" do
+    run = Run.record!(%{source: :bmf, extract_id: "CA", status: :success, row_count: 7})
+
+    assert run.id
+    assert run.source == :bmf
+    assert run.row_count == 7
+  end
+
   test "source and status are constrained to their allowed values" do
     assert_raise Ash.Error.Invalid, fn ->
       create_run(%{source: :not_a_source, status: :success})

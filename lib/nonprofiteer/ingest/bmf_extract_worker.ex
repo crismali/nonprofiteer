@@ -89,8 +89,6 @@ defmodule Nonprofiteer.Ingest.BmfExtractWorker do
   end
 
   defp record_run!(attrs) do
-    Run
-    |> Ash.Changeset.for_create(:create, Map.put(attrs, :source, :bmf))
-    |> Ash.create!()
+    Run.record!(Map.put(attrs, :source, :bmf))
   end
 end

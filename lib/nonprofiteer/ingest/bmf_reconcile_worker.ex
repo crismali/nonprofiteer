@@ -83,11 +83,6 @@ defmodule Nonprofiteer.Ingest.BmfReconcileWorker do
   end
 
   defp record_run!(attrs) do
-    Run
-    |> Ash.Changeset.for_create(
-      :create,
-      Map.merge(attrs, %{source: :bmf, extract_id: @extract_id})
-    )
-    |> Ash.create!()
+    Run.record!(Map.merge(attrs, %{source: :bmf, extract_id: @extract_id}))
   end
 end

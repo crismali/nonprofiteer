@@ -79,15 +79,13 @@ defmodule Nonprofiteer.Ingest.EfileIndexWorker do
   end
 
   defp record_run!(candidate_count, enqueued_count) do
-    Run
-    |> Ash.Changeset.for_create(:create, %{
+    Run.record!(%{
       source: :efile_990,
       extract_id: "index",
       status: :success,
       row_count: enqueued_count,
       orphan_skipped_count: candidate_count - enqueued_count
     })
-    |> Ash.create!()
   end
 
   @doc "The index CSV URL — the configured override, else the latest dated snapshot in the bucket."

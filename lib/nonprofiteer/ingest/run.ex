@@ -81,4 +81,16 @@ defmodule Nonprofiteer.Ingest.Run do
   actions do
     defaults [:read, :destroy, create: :*, update: :*]
   end
+
+  @doc """
+  Writes an audit row from a bare attribute map — the shared `for_create/create!` step every
+  ingest worker's own `record_run!/N` builds its attrs for. Callers own the source-specific
+  defaults (`:source`, `:extract_id`, counts); this owns the changeset.
+  """
+  @spec record!(map()) :: t()
+  def record!(attrs) do
+    __MODULE__
+    |> Ash.Changeset.for_create(:create, attrs)
+    |> Ash.create!()
+  end
 end
