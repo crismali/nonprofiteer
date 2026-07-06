@@ -53,7 +53,9 @@ defmodule Nonprofiteer.Orgs.Address do
   calculations do
     # Addresses aren't history-bearing (no tombstone/supersede), so the sync-feed event is
     # always `:upsert` — present for a uniform feed shape across resources (D16).
-    calculate :event_type, :atom, expr(:upsert) do
+    # `type(:upsert, :atom)`, not a bare `:upsert`: a lone atom is read by the DSL as a
+    # calculation *module* named `:upsert`, which crashes on load and in OpenAPI generation.
+    calculate :event_type, :atom, expr(type(:upsert, :atom)) do
       public? true
       constraints one_of: [:upsert]
       description "Sync-feed status — always `:upsert` for addresses."
