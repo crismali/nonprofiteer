@@ -2,6 +2,8 @@ defmodule Nonprofiteer.Ingest.BmfReconcileWorkerTest do
   use Nonprofiteer.DataCase, async: false
   use Oban.Testing, repo: Nonprofiteer.Repo
 
+  import ExUnit.CaptureLog
+
   alias Nonprofiteer.Ingest.BmfReconcileWorker
   alias Nonprofiteer.Ingest.Run
   alias Nonprofiteer.Orgs.Organization
@@ -80,6 +82,27 @@ defmodule Nonprofiteer.Ingest.BmfReconcileWorkerTest do
     assert run.status == :success
     assert run.row_count == 3
     assert run.orphan_skipped_count == 1
+  end
+
+  test "picks the lowest-EIN central deterministically and flags a GEN with multiple centrals" do
+    # Two centrals share GEN 0925 — a BMF anomaly. The lower EIN should win, whatever read
+    # order Postgres returns.
+    _high_ein =
+      upsert_org(%{ein: "900000001", name: "CENTRAL HIGH", gen: "0925", affiliation_code: "6"})
+
+    low_ein =
+      upsert_org(%{ein: "100000002", name: "CENTRAL LOW", gen: "0925", affiliation_code: "8"})
+
+    sub = upsert_org(%{ein: "010631747", name: "SUB", gen: "0925", affiliation_code: "9"})
+
+    log =
+      capture_log(fn ->
+        assert :ok = perform_job(BmfReconcileWorker, %{})
+      end)
+
+    assert reload(sub).central_org_id == low_ein.id
+    assert log =~ "1 GEN(s) list multiple centrals"
+    assert log =~ "0925"
   end
 
   test "is idempotent — re-running keeps the links and reports the same counts" do
