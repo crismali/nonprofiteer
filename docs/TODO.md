@@ -137,8 +137,8 @@ identifier (`Ingest.Ein.normalize/1`). Orphan filings (EIN not in the BMF spine)
   national volume.
 - [ ] Foreign filers (`ForeignAddress`) — parser handles `USAddress`; `xx` extract addresses
   fall through to nil today.
-- [ ] Coverage/quality metrics off the data (% orgs with parsed Part VII, orphan/unsupported
-  rates) rather than per-filing run rows.
+- [x] Coverage/quality metrics off the data (`mix nonprofiteer.coverage`): % orgs with EIN /
+  address / parsed Part VII people, % filings & people populated, per-source run summary.
 - [ ] Older-schema (pre-2013) Part VII support, if history is extended past the D9 window.
 - [ ] IRSx cross-check script (dev-time diff of our parse vs. IRSx on the fixtures).
 
@@ -206,8 +206,9 @@ health → API keys → lookup/search → raw-source access. All are post-Phase-
   once ohfec's sync consumer + `:exact`/name+address tiers consume the feed. Cross-repo.
 - [ ] Add a couple more known-answer cases for breadth (another shared-officer + shared-address
   pair beyond the flagship ecosystem).
-- [ ] **Coverage/quality metrics** — % orgs with parsed Part VII; null rates on
-  name/address/EIN; dedupe/amendment correctness (a `mix nonprofiteer.coverage` task).
+- [x] **Coverage/quality metrics** — `mix nonprofiteer.coverage`: % orgs with EIN / address /
+  parsed Part VII people, % filings & people populated, per-source run summary. *(Dedupe /
+  amendment-correctness metrics still a possible extension.)*
 
 ## Deferred (Phase 2+)
 
