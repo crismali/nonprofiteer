@@ -14,6 +14,12 @@ defmodule NonprofiteerWeb.Router do
     plug :accepts, ["json"]
   end
 
+  # Health probe — no pipeline (no `:accepts`/CSRF) so monitors get a response regardless of
+  # request headers, and it stays open even once the feed is gated (see TODO).
+  scope "/", NonprofiteerWeb do
+    get "/health", HealthController, :index
+  end
+
   # Public JSON:API sync feed (D3/D16). Unauthenticated by design (ARCHITECTURE); an interim
   # Basic-auth gate is a follow-up (see TODO) for the early-access window.
   scope "/api/v1" do

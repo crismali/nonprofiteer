@@ -167,9 +167,9 @@ health → API keys → lookup/search → raw-source access. All are post-Phase-
   a real deploy and fixes the production base URL, which becomes the OpenAPI `servers[].url`
   (`mix nonprofiteer.openapi`, `GET /api/v1/open_api`) that ohfec's generated client targets —
   so nail it down before handing ohfec a spec pinned to a throwaway host.
-- [ ] **Health endpoint** — `GET /health` (or `/api/v1/health`), **unauthenticated** even once
-  keys land (monitors need it open). 200 + optionally DB-reachable + last-ingest-run time.
-  Small; worth doing soon for deploy/monitoring.
+- [x] **Health endpoint** — `GET /health` (`HealthController`), **unauthenticated**, no pipeline
+  (no `:accepts`/CSRF) so bare monitors get a response. 200 + `database` reachability + newest
+  `last_ingest_run_at` (the run lookup doubles as the DB probe); 503 if the probe fails.
 - [ ] **Admin-managed API keys** — an `ApiKey` Ash resource (hashed key, owner, active flag,
   maybe tier) managed via AshAdmin, plus an auth plug on the `/api/v1` pipeline. Use
   `ash_authentication`'s API-key strategy, don't hand-roll. Foundation for traffic management +
