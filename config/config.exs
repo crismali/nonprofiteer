@@ -37,7 +37,10 @@ config :nonprofiteer, Oban,
        {"0 6 6 * *", Nonprofiteer.Ingest.BmfReconcileWorker},
        # 990 e-file parse runs after the BMF spine + reconcile have settled, so org lookups by
        # EIN hit a current spine (a missing org is an orphan skip, not a hard failure).
-       {"0 6 7 * *", Nonprofiteer.Ingest.EfileIndexWorker}
+       {"0 6 7 * *", Nonprofiteer.Ingest.EfileIndexWorker},
+       # Amendment supersede runs after the parse settles — links superseded filings so the
+       # sync feed emits the status change (D10/D16).
+       {"0 6 8 * *", Nonprofiteer.Ingest.EfileSupersedeWorker}
      ]}
   ],
   repo: Nonprofiteer.Repo
