@@ -163,6 +163,10 @@ Cursor decided (D16), layer AshJsonApi (D17): monotonic **`updated_at`**, keyset
 Beyond the changed-since sync feed, the API surface consumers touch. Suggested order:
 health → API keys → lookup/search → raw-source access. All are post-Phase-1 product work.
 
+- [ ] **Register a domain name** — pick + register the public hostname for nonprofiteer. Blocks
+  a real deploy and fixes the production base URL, which becomes the OpenAPI `servers[].url`
+  (`mix nonprofiteer.openapi`, `GET /api/v1/open_api`) that ohfec's generated client targets —
+  so nail it down before handing ohfec a spec pinned to a throwaway host.
 - [ ] **Health endpoint** — `GET /health` (or `/api/v1/health`), **unauthenticated** even once
   keys land (monitors need it open). 200 + optionally DB-reachable + last-ingest-run time.
   Small; worth doing soon for deploy/monitoring.
