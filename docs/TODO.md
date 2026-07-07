@@ -132,7 +132,8 @@ identifier (`Ingest.Ein.normalize/1`). Orphan filings (EIN not in the BMF spine)
   backfills the window (`efile_min_tax_year`); later runs are incremental (full-snapshot diff).
 - [x] Incrementality via Data Lake index files — `EfileIndexWorker` diffs against ingested
   `source_object_id`s and fans out one `EfileParseWorker` per new Form 990.
-- [ ] Validate output against **IRSx** as reference (documented dev-time diff, not CI).
+- [x] Validate output against **IRSx** as reference (documented dev-time diff, not CI) — see the
+  cross-check task below.
 
 **Deferred (Phase-1 follow-ups, not the first cut):**
 - [x] **Amendment supersede (D10)** — `EfileSupersedeWorker` points earlier filings'
@@ -150,7 +151,11 @@ identifier (`Ingest.Ein.normalize/1`). Orphan filings (EIN not in the BMF spine)
 - [x] Coverage/quality metrics off the data (`mix nonprofiteer.coverage`): % orgs with EIN /
   address / parsed Part VII people, % filings & people populated, per-source run summary.
 - [ ] Older-schema (pre-2013) Part VII support, if history is extended past the D9 window.
-- [ ] IRSx cross-check script (dev-time diff of our parse vs. IRSx on the fixtures).
+- [x] IRSx cross-check script (dev-time diff of our parse vs. IRSx on the fixtures) —
+  `mix nonprofiteer.irsx_crosscheck` seeds a throwaway IRSx cache with each known-answer return
+  and diffs Part VII Section A listees (name/title, in order) against `Efile.PartVii`; pure
+  extraction + compare in `Ingest.Efile.IrsxCrosscheck` (unit-tested), task shells to `irsx` and
+  skips gracefully if it's not installed. Verified: both flagship returns match IRSx 15/15.
 
 ## Sync feed (the Phase-1 deliverable)
 

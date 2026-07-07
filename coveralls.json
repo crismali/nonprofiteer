@@ -4,6 +4,7 @@
     "deps/",
     "lib/nonprofiteer/application.ex",
     "lib/mix/tasks/nonprofiteer.capture_known_answers.ex",
+    "lib/mix/tasks/nonprofiteer.irsx_crosscheck.ex",
     "lib/nonprofiteer/mailer.ex",
     "lib/nonprofiteer/repo.ex",
     "lib/nonprofiteer_web.ex",
