@@ -1,7 +1,9 @@
 defmodule Nonprofiteer.Orgs.FilingTest do
   use Nonprofiteer.DataCase, async: true
 
-  import Nonprofiteer.OrgsFixtures
+  # This module tests the plain `:create` action via its own `create_filing/1`; skip the
+  # shared fixture's same-named helper (which upserts via `:upsert_from_efile`) to avoid a clash.
+  import Nonprofiteer.OrgsFixtures, except: [create_filing: 1, create_filing: 2]
 
   alias Ash.Resource.Info
   alias Nonprofiteer.Orgs.Filing

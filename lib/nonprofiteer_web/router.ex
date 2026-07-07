@@ -20,6 +20,13 @@ defmodule NonprofiteerWeb.Router do
     get "/health", HealthController, :index
   end
 
+  # Raw source-document access (D11) — the R2-mirrored 990 XML for a filing. Declared *before*
+  # the AshJsonApi forward below, which otherwise swallows every `/api/v1/*` path. No pipeline
+  # (like `/health`) so `:accepts ["json"]` doesn't reject the XML response's content negotiation.
+  scope "/api/v1", NonprofiteerWeb do
+    get "/filings/:id/source", FilingSourceController, :show
+  end
+
   # Public JSON:API sync feed (D3/D16). Unauthenticated by design (ARCHITECTURE); an interim
   # Basic-auth gate is a follow-up (see TODO) for the early-access window.
   scope "/api/v1" do

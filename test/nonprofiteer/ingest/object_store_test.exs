@@ -17,6 +17,10 @@ defmodule Nonprofiteer.Ingest.ObjectStoreTest do
     refute ObjectStore.configured?()
   end
 
+  test "get/1 is a dormant no-op when R2 is unconfigured" do
+    assert {:error, :not_configured} = ObjectStore.get("efile/1.xml")
+  end
+
   describe "when configured" do
     setup do
       Application.put_env(:nonprofiteer, :r2, @config)
@@ -46,6 +50,28 @@ defmodule Nonprofiteer.Ingest.ObjectStoreTest do
       Req.Test.stub(__MODULE__, fn conn -> Plug.Conn.send_resp(conn, 500, "boom") end)
 
       assert {:error, {:http_status, 500, _}} = ObjectStore.put("filings/abc.xml", "<Return/>")
+    end
+
+    test "get/1 signs and GETs the object, returning the body on 2xx" do
+      Req.Test.stub(__MODULE__, fn conn ->
+        assert conn.method == "GET"
+        assert conn.request_path == "/mirror/efile/abc.xml"
+        Plug.Conn.send_resp(conn, 200, "<Return>mirrored</Return>")
+      end)
+
+      assert {:ok, "<Return>mirrored</Return>"} = ObjectStore.get("efile/abc.xml")
+    end
+
+    test "get/1 maps a 404 to :not_found" do
+      Req.Test.stub(__MODULE__, fn conn -> Plug.Conn.send_resp(conn, 404, "") end)
+
+      assert {:error, :not_found} = ObjectStore.get("efile/missing.xml")
+    end
+
+    test "get/1 surfaces other non-2xx as an error" do
+      Req.Test.stub(__MODULE__, fn conn -> Plug.Conn.send_resp(conn, 500, "boom") end)
+
+      assert {:error, {:http_status, 500, _}} = ObjectStore.get("efile/abc.xml")
     end
   end
 end

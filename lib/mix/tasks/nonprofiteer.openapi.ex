@@ -43,7 +43,14 @@ defmodule Mix.Tasks.Nonprofiteer.Openapi do
       end
 
     json =
-      [domains: @domains, prefix: @mount_prefix, phoenix_endpoint: NonprofiteerWeb.Endpoint]
+      [
+        domains: @domains,
+        prefix: @mount_prefix,
+        phoenix_endpoint: NonprofiteerWeb.Endpoint,
+        # Same hook the live router uses, so the handoff spec includes the custom (non-Ash)
+        # routes and stays byte-identical to `GET /api/v1/open_api`.
+        modify_open_api: {NonprofiteerWeb.OpenApiExtensions, :add_filing_source, []}
+      ]
       |> AshJsonApi.OpenApi.spec()
       |> Jason.encode!(pretty: true)
 

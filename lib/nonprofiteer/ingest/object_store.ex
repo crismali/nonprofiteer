@@ -45,6 +45,26 @@ defmodule Nonprofiteer.Ingest.ObjectStore do
     end
   end
 
+  @doc """
+  Fetches the object at `key` via a signed `GET`. Returns `{:ok, body}` on a 2xx,
+  `{:error, :not_found}` on a 404 (no such mirrored object), `{:error, {:http_status, status,
+  body}}` on any other non-2xx, `{:error, {:transport, reason}}` on a transport failure, or
+  `{:error, :not_configured}` when R2 is dormant.
+  """
+  @spec get(String.t()) ::
+          {:ok, binary()} | {:error, :not_found} | {:error, :not_configured} | {:error, term()}
+  def get(key) do
+    case config() do
+      {:ok, config} ->
+        config
+        |> signed_request("GET", key, "")
+        |> handle_get()
+
+      {:error, :not_configured} = err ->
+        err
+    end
+  end
+
   @doc "Whether R2 is configured — the parse worker uses this to require vs. skip the mirror."
   @spec configured?() :: boolean()
   def configured?, do: match?({:ok, _}, config())
@@ -112,10 +132,13 @@ defmodule Nonprofiteer.Ingest.ObjectStore do
       )
 
     Req.request(
-      [method: :put, url: url, headers: headers, body: body, retry: false] ++
+      [method: method(method), url: url, headers: headers, body: body, retry: false] ++
         Application.get_env(:nonprofiteer, :r2_req_opts, [])
     )
   end
+
+  defp method("GET"), do: :get
+  defp method("PUT"), do: :put
 
   defp handle_status({:ok, %Req.Response{status: status}}) when status in 200..299, do: :ok
 
@@ -123,4 +146,16 @@ defmodule Nonprofiteer.Ingest.ObjectStore do
     do: {:error, {:http_status, status, body}}
 
   defp handle_status({:error, reason}), do: {:error, {:transport, reason}}
+
+  # GET shares the signing/transport path but returns the body on success and distinguishes a
+  # 404 (object never mirrored) from other non-2xx, so the controller can map it to a clean 404.
+  defp handle_get({:ok, %Req.Response{status: status, body: body}}) when status in 200..299,
+    do: {:ok, IO.iodata_to_binary(body)}
+
+  defp handle_get({:ok, %Req.Response{status: 404}}), do: {:error, :not_found}
+
+  defp handle_get({:ok, %Req.Response{status: status, body: body}}),
+    do: {:error, {:http_status, status, body}}
+
+  defp handle_get({:error, reason}), do: {:error, {:transport, reason}}
 end

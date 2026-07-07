@@ -197,12 +197,16 @@ health → API keys → lookup/search → raw-source access. All are post-Phase-
 - [ ] **Lookup / search endpoints** ("public API, later" — ARCHITECTURE) — org-by-EIN / by-id
   (trivial AshJsonApi `get` route) + name/NTEE search (a `pg_trgm` read action; the extension
   is already installed). Gate behind API keys, so land these *after* keys.
-- [ ] **Raw-source access** — expose the mirrored source 990 XML (D11) for provenance/trust and
-  maximal openness (the XML content is IRS public domain — the safest thing we redistribute).
-  `GET /api/v1/filings/:id/source` streaming/redirecting the R2-mirrored document; `source_object_id`
-  is already the pointer. **Depends on R2 being populated** by a real ingest run, so naturally
-  later. (BMF isn't worth exposing — it's a public irs.gov CSV; the per-filing XML is the
-  valuable, hard-to-locate one.)
+- [x] **Raw-source access** — `GET /api/v1/filings/:id/source` (`FilingSourceController`)
+  **proxies** the R2-mirrored source 990 XML (D11) — bucket stays private, stable URL, immutable
+  `cache-control`. Added `ObjectStore.get/1` (signed GET, 404→`:not_found`). Error mapping:
+  unknown filing / no `source_object_id` → 404, dormant mirror → 503, mirror error → 502. Route
+  sits before the AshJsonApi forward, no pipeline (XML response). Wired into the OpenAPI/Swagger
+  spec via `OpenApiExtensions.add_filing_source/3` (`modify_open_api`, applied in both the live
+  router and `mix nonprofiteer.openapi` so the ohfec handoff stays complete). **Unauthenticated
+  now; joins the API-key gate when that lands** (it's data, unlike `/health`). Runs against a
+  real R2 once an ingest run populates the mirror. (BMF isn't worth exposing — public irs.gov
+  CSV; the per-filing XML is the valuable, hard-to-locate one.)
 - [x] **Strip internal doc references from resource `description` fields** — the exposed
   descriptions (public attributes, the `:changed_since` action, `event_type`) are now
   consumer-facing; the `D#` refs + ingest jargon moved to adjacent code comments. Audited

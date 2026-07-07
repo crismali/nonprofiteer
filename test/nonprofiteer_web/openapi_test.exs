@@ -31,7 +31,9 @@ defmodule NonprofiteerWeb.OpenApiTest do
       [
         domains: [Nonprofiteer.Orgs],
         prefix: "/api/v1",
-        phoenix_endpoint: NonprofiteerWeb.Endpoint
+        phoenix_endpoint: NonprofiteerWeb.Endpoint,
+        # Must mirror the mix task + live router, both of which fold in the custom routes.
+        modify_open_api: {NonprofiteerWeb.OpenApiExtensions, :add_filing_source, []}
       ]
       |> AshJsonApi.OpenApi.spec()
       |> Jason.encode!(pretty: true)

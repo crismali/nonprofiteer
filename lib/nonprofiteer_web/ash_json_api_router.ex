@@ -5,5 +5,7 @@ defmodule NonprofiteerWeb.AshJsonApiRouter do
   """
   use AshJsonApi.Router,
     domains: [Nonprofiteer.Orgs],
-    open_api: "/open_api"
+    open_api: "/open_api",
+    # Fold in custom (non-Ash) routes like the raw-source proxy so the live spec is complete.
+    modify_open_api: {NonprofiteerWeb.OpenApiExtensions, :add_filing_source, []}
 end
